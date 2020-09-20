@@ -5,7 +5,7 @@ import { useUsersQuery } from '../../generated/graphql'
 
 const { Header, Content, Sider } = Layout
 
-const Dashboard: FC = () => {
+const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
   const { data, error, loading } = useUsersQuery()
 
@@ -40,4 +40,4 @@ const Dashboard: FC = () => {
   )
 }
 
-export default Dashboard
+export default DashboardPage

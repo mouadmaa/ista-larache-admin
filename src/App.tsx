@@ -1,10 +1,12 @@
 import React, { FC } from 'react'
 
-import Dashboard from './pages/Dashboard/DashboardPage'
+// import DashboardPage from './pages/Dashboard/DashboardPage'
+import LoginPage from './pages/Login/LoginPage'
 
 const App: FC = () => {
   return (
-    <Dashboard />
+    // <DashboardPage />
+    <LoginPage />
   )
 }
 

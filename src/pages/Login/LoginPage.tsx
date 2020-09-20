@@ -3,11 +3,20 @@ import { Form, Input, Button, Layout, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
 import LoginBGSvg from '../../assets/svg/login-background.svg'
+import { useLoginMutation } from '../../generated/graphql'
+
+interface LoginCredentials {
+  email: string
+  password: string
+}
 
 const LoginPage: FC = () => {
+  const [login, { loading }] = useLoginMutation()
 
-  const onFinish = (values: any) => {
-    console.log('Received values of form: ', values)
+  const onFinish = async (variables: LoginCredentials) => {
+    console.log('Received values of form: ', variables)
+    const response = await login({ variables })
+    console.log(response)
   }
 
   return (
@@ -84,6 +93,7 @@ const LoginPage: FC = () => {
             htmlType="submit"
             className="login-form-button"
             style={{ width: '100%' }}
+            loading={loading}
           >
             Log in
           </Button>
