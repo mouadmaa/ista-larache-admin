@@ -6,16 +6,16 @@ import LoginBGSvg from '../../assets/svg/login-background.svg'
 import { useLoginMutation } from '../../generated/graphql'
 import AuthContext from '../../context/authContext'
 
-interface LoginCredentials {
+interface LoginVariables {
   email: string
   password: string
 }
 
 const LoginPage: FC = () => {
-  const [loginMutation, { loading }] = useLoginMutation()
   const { login } = useContext(AuthContext)
+  const [loginMutation, { loading }] = useLoginMutation()
 
-  const onFinish = async (variables: LoginCredentials) => {
+  const onFinish = async (variables: LoginVariables) => {
     const { data } = await loginMutation({ variables })
     if (data?.login) login(data.login)
   }

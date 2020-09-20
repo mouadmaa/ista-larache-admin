@@ -8,7 +8,6 @@ interface Auth {
   loading: boolean,
   login(user: User): void
   logout(): void
-  updateUser(user: User): void
 }
 
 const AuthContext = createContext<Auth>({
@@ -16,18 +15,16 @@ const AuthContext = createContext<Auth>({
   loading: true,
   login: () => { },
   logout: () => { },
-  updateUser: () => { },
 })
 
 export default AuthContext
 
 export const AuthProvider: React.FC = ({ children }) => {
-  const { user, loading, login, logout, updateUser } = useAuth()
-  console.log(user, loading)
+  const { user, loading, login, logout } = useAuth()
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, login, logout, updateUser, }}
+      value={{ user, loading, login, logout }}
     >
       {children}
     </AuthContext.Provider>

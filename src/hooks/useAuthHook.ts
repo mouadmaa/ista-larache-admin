@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 
-import { useLogoutMutation, useMeLazyQuery, User } from '../generated/graphql'
+import { useMeLazyQuery, User } from '../generated/graphql'
 
 interface UserData {
   userId: string
@@ -12,7 +12,6 @@ const useAuth = () => {
   const [loading, setLoading] = useState(true)
 
   const [getUser, { data }] = useMeLazyQuery()
-  const [logoutMutation, { client }] = useLogoutMutation()
 
   const login = useCallback((user: User) => {
     setUser(user)
@@ -20,15 +19,9 @@ const useAuth = () => {
     setLoading(false)
   }, [])
 
-  const logout = useCallback(async () => {
+  const logout = useCallback(() => {
     setUser(undefined)
     deleteUserData()
-    await logoutMutation()
-    await client.resetStore()
-  }, [logoutMutation, client])
-
-  const updateUser = useCallback((user: User) => {
-    setUser(user)
   }, [])
 
   useEffect(() => {
@@ -45,7 +38,7 @@ const useAuth = () => {
     })()
   }, [data, getUser])
 
-  return { user, login, loading, logout, updateUser }
+  return { user, login, loading, logout, }
 }
 
 export default useAuth
