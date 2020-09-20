@@ -90,7 +90,6 @@ const LoginPage: FC = () => {
 
         <Form.Item>
           <Button
-            type="primary"
             htmlType="submit"
             className="login-form-button"
             style={{ width: '100%' }}

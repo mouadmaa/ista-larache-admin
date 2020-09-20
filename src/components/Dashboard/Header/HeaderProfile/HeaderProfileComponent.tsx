@@ -2,8 +2,8 @@ import React, { FC, useContext } from 'react'
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import { Avatar, Dropdown, Menu, Typography } from 'antd'
 
-import AuthContext from '../../../context/authContext'
-import { useLogoutMutation } from '../../../generated/graphql'
+import AuthContext from '../../../../context/authContext'
+import { useLogoutMutation } from '../../../../generated/graphql'
 
 const HeaderProfile: FC = () => {
   const { user, logout } = useContext(AuthContext)

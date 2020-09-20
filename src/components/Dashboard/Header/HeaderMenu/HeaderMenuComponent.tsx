@@ -3,7 +3,7 @@ import { Layout } from 'antd'
 
 const { Header } = Layout
 
-const HeaderSide: FC = () => {
+const HeaderMenu: FC = () => {
   return (
     <Header
       className="site-layout-background"
@@ -18,4 +18,4 @@ const HeaderSide: FC = () => {
   )
 }
 
-export default HeaderSide
+export default HeaderMenu
