@@ -1,9 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import { Form, Input, Button, Layout, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
 import LoginBGSvg from '../../assets/svg/login-background.svg'
 import { useLoginMutation } from '../../generated/graphql'
+import AuthContext from '../../context/authContext'
 
 interface LoginCredentials {
   email: string
@@ -11,12 +12,12 @@ interface LoginCredentials {
 }
 
 const LoginPage: FC = () => {
-  const [login, { loading }] = useLoginMutation()
+  const [loginMutation, { loading }] = useLoginMutation()
+  const { login } = useContext(AuthContext)
 
   const onFinish = async (variables: LoginCredentials) => {
-    console.log('Received values of form: ', variables)
-    const response = await login({ variables })
-    console.log(response)
+    const { data } = await loginMutation({ variables })
+    if (data?.login) login(data.login)
   }
 
   return (

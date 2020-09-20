@@ -6,11 +6,14 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { client } from './apollo/client'
+import { AuthProvider } from './context/authContext'
 
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
