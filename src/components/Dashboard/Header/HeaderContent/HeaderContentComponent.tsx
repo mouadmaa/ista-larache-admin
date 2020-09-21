@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 
-import HeaderProfile from '../HeaderProfile/HeaderProfileComponent'
+import ProfileDropdown from '../ProfileDropdown/ProfileDropdownComponent'
 
 const HeaderContent: FC = () => {
   return (
@@ -12,7 +12,7 @@ const HeaderContent: FC = () => {
       justifyContent: 'flex-end',
       padding: '0 30px',
     }}>
-      <HeaderProfile />
+      <ProfileDropdown />
     </header>
   )
 }

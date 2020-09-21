@@ -5,20 +5,22 @@ import { Avatar, Dropdown, Menu, Typography } from 'antd'
 import AuthContext from '../../../../context/authContext'
 import { useLogoutMutation } from '../../../../generated/graphql'
 
-const HeaderProfile: FC = () => {
+const ProfileDropdown: FC = () => {
   const { user, logout } = useContext(AuthContext)
   const [logoutMutation, { client }] = useLogoutMutation()
 
   const onMenuClick = async ({ key }: { key: React.Key }) => {
     if (key === 'logout') {
-      await logoutMutation()
-      await client.resetStore()
-      logout()
+      const { data } = await logoutMutation()
+      if (data?.logout) {
+        await client.resetStore()
+        logout()
+      }
     }
   }
 
   const menuHeaderDropdown = (
-    <Menu selectedKeys={[]} onClick={onMenuClick}>
+    <Menu onClick={onMenuClick}>
       <Menu.Item key="profile">
         <UserOutlined />
           Profile
@@ -57,4 +59,4 @@ const HeaderProfile: FC = () => {
   )
 }
 
-export default HeaderProfile
+export default ProfileDropdown

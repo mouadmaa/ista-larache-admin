@@ -4,48 +4,47 @@ import { useMeLazyQuery, User } from '../generated/graphql'
 
 interface UserData {
   userId: string
-  role: 'TEACHER' | 'ADMIN'
 }
 
 const useAuth = () => {
   const [user, setUser] = useState<User>()
   const [loading, setLoading] = useState(true)
 
-  const [getUser, { data }] = useMeLazyQuery()
+  const [getCurrentUser, { data: currentUser }] = useMeLazyQuery()
 
   const login = useCallback((user: User) => {
     setUser(user)
-    storeUserData(user)
+    setUserData(user)
     setLoading(false)
   }, [])
 
   const logout = useCallback(() => {
     setUser(undefined)
-    deleteUserData()
+    removeUserData()
   }, [])
 
   useEffect(() => {
     (async () => {
       if (getUserData()) {
-        getUser()
-        if (data?.me) {
-          setUser(data.me)
+        getCurrentUser()
+        if (currentUser?.me) {
+          setUser(currentUser.me)
           setLoading(false)
         }
       } else {
         setLoading(false)
       }
     })()
-  }, [data, getUser])
+  }, [currentUser, getCurrentUser])
 
   return { user, login, loading, logout, }
 }
 
 export default useAuth
 
-const storeUserData = (user: User) => {
+const setUserData = (user: User) => {
   localStorage.setItem('userData',
-    JSON.stringify({ userId: user.id, role: user.role, })
+    JSON.stringify({ userId: user.id })
   )
 }
 
@@ -55,6 +54,6 @@ const getUserData = () => {
   ) as UserData
 }
 
-const deleteUserData = () => {
+const removeUserData = () => {
   localStorage.removeItem('userData')
 }
