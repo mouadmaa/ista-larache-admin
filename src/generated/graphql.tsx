@@ -23,7 +23,6 @@ export type User = {
   name: Scalars['String'];
   email: Scalars['String'];
   role: Scalars['String'];
-  createdAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -48,7 +47,7 @@ export type MutationLoginArgs = {
 
 export type UserFragment = (
   { __typename?: 'User' }
-  & Pick<User, 'id' | 'name' | 'email' | 'role' | 'createdAt'>
+  & Pick<User, 'id' | 'name' | 'email' | 'role'>
 );
 
 export type LoginMutationVariables = Exact<{
@@ -101,7 +100,6 @@ export const UserFragmentDoc = gql`
   name
   email
   role
-  createdAt
 }
     `;
 export const LoginDocument = gql`

@@ -3,14 +3,18 @@ import { useState, useCallback, useEffect } from 'react'
 import { useMeLazyQuery, User } from '../generated/graphql'
 
 interface UserData {
-  userId: string
+  id: string
+  name: string
+  role: string
 }
 
 const useAuth = () => {
   const [user, setUser] = useState<User>()
   const [loading, setLoading] = useState(true)
 
-  const [getCurrentUser, { data: currentUser }] = useMeLazyQuery()
+  const [fetchCurrentUser, { data: currentUser }] = useMeLazyQuery(
+    { fetchPolicy: 'cache-and-network' }
+  )
 
   const login = useCallback((user: User) => {
     setUser(user)
@@ -25,17 +29,19 @@ const useAuth = () => {
 
   useEffect(() => {
     (async () => {
-      if (getUserData()) {
-        getCurrentUser()
-        if (currentUser?.me) {
-          setUser(currentUser.me)
-          setLoading(false)
-        }
+      setLoading(false)
+
+      const userData = getUserData()
+      if (!userData) return
+
+      fetchCurrentUser()
+      if (currentUser?.me) {
+        setUser(currentUser.me)
       } else {
-        setLoading(false)
+        setUser({ ...userData, email: '', })
       }
     })()
-  }, [currentUser, getCurrentUser])
+  }, [currentUser, fetchCurrentUser])
 
   return { user, login, loading, logout, }
 }
@@ -44,7 +50,11 @@ export default useAuth
 
 const setUserData = (user: User) => {
   localStorage.setItem('userData',
-    JSON.stringify({ userId: user.id })
+    JSON.stringify({
+      id: user.id,
+      name: user.name,
+      role: user.role,
+    })
   )
 }
 
