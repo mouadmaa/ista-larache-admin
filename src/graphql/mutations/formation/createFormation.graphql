@@ -1,0 +1,15 @@
+mutation CreateFormation (
+  $name: String!
+  $descUrl: String!
+  $level: Level!
+) {
+  createFormation(
+    data: {
+      name: $name
+      descUrl: $descUrl
+      level: $level
+    }
+  ) {
+    ...Formation
+  }
+}

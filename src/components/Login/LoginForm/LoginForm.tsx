@@ -25,9 +25,12 @@ const LoginForm: FC<LoginFormProps> = props => {
         rules={[
           {
             required: true,
-            type: 'email',
             message: 'Please input your Email!',
           },
+          {
+            type: 'email',
+            message: 'Please provide valid Email!',
+          }
         ]}
       >
         <Input
@@ -41,8 +44,11 @@ const LoginForm: FC<LoginFormProps> = props => {
         rules={[
           {
             required: true,
-            min: 8,
             message: 'Please input your Password!',
+          },
+          {
+            min: 8,
+            message: 'Enter at least 8 characters!',
           },
         ]}
       >
