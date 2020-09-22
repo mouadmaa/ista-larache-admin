@@ -104,6 +104,11 @@ export type FormationUpdateInput = {
   level?: Maybe<Level>;
 };
 
+export type FormationFragment = (
+  { __typename?: 'Formation' }
+  & Pick<Formation, 'id' | 'name' | 'descUrl' | 'level'>
+);
+
 export type UserFragment = (
   { __typename?: 'User' }
   & Pick<User, 'id' | 'name' | 'email' | 'role'>
@@ -131,6 +136,17 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type FormationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FormationsQuery = (
+  { __typename?: 'Query' }
+  & { formations: Array<(
+    { __typename?: 'Formation' }
+    & FormationFragment
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -153,6 +169,14 @@ export type UsersQuery = (
   )> }
 );
 
+export const FormationFragmentDoc = gql`
+    fragment Formation on Formation {
+  id
+  name
+  descUrl
+  level
+}
+    `;
 export const UserFragmentDoc = gql`
     fragment User on User {
   id
@@ -223,6 +247,38 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const FormationsDocument = gql`
+    query Formations {
+  formations {
+    ...Formation
+  }
+}
+    ${FormationFragmentDoc}`;
+
+/**
+ * __useFormationsQuery__
+ *
+ * To run a query within a React component, call `useFormationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFormationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFormationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFormationsQuery(baseOptions?: Apollo.QueryHookOptions<FormationsQuery, FormationsQueryVariables>) {
+        return Apollo.useQuery<FormationsQuery, FormationsQueryVariables>(FormationsDocument, baseOptions);
+      }
+export function useFormationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FormationsQuery, FormationsQueryVariables>) {
+          return Apollo.useLazyQuery<FormationsQuery, FormationsQueryVariables>(FormationsDocument, baseOptions);
+        }
+export type FormationsQueryHookResult = ReturnType<typeof useFormationsQuery>;
+export type FormationsLazyQueryHookResult = ReturnType<typeof useFormationsLazyQuery>;
+export type FormationsQueryResult = Apollo.QueryResult<FormationsQuery, FormationsQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

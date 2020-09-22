@@ -23,8 +23,8 @@ const SideMenu: FC<SideMenuProps> = props => {
         <Menu.Item key="home" icon={<PieChartOutlined />}>
           Home
       </Menu.Item>
-        <Menu.Item key="other" icon={<DesktopOutlined />}>
-          Other
+        <Menu.Item key="formation" icon={<DesktopOutlined />}>
+          Formation
       </Menu.Item>
       </Menu>
     </Sider>

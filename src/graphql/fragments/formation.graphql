@@ -1,0 +1,6 @@
+fragment Formation on Formation {
+  id
+  name
+  descUrl
+  level
+}

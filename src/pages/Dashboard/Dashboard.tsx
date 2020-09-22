@@ -7,7 +7,7 @@ import TapsContent from '../../components/Dashboard/TapsContent/TapsContent'
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [selectedTap, setSelectedTap] = useState('home')
+  const [selectedTap, setSelectedTap] = useState('formation')
 
   const onSelect = ({ key }: { key: React.Key }) => {
     setSelectedTap(key as string)
