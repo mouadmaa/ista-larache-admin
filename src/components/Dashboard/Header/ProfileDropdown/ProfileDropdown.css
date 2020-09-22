@@ -1,0 +1,23 @@
+.profile-dropdown {
+  transition: .5s;
+}
+
+.profile-dropdown:hover {
+  background-color: #f8f8f8;
+}
+
+.profile-dropdown-loading {
+  margin-top: 10px;
+}
+
+.profile-dropdown-span {
+  padding: 0 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-dropdown-span > span {
+  margin-right: 6px;
+}

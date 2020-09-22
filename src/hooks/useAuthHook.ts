@@ -1,11 +1,11 @@
 import { useState, useCallback, useEffect } from 'react'
 
-import { useMeLazyQuery, User } from '../generated/graphql'
+import { Role, useMeLazyQuery, User } from '../generated/graphql'
 
 interface UserData {
   id: string
   name: string
-  role: string
+  role: Role
 }
 
 const useAuth = () => {

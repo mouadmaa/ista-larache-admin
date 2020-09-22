@@ -1,9 +1,9 @@
 import React, { FC, useContext } from 'react'
 
-import DashboardPage from './pages/Dashboard/DashboardPage'
-import LoginPage from './pages/Login/LoginPage'
+import DashboardPage from './pages/Dashboard/Dashboard'
+import LoginPage from './pages/Login/Login'
 import AuthContext from './context/authContext'
-import Spinner from './components/UI/Spinner/SpinnerComponent'
+import Spinner from './components/UI/Spinner/Spinner'
 
 const App: FC = () => {
   const { user, loading } = useContext(AuthContext)

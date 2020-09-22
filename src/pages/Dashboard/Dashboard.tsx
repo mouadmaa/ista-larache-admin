@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react'
 import { Layout } from 'antd'
 
-import SideMenu from '../../components/Dashboard/SideMenu/SideMenuComponent'
-import TapsContent from '../../components/Dashboard/TapsContent/TapsContentComponent'
+import './Dashboard.css'
+import SideMenu from '../../components/Dashboard/SideMenu/SideMenu'
+import TapsContent from '../../components/Dashboard/TapsContent/TapsContent'
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
@@ -13,7 +14,7 @@ const DashboardPage: FC = () => {
   }
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout className='dashboard-layout'>
       <SideMenu
         collapsed={collapsed}
         setCollapsed={setCollapsed}

@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { Menu, Layout } from 'antd'
 import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons'
 
-import HeaderMenu from '../Header/HeaderMenu/HeaderMenuComponent'
+import HeaderMenu from '../Header/HeaderMenu/HeaderMenu'
 
 const { Sider } = Layout
 

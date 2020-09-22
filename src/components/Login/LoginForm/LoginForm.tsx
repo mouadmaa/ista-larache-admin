@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Form, Input, Button } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 
+import './LoginForm.css'
 import { LoginMutationVariables } from '../../../generated/graphql'
 
 interface LoginFormProps {
@@ -15,11 +16,7 @@ const LoginForm: FC<LoginFormProps> = props => {
   return (
     <Form
       name="normal_login"
-      className="login-form"
-      style={{
-        width: '100%',
-        maxWidth: '350px',
-      }}
+      className="login-form login-form-page"
       initialValues={{ email: '', password: '', }}
       onFinish={onFinish}
     >
@@ -61,11 +58,10 @@ const LoginForm: FC<LoginFormProps> = props => {
         <Button
           htmlType="submit"
           className="login-form-button"
-          style={{ width: '100%' }}
           loading={loading}
         >
           Log in
-          </Button>
+        </Button>
       </Form.Item>
     </Form>
   )

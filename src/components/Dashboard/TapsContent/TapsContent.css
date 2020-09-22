@@ -1,0 +1,10 @@
+.taps-layout {
+  background-color: #f2f2f2;
+}
+
+.taps-content {
+  margin: 16px;
+  padding: 16px;
+  background-color: white;
+  box-shadow: 0 0 10px #eee;
+}

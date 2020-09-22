@@ -1,19 +1,20 @@
-import React, { FC, useContext } from 'react'
+import React, { FC, Fragment, useContext } from 'react'
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
-import { Avatar, Dropdown, Menu, Typography } from 'antd'
+import { Avatar, Dropdown, Menu, Spin, Typography } from 'antd'
 
+import './ProfileDropdown.css'
 import AuthContext from '../../../../context/authContext'
 import { useLogoutMutation } from '../../../../generated/graphql'
 
 const ProfileDropdown: FC = () => {
   const { user, logout } = useContext(AuthContext)
-  const [logoutMutation, { client }] = useLogoutMutation()
+  const [logoutMutation, { loading, client }] = useLogoutMutation()
 
   const onMenuClick = async ({ key }: { key: React.Key }) => {
     if (key === 'logout') {
-      logout()
       await logoutMutation()
       await client.resetStore()
+      logout()
     }
   }
 
@@ -35,25 +36,35 @@ const ProfileDropdown: FC = () => {
     </Menu>
   )
 
-  return (
-    <Dropdown overlay={menuHeaderDropdown}>
-      <span style={{
-        padding: '0 16px',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
+  let dropdown = (
+    <Dropdown
+      overlay={menuHeaderDropdown}
+      className={`profile-dropdown ${loading && 'profile-dropdown-loading'}`}
+    >
+      <span className='profile-dropdown-span'>
         <Avatar
           size="small"
           alt="avatar"
-          style={{ marginRight: '6px' }}
         />
         <Typography.Text type='secondary'>
           {user && user.name.toUpperCase()}
         </Typography.Text>
       </span>
     </Dropdown>
+  )
+
+  if (loading) {
+    return (
+      <Spin size='small'>
+        {dropdown}
+      </Spin>
+    )
+  }
+
+  return (
+    <Fragment>
+      {dropdown}
+    </Fragment>
   )
 }
 

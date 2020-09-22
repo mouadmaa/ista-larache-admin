@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Layout } from 'antd'
 
-import HeaderContent from '../Header/HeaderContent/HeaderContentComponent'
+import './TapsContent.css'
+import HeaderContent from '../Header/HeaderContent/HeaderContent'
 
 const { Content } = Layout
 
@@ -13,15 +14,9 @@ const TapsContent: FC<ContentTapsProps> = props => {
   const { selectedTap } = props
 
   return (
-    <Layout className="site-layout" style={{ backgroundColor: '#f2f2f2' }}>
+    <Layout className="site-layout taps-layout">
       <HeaderContent />
-      <Content
-        style={{
-          margin: '16px',
-          padding: '16px',
-          backgroundColor: 'white',
-          boxShadow: '0 0 10px #eee',
-        }}>
+      <Content className='taps-content'>
         {selectedTap === 'home' && <h3>Home</h3>}
         {selectedTap === 'other' && <h3>Other</h3>}
       </Content>

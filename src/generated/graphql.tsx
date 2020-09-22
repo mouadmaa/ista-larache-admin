@@ -15,6 +15,7 @@ export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
   users: Array<User>;
+  formations: Array<Formation>;
 };
 
 export type User = {
@@ -22,14 +23,40 @@ export type User = {
   id: Scalars['String'];
   name: Scalars['String'];
   email: Scalars['String'];
-  role: Scalars['String'];
+  role: Role;
 };
+
+export enum Role {
+  Admin = 'ADMIN',
+  Teacher = 'TEACHER'
+}
+
+export type Formation = {
+  __typename?: 'Formation';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  descUrl: Scalars['String'];
+  level: Level;
+};
+
+export enum Level {
+  TechnicienSpecialise = 'Technicien_Specialise',
+  Technicien = 'Technicien',
+  Qualification = 'Qualification',
+  Specialisation = 'Specialisation',
+  BacProfessionnel = 'Bac_Professionnel',
+  ParcoursCollegial = 'Parcours_Collegial',
+  FormationQualifiante = 'Formation_Qualifiante'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
   register?: Maybe<User>;
   login?: Maybe<User>;
   logout?: Maybe<Scalars['Boolean']>;
+  createFormation: Formation;
+  updateFormation: Formation;
+  deleteFormation: Formation;
 };
 
 
@@ -43,6 +70,38 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationCreateFormationArgs = {
+  data: CreateFormationInput;
+};
+
+
+export type MutationUpdateFormationArgs = {
+  where: FormationWhereUniqueInput;
+  data: FormationUpdateInput;
+};
+
+
+export type MutationDeleteFormationArgs = {
+  where: FormationWhereUniqueInput;
+};
+
+export type CreateFormationInput = {
+  name: Scalars['String'];
+  descUrl: Scalars['String'];
+  level: Level;
+};
+
+export type FormationWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type FormationUpdateInput = {
+  name?: Maybe<Scalars['String']>;
+  descUrl?: Maybe<Scalars['String']>;
+  level?: Maybe<Level>;
 };
 
 export type UserFragment = (

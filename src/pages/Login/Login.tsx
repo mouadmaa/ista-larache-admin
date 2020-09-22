@@ -1,9 +1,9 @@
 import React, { FC, useContext } from 'react'
 import { Layout } from 'antd'
 
-import LoginBGSvg from '../../assets/svg/login-background.svg'
-import LoginHead from '../../components/Login/LoginHead/LoginHeadComponent'
-import LoginForm from '../../components/Login/LoginForm/LoginFormComponent'
+import './Login.css'
+import LoginHead from '../../components/Login/LoginHead/LoginHead'
+import LoginForm from '../../components/Login/LoginForm/LoginForm'
 import AuthContext from '../../context/authContext'
 import { LoginMutationVariables, useLoginMutation } from '../../generated/graphql'
 
@@ -17,13 +17,7 @@ const LoginPage: FC = () => {
   }
 
   return (
-    <Layout style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      paddingTop: '25vh',
-      backgroundImage: `url(${LoginBGSvg})`,
-    }}>
+    <Layout className='login-layout'>
       <LoginHead />
       <LoginForm
         loading={loading}
