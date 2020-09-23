@@ -2,13 +2,20 @@ import { useState, useCallback, useEffect } from 'react'
 
 import { Role, useMeLazyQuery, User } from '../generated/graphql'
 
+export interface AuthHook {
+  user?: User,
+  loading: boolean,
+  login(user: User): void
+  logout(): void
+}
+
 interface UserData {
   id: string
   name: string
   role: Role
 }
 
-const useAuth = () => {
+export const useAuth = (): AuthHook => {
   const [user, setUser] = useState<User>()
   const [loading, setLoading] = useState(true)
 
@@ -45,8 +52,6 @@ const useAuth = () => {
 
   return { user, login, loading, logout, }
 }
-
-export default useAuth
 
 const setUserData = (user: User) => {
   localStorage.setItem('userData',

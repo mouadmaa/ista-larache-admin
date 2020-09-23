@@ -1,33 +1,16 @@
-import React, { FC, useState } from 'react'
-import { Button, List, message, Popconfirm, Skeleton } from 'antd'
+import React, { FC } from 'react'
+import { Button, List, Popconfirm, Skeleton } from 'antd'
 import { PlusCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 import './Formation.css'
-import { FormationFragmentDoc, useCreateFormationMutation, useFormationsQuery } from '../../generated/graphql'
 import FormationForm from '../../components/Formation/FormationForm/FormationForm'
+import { useFormation } from '../../hooks/useFormationHook'
 
 const Formation: FC = () => {
-  const [visible, setVisible] = useState(false)
-  const { data, loading } = useFormationsQuery()
-
-  const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
-    update: (cache, { data }) => {
-      if (!data?.createFormation) return
-      cache.modify({
-        fields: {
-          formations: (existingFormations = []) => {
-            const newFormation = cache.writeFragment({
-              data: data.createFormation,
-              fragment: FormationFragmentDoc
-            })
-            return [...existingFormations, newFormation]
-          }
-        }
-      })
-      setVisible(false)
-      message.success('A new formation has been added successfully')
-    },
-  })
+  const {
+    formations, loadingFormations, visible, setVisible,
+    createFormation, loadingForm,
+  } = useFormation()
 
   return (
     <div className='formation-container'>
@@ -39,7 +22,7 @@ const Formation: FC = () => {
       </Button>
       <FormationForm
         visible={visible}
-        loading={loadingCreate}
+        loading={loadingForm}
         onCreate={createFormation}
         onCancel={() => setVisible(false)}
       />
@@ -47,8 +30,8 @@ const Formation: FC = () => {
         className='formation-list'
         itemLayout="horizontal"
         header={<h3>Formations</h3>}
-        loading={loading}
-        dataSource={data?.formations || []}
+        loading={loadingFormations}
+        dataSource={formations}
         renderItem={formation => (
           <List.Item
             actions={[
@@ -68,7 +51,7 @@ const Formation: FC = () => {
               </Popconfirm>
             ]}
           >
-            <Skeleton title={false} loading={loading} active>
+            <Skeleton title={false} loading={loadingFormations} active>
               <List.Item.Meta
                 title={<a href={formation.descUrl}>{formation.name}</a>}
                 description={formation.level.replace('_', ' ')}

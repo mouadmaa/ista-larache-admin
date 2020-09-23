@@ -3,7 +3,7 @@ import { Input, Modal, Form, Select } from 'antd'
 
 import { CreateFormationInput, Level } from '../../../generated/graphql'
 
-export interface FormationFormProps {
+interface FormationFormProps {
   visible: boolean
   loading: boolean
   onCreate: ({ variables }: { variables: CreateFormationInput }) => void

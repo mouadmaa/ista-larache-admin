@@ -1,16 +1,8 @@
 import React, { createContext } from 'react'
-import { User } from '../generated/graphql'
 
-import useAuth from '../hooks/useAuthHook'
+import { AuthHook, useAuth } from '../hooks/useAuthHook'
 
-interface Auth {
-  user?: User,
-  loading: boolean,
-  login(user: User): void
-  logout(): void
-}
-
-const AuthContext = createContext<Auth>({
+const AuthContext = createContext<AuthHook>({
   user: undefined,
   loading: true,
   login: () => { },
