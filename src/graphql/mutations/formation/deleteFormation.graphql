@@ -1,0 +1,11 @@
+mutation DeleteFormation(
+  $id: String!
+) {
+  deleteFormation(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Formation
+  }
+}

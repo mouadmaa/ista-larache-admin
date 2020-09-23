@@ -8,23 +8,23 @@ import { useFormation } from '../../hooks/useFormationHook'
 
 const Formation: FC = () => {
   const {
-    formations, loadingFormations, visible, setVisible,
-    createFormation, loadingForm,
+    formations, loadingFormations, formVisible, setFormVisible,
+    createFormation, deleteFormation, loadingForm,
   } = useFormation()
 
   return (
     <div className='formation-container'>
       <Button
         icon={<PlusCircleOutlined />}
-        onClick={() => setVisible(true)}
+        onClick={() => setFormVisible(true)}
       >
         Add Formation
       </Button>
       <FormationForm
-        visible={visible}
+        visible={formVisible}
         loading={loadingForm}
         onCreate={createFormation}
-        onCancel={() => setVisible(false)}
+        onCancel={() => setFormVisible(false)}
       />
       <List
         className='formation-list'
@@ -43,7 +43,7 @@ const Formation: FC = () => {
               </Button>,
               <Popconfirm
                 title="Sure to delete?"
-                onConfirm={() => console.log('delete')}
+                onConfirm={() => deleteFormation({ variables: { id: formation.id } })}
               >
                 <Button icon={<DeleteOutlined />}>
                   Delete
