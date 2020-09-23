@@ -1,0 +1,19 @@
+mutation UpdateFormation(
+  $id: String!
+  $name: String
+  $descUrl: String
+  $level: Level
+) {
+  updateFormation(
+    where: {
+      id: $id
+    }
+    data: {
+      name: $name
+      descUrl: $descUrl
+      level: $level
+    }
+  ) {
+    ...Formation
+  }
+}

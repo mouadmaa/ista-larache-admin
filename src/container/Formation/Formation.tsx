@@ -8,8 +8,8 @@ import { useFormation } from '../../hooks/useFormationHook'
 
 const Formation: FC = () => {
   const {
-    formations, loadingFormations, formVisible, setFormVisible,
-    createFormation, deleteFormation, loadingForm,
+    formations, formation, setFormation, loadingFormations, formVisible, setFormVisible,
+    createFormation, updateFormation, deleteFormation, loadingForm,
   } = useFormation()
 
   return (
@@ -21,9 +21,11 @@ const Formation: FC = () => {
         Add Formation
       </Button>
       <FormationForm
+        formation={formation}
         visible={formVisible}
         loading={loadingForm}
         onCreate={createFormation}
+        onUpdate={updateFormation}
         onCancel={() => setFormVisible(false)}
       />
       <List
@@ -37,7 +39,10 @@ const Formation: FC = () => {
             actions={[
               <Button
                 icon={<EditOutlined />}
-                onClick={() => console.log('edit')}
+                onClick={() => {
+                  setFormation(formation)
+                  setFormVisible(true)
+                }}
               >
                 Edit
               </Button>,

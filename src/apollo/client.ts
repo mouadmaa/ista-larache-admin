@@ -3,6 +3,8 @@ import { onError } from 'apollo-link-error'
 import { createHttpLink } from 'apollo-link-http'
 import { message as Message } from 'antd'
 
+import { memoryCacheConfig } from './memoryCacheConfig'
+
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
   credentials: 'include',
@@ -21,6 +23,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 export const client = new ApolloClient({
   link: ApolloLink.from([errorLink as any, httpLink]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache(memoryCacheConfig),
   connectToDevTools: process.env.NODE_ENV === 'development',
 })

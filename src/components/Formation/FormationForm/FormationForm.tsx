@@ -1,21 +1,28 @@
 import React, { FC } from 'react'
 import { Input, Modal, Form, Select } from 'antd'
 
-import { CreateFormationInput, Level } from '../../../generated/graphql'
+import { CreateFormationInput, UpdateFormationMutationVariables, Formation, Level } from '../../../generated/graphql'
 
 interface FormationFormProps {
+  formation: Formation | undefined
   visible: boolean
   loading: boolean
   onCreate: ({ variables }: { variables: CreateFormationInput }) => void
+  onUpdate: ({ variables }: { variables: UpdateFormationMutationVariables }) => void
   onCancel: () => void
 }
 
 const FormationForm: FC<FormationFormProps> = props => {
-  const { visible, loading, onCreate, onCancel } = props
+  const { formation, visible, loading, onCreate, onUpdate, onCancel } = props
   const [form] = Form.useForm()
 
   const handleOk = async () => {
-    onCreate({ variables: await form.validateFields() as CreateFormationInput })
+    const variables = await form.validateFields()
+    if (formation) {
+      onUpdate({ variables: { ...variables, id: formation.id } })
+    } else {
+      onCreate({ variables: variables as CreateFormationInput })
+    }
     form.resetFields()
   }
 
@@ -34,9 +41,9 @@ const FormationForm: FC<FormationFormProps> = props => {
         layout="vertical"
         name="form_in_modal"
         initialValues={{
-          name: '',
-          descUrl: '',
-          level: Object.entries(Level)[0][1],
+          name: formation ? formation.name : '',
+          descUrl: formation ? formation.descUrl : '',
+          level: formation ? formation.level : Object.entries(Level)[0][1],
         }}
       >
         <Form.Item

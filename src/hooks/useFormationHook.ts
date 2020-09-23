@@ -3,12 +3,14 @@ import { message } from 'antd'
 import { FetchResult, MutationFunctionOptions } from '@apollo/client'
 
 import {
-  Formation, FormationFragmentDoc, useCreateFormationMutation, useFormationsQuery,
-  CreateFormationMutation, Exact, Level, useDeleteFormationMutation, DeleteFormationMutation
+  Formation, useCreateFormationMutation, useFormationsQuery, Exact, Level, CreateFormationMutation,
+  useDeleteFormationMutation, DeleteFormationMutation, useUpdateFormationMutation, UpdateFormationMutation
 } from '../generated/graphql'
 
 export interface FormationHook {
   formations: Formation[]
+  formation: Formation | undefined
+  setFormation: React.Dispatch<React.SetStateAction<Formation | undefined>>
   loadingFormations: boolean
   loadingForm: boolean
   formVisible: boolean
@@ -16,6 +18,9 @@ export interface FormationHook {
   createFormation: (options?: MutationFunctionOptions<CreateFormationMutation, Exact<{
     name: string; descUrl: string; level: Level;
   }>> | undefined) => Promise<FetchResult<CreateFormationMutation, Record<string, any>, Record<string, any>>>
+  updateFormation: (options?: MutationFunctionOptions<UpdateFormationMutation, Exact<{
+    id: string; name?: string | null | undefined; descUrl?: string | null | undefined; level?: Level | null | undefined;
+  }>> | undefined) => Promise<FetchResult<UpdateFormationMutation, Record<string, any>, Record<string, any>>>
   deleteFormation: (options?: MutationFunctionOptions<DeleteFormationMutation, Exact<{
     id: string;
   }>> | undefined) => Promise<FetchResult<DeleteFormationMutation, Record<string, any>, Record<string, any>>>
@@ -23,41 +28,43 @@ export interface FormationHook {
 
 export const useFormation = (): FormationHook => {
   const [formVisible, setFormVisible] = useState(false)
+  const [formation, setFormation] = useState<Formation>()
   const { data, loading } = useFormationsQuery()
 
   const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
-    update: (cache, { data }) => {
-      if (!data?.createFormation) return
-      cache.modify({
-        fields: {
-          formations: (existingFormations = []) => {
-            const newFormation = cache.writeFragment({
-              data: data.createFormation,
-              fragment: FormationFragmentDoc
-            })
-            return [newFormation, ...existingFormations]
-          }
-        }
-      })
-      message.success('A new formation has been added successfully')
+    onCompleted: () => {
+      message.success('A new formation has been added successfully.')
+      setFormVisible(false)
+    },
+    update: (cache) => {
+      cache.evict({ fieldName: 'formations' })
+    },
+  })
+
+  const [updateFormation, { loading: loadingUpdate }] = useUpdateFormationMutation({
+    onCompleted: () => {
+      message.success('The formation has been edited successfully.')
       setFormVisible(false)
     },
   })
 
   const [deleteFormation, { loading: loadingDelete }] = useDeleteFormationMutation({
+    onCompleted: () => {
+      message.success('The formation has been removed successfully.')
+    },
     update: (cache, { data }) => {
-      if (!data?.deleteFormation) return
-      cache.evict({ id: cache.identify(data.deleteFormation) })
-      message.success('A new formation has been deleted successfully')
-      setFormVisible(false)
+      if (data?.deleteFormation) cache.evict({ id: cache.identify(data.deleteFormation) })
     },
   })
 
   return {
     formations: data?.formations || [],
-    loadingFormations: loading,
-    loadingForm: loadingCreate || loadingDelete,
+    formation,
+    setFormation,
+    loadingFormations: loading || loadingDelete,
+    loadingForm: loadingCreate || loadingUpdate,
     createFormation,
+    updateFormation,
     deleteFormation,
     formVisible,
     setFormVisible,

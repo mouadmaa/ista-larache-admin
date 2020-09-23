@@ -142,6 +142,22 @@ export type DeleteFormationMutation = (
   ) }
 );
 
+export type UpdateFormationMutationVariables = Exact<{
+  id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  descUrl?: Maybe<Scalars['String']>;
+  level?: Maybe<Level>;
+}>;
+
+
+export type UpdateFormationMutation = (
+  { __typename?: 'Mutation' }
+  & { updateFormation: (
+    { __typename?: 'Formation' }
+    & FormationFragment
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -279,6 +295,41 @@ export function useDeleteFormationMutation(baseOptions?: Apollo.MutationHookOpti
 export type DeleteFormationMutationHookResult = ReturnType<typeof useDeleteFormationMutation>;
 export type DeleteFormationMutationResult = Apollo.MutationResult<DeleteFormationMutation>;
 export type DeleteFormationMutationOptions = Apollo.BaseMutationOptions<DeleteFormationMutation, DeleteFormationMutationVariables>;
+export const UpdateFormationDocument = gql`
+    mutation UpdateFormation($id: String!, $name: String, $descUrl: String, $level: Level) {
+  updateFormation(where: {id: $id}, data: {name: $name, descUrl: $descUrl, level: $level}) {
+    ...Formation
+  }
+}
+    ${FormationFragmentDoc}`;
+export type UpdateFormationMutationFn = Apollo.MutationFunction<UpdateFormationMutation, UpdateFormationMutationVariables>;
+
+/**
+ * __useUpdateFormationMutation__
+ *
+ * To run a mutation, you first call `useUpdateFormationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFormationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFormationMutation, { data, loading, error }] = useUpdateFormationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      descUrl: // value for 'descUrl'
+ *      level: // value for 'level'
+ *   },
+ * });
+ */
+export function useUpdateFormationMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFormationMutation, UpdateFormationMutationVariables>) {
+        return Apollo.useMutation<UpdateFormationMutation, UpdateFormationMutationVariables>(UpdateFormationDocument, baseOptions);
+      }
+export type UpdateFormationMutationHookResult = ReturnType<typeof useUpdateFormationMutation>;
+export type UpdateFormationMutationResult = Apollo.MutationResult<UpdateFormationMutation>;
+export type UpdateFormationMutationOptions = Apollo.BaseMutationOptions<UpdateFormationMutation, UpdateFormationMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
