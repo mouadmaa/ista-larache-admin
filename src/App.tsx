@@ -1,7 +1,7 @@
 import React, { FC, useContext } from 'react'
 
-import DashboardPage from './pages/Dashboard/Dashboard'
-import LoginPage from './pages/Login/Login'
+import Dashboard from './pages/Dashboard/Dashboard'
+import Login from './pages/Login/Login'
 import AuthContext from './context/authContext'
 import Spinner from './components/UI/Spinner/Spinner'
 
@@ -14,9 +14,9 @@ const App: FC = () => {
   }
 
   return user ? (
-    <DashboardPage />
+    <Dashboard />
   ) : (
-      <LoginPage />
+      <Login />
   )
 }
 
