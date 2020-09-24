@@ -16,7 +16,10 @@ const Formation: FC = () => {
     <div className='formation-container'>
       <Button
         icon={<PlusCircleOutlined />}
-        onClick={() => setFormVisible(true)}
+        onClick={() => {
+          setFormVisible(true)
+          setFormation(undefined)
+        }}
       >
         Add Formation
       </Button>
@@ -40,15 +43,17 @@ const Formation: FC = () => {
               <Button
                 icon={<EditOutlined />}
                 onClick={() => {
-                  setFormation(formation)
                   setFormVisible(true)
+                  setFormation(formation)
                 }}
               >
                 Edit
               </Button>,
               <Popconfirm
                 title="Sure to delete?"
-                onConfirm={() => deleteFormation({ variables: { id: formation.id } })}
+                onConfirm={() => deleteFormation({
+                  variables: { id: formation.id }
+                })}
               >
                 <Button icon={<DeleteOutlined />}>
                   Delete

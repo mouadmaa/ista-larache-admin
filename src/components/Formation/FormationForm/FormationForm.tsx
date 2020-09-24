@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Input, Modal, Form, Select } from 'antd'
 
 import { CreateFormationInput, UpdateFormationMutationVariables, Formation, Level } from '../../../generated/graphql'
@@ -16,6 +16,16 @@ const FormationForm: FC<FormationFormProps> = props => {
   const { formation, visible, loading, onCreate, onUpdate, onCancel } = props
   const [form] = Form.useForm()
 
+  useEffect(() => {
+    if (formation) {
+      form.setFieldsValue(formation)
+    } else {
+      form.setFieldsValue({
+        name: '', descUrl: '', level: Object.entries(Level)[0][1],
+      })
+    }
+  }, [form, formation])
+
   const handleOk = async () => {
     const variables = await form.validateFields()
     if (formation) {
@@ -23,28 +33,23 @@ const FormationForm: FC<FormationFormProps> = props => {
     } else {
       onCreate({ variables: variables as CreateFormationInput })
     }
-    form.resetFields()
   }
 
   return (
     <Modal
-      title="Create a new formation"
-      okText="Create"
+      title={`${formation ? 'Edit' : 'Create a new'} formation`}
+      okText={`${formation ? 'Save' : 'Create'}`}
       cancelText="Cancel"
       onOk={handleOk}
       onCancel={onCancel}
       visible={visible}
       confirmLoading={loading}
+      afterClose={form.resetFields}
     >
       <Form
         form={form}
         layout="vertical"
         name="form_in_modal"
-        initialValues={{
-          name: formation ? formation.name : '',
-          descUrl: formation ? formation.descUrl : '',
-          level: formation ? formation.level : Object.entries(Level)[0][1],
-        }}
       >
         <Form.Item
           name="name"
