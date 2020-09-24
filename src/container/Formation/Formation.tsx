@@ -1,74 +1,64 @@
-import React, { FC } from 'react'
-import { Button, List, Popconfirm, Skeleton } from 'antd'
-import { PlusCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import React, { FC, useState } from 'react'
 
 import './Formation.css'
+import FormationList from '../../components/Formation/FormationList/FormationList'
 import FormationForm from '../../components/Formation/FormationForm/FormationForm'
+import ModuleTable from '../../components/Formation/ModuleTable/ModuleTable'
 import { useFormation } from '../../hooks/useFormationHook'
+import { Formation as FormationType } from '../../generated/graphql'
 
 const Formation: FC = () => {
+  const [formation, setFormation] = useState<FormationType>()
+
   const {
-    formations, formation, setFormation, loadingFormations, formVisible, setFormVisible,
+    formations, loadingFormations, formVisible, setFormVisible,
     createFormation, updateFormation, deleteFormation, loadingForm,
+    fetchFormationWithModules, modules, loadingModules,
   } = useFormation()
+
+  const onShowForm = () => {
+    setFormVisible(true)
+    setFormation(undefined)
+  }
+
+  const onEdit = () => {
+    setFormVisible(true)
+    setFormation(formation)
+  }
+
+  const onDelete = (formation: FormationType) => {
+    deleteFormation({ variables: { id: formation.id } })
+  }
+
+  const onShowModules = (formation: FormationType) => {
+    setFormation(formation)
+    fetchFormationWithModules({ variables: { id: formation.id } })
+  }
+
+  const onHideForm = () => setFormVisible(false)
 
   return (
     <div className='formation-container'>
-      <Button
-        icon={<PlusCircleOutlined />}
-        onClick={() => {
-          setFormVisible(true)
-          setFormation(undefined)
-        }}
-      >
-        Add Formation
-      </Button>
       <FormationForm
         formation={formation}
         visible={formVisible}
         loading={loadingForm}
         onCreate={createFormation}
         onUpdate={updateFormation}
-        onCancel={() => setFormVisible(false)}
+        onShowForm={onShowForm}
+        onHideForm={onHideForm}
       />
-      <List
-        className='formation-list'
-        itemLayout="horizontal"
-        header={<h3>Formations</h3>}
+      <FormationList
+        formations={formations}
         loading={loadingFormations}
-        dataSource={formations}
-        renderItem={formation => (
-          <List.Item
-            actions={[
-              <Button
-                icon={<EditOutlined />}
-                onClick={() => {
-                  setFormVisible(true)
-                  setFormation(formation)
-                }}
-              >
-                Edit
-              </Button>,
-              <Popconfirm
-                title="Sure to delete?"
-                onConfirm={() => deleteFormation({
-                  variables: { id: formation.id }
-                })}
-              >
-                <Button icon={<DeleteOutlined />}>
-                  Delete
-                </Button>
-              </Popconfirm>
-            ]}
-          >
-            <Skeleton title={false} loading={loadingFormations} active>
-              <List.Item.Meta
-                title={<a href={formation.descUrl}>{formation.name}</a>}
-                description={formation.level.replace('_', ' ')}
-              />
-            </Skeleton>
-          </List.Item>
-        )}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onShowModules={onShowModules}
+      />
+      <ModuleTable
+        modules={modules}
+        loading={loadingModules}
+        formation={formation}
       />
     </div>
   )

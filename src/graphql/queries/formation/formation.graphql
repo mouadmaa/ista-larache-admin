@@ -1,0 +1,14 @@
+query Formation(
+  $id: String!
+) {
+  formation(
+    where:{
+      id: $id
+    }
+  ) {
+    ...Formation
+    modules {
+      ...Module
+    }
+  }
+}

@@ -1,0 +1,5 @@
+fragment Module on Module {
+  id
+  number
+  name
+}

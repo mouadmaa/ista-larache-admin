@@ -15,7 +15,15 @@ export type Query = {
   __typename?: 'Query';
   me?: Maybe<User>;
   users: Array<User>;
+  formation?: Maybe<Formation>;
   formations: Array<Formation>;
+  modules: Array<Module>;
+  classes: Array<Class>;
+};
+
+
+export type QueryFormationArgs = {
+  where: FormationWhereUniqueInput;
 };
 
 export type User = {
@@ -31,12 +39,18 @@ export enum Role {
   Teacher = 'TEACHER'
 }
 
+export type FormationWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
 export type Formation = {
   __typename?: 'Formation';
   id: Scalars['String'];
   name: Scalars['String'];
   descUrl: Scalars['String'];
   level: Level;
+  modules: Array<Module>;
+  classes: Array<Class>;
 };
 
 export enum Level {
@@ -49,6 +63,38 @@ export enum Level {
   FormationQualifiante = 'Formation_Qualifiante'
 }
 
+export type Module = {
+  __typename?: 'Module';
+  id: Scalars['String'];
+  number: Scalars['Int'];
+  name: Scalars['String'];
+  classes: Array<Class>;
+  formation: Formation;
+};
+
+export type Class = {
+  __typename?: 'Class';
+  id: Scalars['String'];
+  year: Year;
+  group: Group;
+  modules: Array<Module>;
+  formation: Formation;
+  teacher: User;
+};
+
+export enum Year {
+  Premiere = 'Premiere',
+  Deuxieme = 'Deuxieme'
+}
+
+export enum Group {
+  A = 'A',
+  B = 'B',
+  C = 'C',
+  D = 'D',
+  E = 'E'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   register?: Maybe<User>;
@@ -57,6 +103,9 @@ export type Mutation = {
   createFormation: Formation;
   updateFormation: Formation;
   deleteFormation: Formation;
+  createModule: Module;
+  updateModule: Module;
+  deleteModule: Module;
 };
 
 
@@ -74,7 +123,7 @@ export type MutationLoginArgs = {
 
 
 export type MutationCreateFormationArgs = {
-  data: CreateFormationInput;
+  data: FormationCreateInput;
 };
 
 
@@ -88,14 +137,26 @@ export type MutationDeleteFormationArgs = {
   where: FormationWhereUniqueInput;
 };
 
-export type CreateFormationInput = {
+
+export type MutationCreateModuleArgs = {
+  data: ModuleCreateInput;
+};
+
+
+export type MutationUpdateModuleArgs = {
+  where: ModuleWhereUniqueInput;
+  data: ModuleUpdateInput;
+};
+
+
+export type MutationDeleteModuleArgs = {
+  where: ModuleWhereUniqueInput;
+};
+
+export type FormationCreateInput = {
   name: Scalars['String'];
   descUrl: Scalars['String'];
   level: Level;
-};
-
-export type FormationWhereUniqueInput = {
-  id: Scalars['String'];
 };
 
 export type FormationUpdateInput = {
@@ -104,9 +165,34 @@ export type FormationUpdateInput = {
   level?: Maybe<Level>;
 };
 
+export type ModuleCreateInput = {
+  number: Scalars['Int'];
+  name: Scalars['String'];
+  formation: FormationConnectModuleInput;
+};
+
+export type FormationConnectModuleInput = {
+  connect: FormationWhereUniqueInput;
+};
+
+export type ModuleWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type ModuleUpdateInput = {
+  number?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  formation?: Maybe<FormationConnectModuleInput>;
+};
+
 export type FormationFragment = (
   { __typename?: 'Formation' }
   & Pick<Formation, 'id' | 'name' | 'descUrl' | 'level'>
+);
+
+export type ModuleFragment = (
+  { __typename?: 'Module' }
+  & Pick<Module, 'id' | 'number' | 'name'>
 );
 
 export type UserFragment = (
@@ -180,6 +266,23 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type FormationQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type FormationQuery = (
+  { __typename?: 'Query' }
+  & { formation?: Maybe<(
+    { __typename?: 'Formation' }
+    & { modules: Array<(
+      { __typename?: 'Module' }
+      & ModuleFragment
+    )> }
+    & FormationFragment
+  )> }
+);
+
 export type FormationsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -219,6 +322,13 @@ export const FormationFragmentDoc = gql`
   name
   descUrl
   level
+}
+    `;
+export const ModuleFragmentDoc = gql`
+    fragment Module on Module {
+  id
+  number
+  name
 }
     `;
 export const UserFragmentDoc = gql`
@@ -392,6 +502,43 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const FormationDocument = gql`
+    query Formation($id: String!) {
+  formation(where: {id: $id}) {
+    ...Formation
+    modules {
+      ...Module
+    }
+  }
+}
+    ${FormationFragmentDoc}
+${ModuleFragmentDoc}`;
+
+/**
+ * __useFormationQuery__
+ *
+ * To run a query within a React component, call `useFormationQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFormationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFormationQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFormationQuery(baseOptions?: Apollo.QueryHookOptions<FormationQuery, FormationQueryVariables>) {
+        return Apollo.useQuery<FormationQuery, FormationQueryVariables>(FormationDocument, baseOptions);
+      }
+export function useFormationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FormationQuery, FormationQueryVariables>) {
+          return Apollo.useLazyQuery<FormationQuery, FormationQueryVariables>(FormationDocument, baseOptions);
+        }
+export type FormationQueryHookResult = ReturnType<typeof useFormationQuery>;
+export type FormationLazyQueryHookResult = ReturnType<typeof useFormationLazyQuery>;
+export type FormationQueryResult = Apollo.QueryResult<FormationQuery, FormationQueryVariables>;
 export const FormationsDocument = gql`
     query Formations {
   formations {

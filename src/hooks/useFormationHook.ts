@@ -2,14 +2,15 @@ import { useState } from 'react'
 import { message } from 'antd'
 
 import {
-  Formation, useCreateFormationMutation, useFormationsQuery,
-  useDeleteFormationMutation, useUpdateFormationMutation,
+  Formation, useCreateFormationMutation, useFormationsQuery, useDeleteFormationMutation,
+  useUpdateFormationMutation, useFormationLazyQuery, Module
 } from '../generated/graphql'
 
 export const useFormation = () => {
   const [formVisible, setFormVisible] = useState(false)
-  const [formation, setFormation] = useState<Formation>()
-  const { data, loading } = useFormationsQuery()
+
+  const { data: formationsData, loading: formationsLoading } = useFormationsQuery()
+  const [fetchFormationWithModules, { data: formationDataWithModules, loading: formationLoadingWithModules }] = useFormationLazyQuery()
 
   const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
     onCompleted: () => {
@@ -38,14 +39,15 @@ export const useFormation = () => {
   })
 
   return {
-    formations: data?.formations || [],
-    formation,
-    setFormation,
-    loadingFormations: loading || loadingDelete,
+    formations: formationsData?.formations as Formation[] || [],
+    loadingFormations: formationsLoading || loadingDelete,
     loadingForm: loadingCreate || loadingUpdate,
     createFormation,
     updateFormation,
     deleteFormation,
+    fetchFormationWithModules,
+    modules: formationDataWithModules?.formation?.modules as Module[] || [],
+    loadingModules: formationLoadingWithModules,
     formVisible,
     setFormVisible,
   }

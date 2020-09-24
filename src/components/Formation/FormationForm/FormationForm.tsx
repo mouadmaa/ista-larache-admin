@@ -1,19 +1,21 @@
-import React, { FC, useEffect } from 'react'
-import { Input, Modal, Form, Select } from 'antd'
+import React, { FC, Fragment, useEffect } from 'react'
+import { Input, Modal, Form, Select, Button } from 'antd'
+import { PlusCircleOutlined } from '@ant-design/icons'
 
-import { CreateFormationInput, UpdateFormationMutationVariables, Formation, Level } from '../../../generated/graphql'
+import { FormationCreateInput, UpdateFormationMutationVariables, Formation, Level } from '../../../generated/graphql'
 
 interface FormationFormProps {
   formation: Formation | undefined
   visible: boolean
   loading: boolean
-  onCreate: ({ variables }: { variables: CreateFormationInput }) => void
+  onCreate: ({ variables }: { variables: FormationCreateInput }) => void
   onUpdate: ({ variables }: { variables: UpdateFormationMutationVariables }) => void
-  onCancel: () => void
+  onShowForm: () => void
+  onHideForm: () => void
 }
 
 const FormationForm: FC<FormationFormProps> = props => {
-  const { formation, visible, loading, onCreate, onUpdate, onCancel } = props
+  const { formation, visible, loading, onCreate, onUpdate, onShowForm, onHideForm } = props
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -31,69 +33,77 @@ const FormationForm: FC<FormationFormProps> = props => {
     if (formation) {
       onUpdate({ variables: { ...variables, id: formation.id } })
     } else {
-      onCreate({ variables: variables as CreateFormationInput })
+      onCreate({ variables: variables as FormationCreateInput })
     }
   }
 
   return (
-    <Modal
-      title={`${formation ? 'Edit' : 'Create a new'} formation`}
-      okText={`${formation ? 'Save' : 'Create'}`}
-      cancelText="Cancel"
-      onOk={handleOk}
-      onCancel={onCancel}
-      visible={visible}
-      confirmLoading={loading}
-      afterClose={form.resetFields}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
+    <Fragment>
+      <Button
+        icon={<PlusCircleOutlined />}
+        onClick={onShowForm}
       >
-        <Form.Item
-          name="name"
-          label="Name"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the name of formation!',
-            },
-            {
-              min: 5,
-              message: 'Enter at least 5 characters!',
-            },
-          ]}
+        Add Formation
+      </Button>
+      <Modal
+        title={`${formation ? 'Edit the' : 'Create a new'} formation`}
+        okText={`${formation ? 'Save' : 'Create'}`}
+        cancelText="Cancel"
+        onOk={handleOk}
+        onCancel={onHideForm}
+        visible={visible}
+        confirmLoading={loading}
+        afterClose={form.resetFields}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          name="form_in_modal"
         >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="descUrl"
-          label="Description Url"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the description url of formation!',
-            },
-            {
-              type: 'url',
-              message: 'Please provide valid url!',
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item name="level" label="Level of Formation">
-          <Select defaultValue={Object.entries(Level)[0][1]}>
-            {Object.entries(Level).map(level => (
-              <Select.Option key={level[0]} value={level[1]} >
-                {level[1].replace('_', ' ')}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-      </Form>
-    </Modal>
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the name of formation!',
+              },
+              {
+                min: 5,
+                message: 'Enter at least 5 characters!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="descUrl"
+            label="Description Url"
+            rules={[
+              {
+                required: true,
+                message: 'Please input the description url of formation!',
+              },
+              {
+                type: 'url',
+                message: 'Please provide valid url!',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item name="level" label="Level of Formation">
+            <Select defaultValue={Object.entries(Level)[0][1]}>
+              {Object.entries(Level).map(level => (
+                <Select.Option key={level[0]} value={level[1]} >
+                  {level[1].replace('_', ' ')}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </Fragment>
   )
 }
 
