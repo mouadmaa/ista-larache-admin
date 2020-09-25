@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC } from 'react'
-import { Table } from 'antd'
+import { Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 
 import { Formation, Module } from '../../../generated/graphql'
@@ -32,12 +33,26 @@ const columns: ColumnsType<Module> = [
   {
     key: "number",
     title: "Number",
-    dataIndex: "number"
+    dataIndex: "number",
+    width: '10%',
   },
   {
     key: "name",
     title: "Name",
-    dataIndex: "name"
+    dataIndex: "name",
+  },
+  {
+    title: 'operation',
+    dataIndex: 'operation',
+    width: '15%',
+    render: () => (
+      <Space size="middle">
+        <a>Edit</a>
+        <Popconfirm title="Sure to delete?">
+          <a>Delete</a>
+        </Popconfirm>
+      </Space>
+    ),
   },
 ]
 
@@ -45,5 +60,5 @@ const getTitle = (modules: Module[], loading: boolean, formation?: Formation) =>
   return loading ? 'Modules is Loading...' : formation && modules.length
     ? `Modules Related to Formation: ${formation.name}`
     : formation ? 'This Formation does not have any modules'
-      : 'Select a formation'
+      : 'Modules (Choose a formation)'
 }

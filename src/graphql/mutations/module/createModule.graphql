@@ -1,0 +1,15 @@
+mutation CreateModule(
+  $number: Int!
+  $name: String!
+  $formation: FormationConnectModuleInput!
+) {
+  createModule(
+    data: {
+      number: $number
+      name: $name
+      formation: $formation
+    }
+  ) {
+    ...Module
+  }
+}

@@ -5,7 +5,7 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { FormationCreateInput, UpdateFormationMutationVariables, Formation, Level } from '../../../generated/graphql'
 
 interface FormationFormProps {
-  formation: Formation | undefined
+  formation?: Formation
   visible: boolean
   loading: boolean
   onCreate: ({ variables }: { variables: FormationCreateInput }) => void
@@ -16,6 +16,7 @@ interface FormationFormProps {
 
 const FormationForm: FC<FormationFormProps> = props => {
   const { formation, visible, loading, onCreate, onUpdate, onShowForm, onHideForm } = props
+
   const [form] = Form.useForm()
 
   useEffect(() => {

@@ -244,6 +244,21 @@ export type UpdateFormationMutation = (
   ) }
 );
 
+export type CreateModuleMutationVariables = Exact<{
+  number: Scalars['Int'];
+  name: Scalars['String'];
+  formation: FormationConnectModuleInput;
+}>;
+
+
+export type CreateModuleMutation = (
+  { __typename?: 'Mutation' }
+  & { createModule: (
+    { __typename?: 'Module' }
+    & ModuleFragment
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -440,6 +455,40 @@ export function useUpdateFormationMutation(baseOptions?: Apollo.MutationHookOpti
 export type UpdateFormationMutationHookResult = ReturnType<typeof useUpdateFormationMutation>;
 export type UpdateFormationMutationResult = Apollo.MutationResult<UpdateFormationMutation>;
 export type UpdateFormationMutationOptions = Apollo.BaseMutationOptions<UpdateFormationMutation, UpdateFormationMutationVariables>;
+export const CreateModuleDocument = gql`
+    mutation CreateModule($number: Int!, $name: String!, $formation: FormationConnectModuleInput!) {
+  createModule(data: {number: $number, name: $name, formation: $formation}) {
+    ...Module
+  }
+}
+    ${ModuleFragmentDoc}`;
+export type CreateModuleMutationFn = Apollo.MutationFunction<CreateModuleMutation, CreateModuleMutationVariables>;
+
+/**
+ * __useCreateModuleMutation__
+ *
+ * To run a mutation, you first call `useCreateModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createModuleMutation, { data, loading, error }] = useCreateModuleMutation({
+ *   variables: {
+ *      number: // value for 'number'
+ *      name: // value for 'name'
+ *      formation: // value for 'formation'
+ *   },
+ * });
+ */
+export function useCreateModuleMutation(baseOptions?: Apollo.MutationHookOptions<CreateModuleMutation, CreateModuleMutationVariables>) {
+        return Apollo.useMutation<CreateModuleMutation, CreateModuleMutationVariables>(CreateModuleDocument, baseOptions);
+      }
+export type CreateModuleMutationHookResult = ReturnType<typeof useCreateModuleMutation>;
+export type CreateModuleMutationResult = Apollo.MutationResult<CreateModuleMutation>;
+export type CreateModuleMutationOptions = Apollo.BaseMutationOptions<CreateModuleMutation, CreateModuleMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

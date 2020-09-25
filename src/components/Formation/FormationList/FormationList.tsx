@@ -7,7 +7,7 @@ import { Formation } from '../../../generated/graphql'
 interface FormationListProps {
   formations: Formation[]
   loading: boolean
-  onEdit: () => void
+  onEdit: (formation: Formation) => void
   onDelete: (formation: Formation) => void
   onShowModules: (formation: Formation) => void
 }
@@ -30,7 +30,7 @@ const FormationList: FC<FormationListProps> = props => {
             </Button>,
             <Button
               icon={<EditOutlined />}
-              onClick={onEdit}
+              onClick={() => onEdit(formation)}
             >
               Edit
             </Button>,

@@ -3,9 +3,9 @@ import React, { FC, useState } from 'react'
 import './Formation.css'
 import FormationList from '../../components/Formation/FormationList/FormationList'
 import FormationForm from '../../components/Formation/FormationForm/FormationForm'
-import ModuleTable from '../../components/Formation/ModuleTable/ModuleTable'
 import { useFormation } from '../../hooks/useFormationHook'
 import { Formation as FormationType } from '../../generated/graphql'
+import Module from '../Module/Module'
 
 const Formation: FC = () => {
   const [formation, setFormation] = useState<FormationType>()
@@ -21,7 +21,7 @@ const Formation: FC = () => {
     setFormation(undefined)
   }
 
-  const onEdit = () => {
+  const onEdit = (formation: FormationType) => {
     setFormVisible(true)
     setFormation(formation)
   }
@@ -55,7 +55,7 @@ const Formation: FC = () => {
         onDelete={onDelete}
         onShowModules={onShowModules}
       />
-      <ModuleTable
+      <Module
         modules={modules}
         loading={loadingModules}
         formation={formation}

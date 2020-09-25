@@ -17,6 +17,9 @@ export const useFormation = () => {
       message.success('A new formation has been added successfully.')
       setFormVisible(false)
     },
+    onError: () => {
+      message.warning('Maybe the name of formation already exists.', 10)
+    },
     update: (cache) => {
       cache.evict({ fieldName: 'formations' })
     },
@@ -26,6 +29,9 @@ export const useFormation = () => {
     onCompleted: () => {
       message.success('The formation has been edited successfully.')
       setFormVisible(false)
+    },
+    onError: () => {
+      message.warning('Maybe the name of formation already exists.', 10)
     },
   })
 
