@@ -9,10 +9,44 @@ interface ModuleTableProps {
   modules: Module[]
   loading: boolean
   formation?: Formation
+  onDelete: (module: Module) => void
+  onEdit: (module: Module) => void
 }
 
 const ModuleTable: FC<ModuleTableProps> = props => {
-  const { modules, loading, formation } = props
+  const { modules, loading, formation, onDelete, onEdit } = props
+
+  const columns: ColumnsType<Module> = [
+    {
+      key: "number",
+      title: "Number",
+      dataIndex: "number",
+      width: '10%',
+    },
+    {
+      key: "name",
+      title: "Name",
+      dataIndex: "name",
+    },
+    {
+      title: 'operation',
+      dataIndex: 'operation',
+      width: '15%',
+      render: (_, module) => (
+        <Space size="middle">
+          <a onClick={() => onEdit(module)}>
+            Edit
+          </a>
+          <Popconfirm
+            title="Sure to delete?"
+            onConfirm={() => onDelete(module)}
+          >
+            <a>Delete</a>
+          </Popconfirm>
+        </Space>
+      ),
+    },
+  ]
 
   return (
     <Table<Module>
@@ -28,33 +62,6 @@ const ModuleTable: FC<ModuleTableProps> = props => {
 }
 
 export default ModuleTable
-
-const columns: ColumnsType<Module> = [
-  {
-    key: "number",
-    title: "Number",
-    dataIndex: "number",
-    width: '10%',
-  },
-  {
-    key: "name",
-    title: "Name",
-    dataIndex: "name",
-  },
-  {
-    title: 'operation',
-    dataIndex: 'operation',
-    width: '15%',
-    render: () => (
-      <Space size="middle">
-        <a>Edit</a>
-        <Popconfirm title="Sure to delete?">
-          <a>Delete</a>
-        </Popconfirm>
-      </Space>
-    ),
-  },
-]
 
 const getTitle = (modules: Module[], loading: boolean, formation?: Formation) => {
   return loading ? 'Modules is Loading...' : formation && modules.length

@@ -259,6 +259,35 @@ export type CreateModuleMutation = (
   ) }
 );
 
+export type DeleteModuleMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteModuleMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteModule: (
+    { __typename?: 'Module' }
+    & ModuleFragment
+  ) }
+);
+
+export type UpdateModuleMutationVariables = Exact<{
+  id: Scalars['String'];
+  number?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  formation?: Maybe<FormationConnectModuleInput>;
+}>;
+
+
+export type UpdateModuleMutation = (
+  { __typename?: 'Mutation' }
+  & { updateModule: (
+    { __typename?: 'Module' }
+    & ModuleFragment
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -489,6 +518,73 @@ export function useCreateModuleMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateModuleMutationHookResult = ReturnType<typeof useCreateModuleMutation>;
 export type CreateModuleMutationResult = Apollo.MutationResult<CreateModuleMutation>;
 export type CreateModuleMutationOptions = Apollo.BaseMutationOptions<CreateModuleMutation, CreateModuleMutationVariables>;
+export const DeleteModuleDocument = gql`
+    mutation DeleteModule($id: String!) {
+  deleteModule(where: {id: $id}) {
+    ...Module
+  }
+}
+    ${ModuleFragmentDoc}`;
+export type DeleteModuleMutationFn = Apollo.MutationFunction<DeleteModuleMutation, DeleteModuleMutationVariables>;
+
+/**
+ * __useDeleteModuleMutation__
+ *
+ * To run a mutation, you first call `useDeleteModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteModuleMutation, { data, loading, error }] = useDeleteModuleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteModuleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteModuleMutation, DeleteModuleMutationVariables>) {
+        return Apollo.useMutation<DeleteModuleMutation, DeleteModuleMutationVariables>(DeleteModuleDocument, baseOptions);
+      }
+export type DeleteModuleMutationHookResult = ReturnType<typeof useDeleteModuleMutation>;
+export type DeleteModuleMutationResult = Apollo.MutationResult<DeleteModuleMutation>;
+export type DeleteModuleMutationOptions = Apollo.BaseMutationOptions<DeleteModuleMutation, DeleteModuleMutationVariables>;
+export const UpdateModuleDocument = gql`
+    mutation UpdateModule($id: String!, $number: Int, $name: String, $formation: FormationConnectModuleInput) {
+  updateModule(where: {id: $id}, data: {number: $number, name: $name, formation: $formation}) {
+    ...Module
+  }
+}
+    ${ModuleFragmentDoc}`;
+export type UpdateModuleMutationFn = Apollo.MutationFunction<UpdateModuleMutation, UpdateModuleMutationVariables>;
+
+/**
+ * __useUpdateModuleMutation__
+ *
+ * To run a mutation, you first call `useUpdateModuleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateModuleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateModuleMutation, { data, loading, error }] = useUpdateModuleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      number: // value for 'number'
+ *      name: // value for 'name'
+ *      formation: // value for 'formation'
+ *   },
+ * });
+ */
+export function useUpdateModuleMutation(baseOptions?: Apollo.MutationHookOptions<UpdateModuleMutation, UpdateModuleMutationVariables>) {
+        return Apollo.useMutation<UpdateModuleMutation, UpdateModuleMutationVariables>(UpdateModuleDocument, baseOptions);
+      }
+export type UpdateModuleMutationHookResult = ReturnType<typeof useUpdateModuleMutation>;
+export type UpdateModuleMutationResult = Apollo.MutationResult<UpdateModuleMutation>;
+export type UpdateModuleMutationOptions = Apollo.BaseMutationOptions<UpdateModuleMutation, UpdateModuleMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

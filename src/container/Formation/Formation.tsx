@@ -28,6 +28,7 @@ const Formation: FC = () => {
 
   const onDelete = (formation: FormationType) => {
     deleteFormation({ variables: { id: formation.id } })
+    setFormation(undefined)
   }
 
   const onShowModules = (formation: FormationType) => {

@@ -16,10 +16,23 @@ const Module: FC<ModuleProps> = props => {
 
   const [module, setModule] = useState<ModuleType>()
 
-  const { formVisible, setFormVisible, loadingForm, createModule } = useModule()
+  const {
+    formVisible, setFormVisible, loadingForm, createModule,
+    deleteModule, updateModule, loadingTable,
+  } = useModule()
 
   const onShowForm = () => {
     setFormVisible(true)
+    setModule(undefined)
+  }
+
+  const onEdit = (module: ModuleType) => {
+    setFormVisible(true)
+    setModule(module)
+  }
+
+  const onDelete = (module: ModuleType) => {
+    deleteModule({ variables: { id: module.id } })
     setModule(undefined)
   }
 
@@ -34,14 +47,17 @@ const Module: FC<ModuleProps> = props => {
           visible={formVisible}
           loading={loadingForm}
           onCreate={createModule}
+          onUpdate={updateModule}
           onShowForm={onShowForm}
           onHideForm={onHideForm}
         />
       )}
       <ModuleTable
         modules={formation ? modules : []}
-        loading={loading}
+        loading={loading || loadingTable}
         formation={formation}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </Fragment>
   )

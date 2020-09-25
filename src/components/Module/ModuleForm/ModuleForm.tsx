@@ -2,7 +2,7 @@ import React, { FC, Fragment, useEffect } from 'react'
 import { Input, Modal, Form, Button, InputNumber } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 
-import { Formation, Module, ModuleCreateInput } from '../../../generated/graphql'
+import { Formation, Module, ModuleCreateInput, UpdateModuleMutationVariables } from '../../../generated/graphql'
 
 interface ModuleFormProps {
   module?: Module
@@ -10,12 +10,16 @@ interface ModuleFormProps {
   visible: boolean
   loading: boolean
   onCreate: ({ variables }: { variables: ModuleCreateInput }) => void
+  onUpdate: ({ variables }: { variables: UpdateModuleMutationVariables }) => void
   onShowForm: () => void
   onHideForm: () => void
 }
 
 const ModuleForm: FC<ModuleFormProps> = props => {
-  const { module, loading, formation, visible, onShowForm, onHideForm, onCreate } = props
+  const {
+    module, loading, formation, visible, onShowForm,
+    onHideForm, onCreate, onUpdate
+  } = props
 
   const [form] = Form.useForm()
 
@@ -28,9 +32,13 @@ const ModuleForm: FC<ModuleFormProps> = props => {
   }, [form, module])
 
   const handleOk = async () => {
-    const variables = await form.validateFields() as ModuleCreateInput
+    const variables = await form.validateFields()
     variables.formation = { connect: { id: formation.id } }
-    onCreate({ variables })
+    if (module) {
+      onUpdate({ variables: { ...variables, id: module.id } })
+    } else {
+      onCreate({ variables: variables as ModuleCreateInput })
+    }
   }
 
   return (
@@ -49,7 +57,6 @@ const ModuleForm: FC<ModuleFormProps> = props => {
         onCancel={onHideForm}
         visible={visible}
         confirmLoading={loading}
-        afterClose={form.resetFields}
       >
         <Form
           form={form}

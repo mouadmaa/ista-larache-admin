@@ -1,0 +1,11 @@
+mutation DeleteModule(
+  $id: String!
+) {
+  deleteModule(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Module
+  }
+}

@@ -1,0 +1,19 @@
+mutation UpdateModule(
+  $id: String!
+  $number: Int
+  $name: String
+  $formation: FormationConnectModuleInput
+) {
+  updateModule(
+    where: {
+      id: $id
+    }
+    data: {
+      number: $number
+      name: $name
+      formation: $formation
+    }
+  ) {
+    ...Module
+  }
+}

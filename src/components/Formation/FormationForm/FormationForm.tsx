@@ -54,7 +54,7 @@ const FormationForm: FC<FormationFormProps> = props => {
         onCancel={onHideForm}
         visible={visible}
         confirmLoading={loading}
-        afterClose={form.resetFields}
+        // afterClose={form.resetFields}
       >
         <Form
           form={form}

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { message } from 'antd'
 
-import { useCreateModuleMutation } from '../generated/graphql'
+import { useCreateModuleMutation, useDeleteModuleMutation, useUpdateModuleMutation } from '../generated/graphql'
 
 export const useModule = () => {
   const [formVisible, setFormVisible] = useState(false)
@@ -19,9 +19,31 @@ export const useModule = () => {
     },
   })
 
+  const [updateModule, { loading: loadingUpdate }] = useUpdateModuleMutation({
+    onCompleted: () => {
+      message.success('The module has been edited successfully.')
+      setFormVisible(false)
+    },
+    onError: () => {
+      message.warning('Maybe the number of module already exists.', 10)
+    },
+  })
+
+  const [deleteModule, { loading: loadingDelete }] = useDeleteModuleMutation({
+    onCompleted: () => {
+      message.success('The module has been removed successfully.')
+    },
+    update: (cache, { data }) => {
+      if (data?.deleteModule) cache.evict({ id: cache.identify(data.deleteModule) })
+    },
+  })
+
   return {
     createModule,
-    loadingForm: loadingCreate,
+    deleteModule,
+    updateModule,
+    loadingForm: loadingCreate || loadingUpdate,
+    loadingTable: loadingDelete,
     formVisible,
     setFormVisible,
   }
