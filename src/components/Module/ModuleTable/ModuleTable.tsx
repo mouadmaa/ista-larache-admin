@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC } from 'react'
-import { Popconfirm, Space, Table } from 'antd'
+import { Divider, Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 
 import { Formation, Module } from '../../../generated/graphql'
@@ -18,13 +18,11 @@ const ModuleTable: FC<ModuleTableProps> = props => {
 
   const columns: ColumnsType<Module> = [
     {
-      key: "number",
       title: "Number",
       dataIndex: "number",
       width: '10%',
     },
     {
-      key: "name",
       title: "Name",
       dataIndex: "name",
     },
@@ -33,10 +31,11 @@ const ModuleTable: FC<ModuleTableProps> = props => {
       dataIndex: 'operation',
       width: '15%',
       render: (_, module) => (
-        <Space size="middle">
+        <Space size="small">
           <a onClick={() => onEdit(module)}>
             Edit
           </a>
+          <Divider type="vertical" />
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => onDelete(module)}
@@ -54,7 +53,7 @@ const ModuleTable: FC<ModuleTableProps> = props => {
       columns={columns}
       dataSource={modules}
       loading={loading}
-      pagination={{ pageSize: 6 }}
+      pagination={{ pageSize: 8 }}
       size='small'
       bordered
     />

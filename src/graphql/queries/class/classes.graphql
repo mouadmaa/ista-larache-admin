@@ -1,0 +1,11 @@
+query Classes {
+  classes {
+    ...Class
+    formation {
+      ...Formation
+    }
+    teacher {
+      ...User
+    }
+  }
+}

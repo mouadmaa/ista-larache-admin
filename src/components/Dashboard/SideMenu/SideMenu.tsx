@@ -22,10 +22,13 @@ const SideMenu: FC<SideMenuProps> = props => {
       <Menu theme="dark" defaultSelectedKeys={[selectedTap]} mode="inline" onSelect={onSelect}>
         <Menu.Item key="home" icon={<PieChartOutlined />}>
           Home
-      </Menu.Item>
+        </Menu.Item>
         <Menu.Item key="formation" icon={<DesktopOutlined />}>
           Formation
-      </Menu.Item>
+        </Menu.Item>
+        <Menu.Item key="class" icon={<DesktopOutlined />}>
+          Class
+        </Menu.Item>
       </Menu>
     </Sider>
   )

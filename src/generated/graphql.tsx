@@ -106,6 +106,9 @@ export type Mutation = {
   createModule: Module;
   updateModule: Module;
   deleteModule: Module;
+  createClass: Class;
+  updateClass: Class;
+  deleteClass: Class;
 };
 
 
@@ -153,6 +156,22 @@ export type MutationDeleteModuleArgs = {
   where: ModuleWhereUniqueInput;
 };
 
+
+export type MutationCreateClassArgs = {
+  data: ClassCreateInput;
+};
+
+
+export type MutationUpdateClassArgs = {
+  where: ClassWhereUniqueInput;
+  data: ClassUpdateInput;
+};
+
+
+export type MutationDeleteClassArgs = {
+  where: ClassWhereUniqueInput;
+};
+
 export type FormationCreateInput = {
   name: Scalars['String'];
   descUrl: Scalars['String'];
@@ -184,6 +203,41 @@ export type ModuleUpdateInput = {
   name?: Maybe<Scalars['String']>;
   formation?: Maybe<FormationConnectModuleInput>;
 };
+
+export type ClassCreateInput = {
+  year: Year;
+  group: Group;
+  formation: FormationConnectClassInput;
+  teacher: UserConnectClassInput;
+};
+
+export type FormationConnectClassInput = {
+  connect: FormationWhereUniqueInput;
+};
+
+export type UserConnectClassInput = {
+  connect: UserWhereUniqueInput;
+};
+
+export type UserWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type ClassWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type ClassUpdateInput = {
+  year?: Maybe<Year>;
+  group?: Maybe<Group>;
+  formation?: Maybe<FormationConnectClassInput>;
+  teacher?: Maybe<UserConnectClassInput>;
+};
+
+export type ClassFragment = (
+  { __typename?: 'Class' }
+  & Pick<Class, 'id' | 'year' | 'group'>
+);
 
 export type FormationFragment = (
   { __typename?: 'Formation' }
@@ -310,12 +364,30 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
-export type FormationQueryVariables = Exact<{
+export type ClassesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ClassesQuery = (
+  { __typename?: 'Query' }
+  & { classes: Array<(
+    { __typename?: 'Class' }
+    & { formation: (
+      { __typename?: 'Formation' }
+      & FormationFragment
+    ), teacher: (
+      { __typename?: 'User' }
+      & UserFragment
+    ) }
+    & ClassFragment
+  )> }
+);
+
+export type FormationWithModulesQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type FormationQuery = (
+export type FormationWithModulesQuery = (
   { __typename?: 'Query' }
   & { formation?: Maybe<(
     { __typename?: 'Formation' }
@@ -360,6 +432,13 @@ export type UsersQuery = (
   )> }
 );
 
+export const ClassFragmentDoc = gql`
+    fragment Class on Class {
+  id
+  year
+  group
+}
+    `;
 export const FormationFragmentDoc = gql`
     fragment Formation on Formation {
   id
@@ -647,8 +726,48 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const FormationDocument = gql`
-    query Formation($id: String!) {
+export const ClassesDocument = gql`
+    query Classes {
+  classes {
+    ...Class
+    formation {
+      ...Formation
+    }
+    teacher {
+      ...User
+    }
+  }
+}
+    ${ClassFragmentDoc}
+${FormationFragmentDoc}
+${UserFragmentDoc}`;
+
+/**
+ * __useClassesQuery__
+ *
+ * To run a query within a React component, call `useClassesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClassesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClassesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useClassesQuery(baseOptions?: Apollo.QueryHookOptions<ClassesQuery, ClassesQueryVariables>) {
+        return Apollo.useQuery<ClassesQuery, ClassesQueryVariables>(ClassesDocument, baseOptions);
+      }
+export function useClassesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClassesQuery, ClassesQueryVariables>) {
+          return Apollo.useLazyQuery<ClassesQuery, ClassesQueryVariables>(ClassesDocument, baseOptions);
+        }
+export type ClassesQueryHookResult = ReturnType<typeof useClassesQuery>;
+export type ClassesLazyQueryHookResult = ReturnType<typeof useClassesLazyQuery>;
+export type ClassesQueryResult = Apollo.QueryResult<ClassesQuery, ClassesQueryVariables>;
+export const FormationWithModulesDocument = gql`
+    query FormationWithModules($id: String!) {
   formation(where: {id: $id}) {
     ...Formation
     modules {
@@ -660,30 +779,30 @@ export const FormationDocument = gql`
 ${ModuleFragmentDoc}`;
 
 /**
- * __useFormationQuery__
+ * __useFormationWithModulesQuery__
  *
- * To run a query within a React component, call `useFormationQuery` and pass it any options that fit your needs.
- * When your component renders, `useFormationQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFormationWithModulesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFormationWithModulesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFormationQuery({
+ * const { data, loading, error } = useFormationWithModulesQuery({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useFormationQuery(baseOptions?: Apollo.QueryHookOptions<FormationQuery, FormationQueryVariables>) {
-        return Apollo.useQuery<FormationQuery, FormationQueryVariables>(FormationDocument, baseOptions);
+export function useFormationWithModulesQuery(baseOptions?: Apollo.QueryHookOptions<FormationWithModulesQuery, FormationWithModulesQueryVariables>) {
+        return Apollo.useQuery<FormationWithModulesQuery, FormationWithModulesQueryVariables>(FormationWithModulesDocument, baseOptions);
       }
-export function useFormationLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FormationQuery, FormationQueryVariables>) {
-          return Apollo.useLazyQuery<FormationQuery, FormationQueryVariables>(FormationDocument, baseOptions);
+export function useFormationWithModulesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FormationWithModulesQuery, FormationWithModulesQueryVariables>) {
+          return Apollo.useLazyQuery<FormationWithModulesQuery, FormationWithModulesQueryVariables>(FormationWithModulesDocument, baseOptions);
         }
-export type FormationQueryHookResult = ReturnType<typeof useFormationQuery>;
-export type FormationLazyQueryHookResult = ReturnType<typeof useFormationLazyQuery>;
-export type FormationQueryResult = Apollo.QueryResult<FormationQuery, FormationQueryVariables>;
+export type FormationWithModulesQueryHookResult = ReturnType<typeof useFormationWithModulesQuery>;
+export type FormationWithModulesLazyQueryHookResult = ReturnType<typeof useFormationWithModulesLazyQuery>;
+export type FormationWithModulesQueryResult = Apollo.QueryResult<FormationWithModulesQuery, FormationWithModulesQueryVariables>;
 export const FormationsDocument = gql`
     query Formations {
   formations {

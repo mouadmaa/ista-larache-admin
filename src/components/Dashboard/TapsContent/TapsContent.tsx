@@ -1,9 +1,12 @@
-import React, { FC } from 'react'
+import React, { FC, lazy, Suspense } from 'react'
 import { Layout } from 'antd'
 
 import './TapsContent.css'
 import HeaderContent from '../Header/HeaderContent/HeaderContent'
-import Formation from '../../../container/Formation/Formation'
+import Spinner from '../../UI/Spinner/Spinner'
+
+const Formation = lazy(() => import('../../../container/Formation/Formation'))
+const Class = lazy(() => import('../../../container/Class/Class'))
 
 const { Content } = Layout
 
@@ -18,8 +21,13 @@ const TapsContent: FC<ContentTapsProps> = props => {
     <Layout className="site-layout taps-layout">
       <HeaderContent />
       <Content className='taps-content'>
-        {selectedTap === 'home' && <h3>Home</h3>}
-        {selectedTap === 'formation' && <Formation />}
+        <Suspense
+          fallback={<Spinner />}
+        >
+          {selectedTap === 'home' && <h3>Home</h3>}
+          {selectedTap === 'formation' && <Formation />}
+          {selectedTap === 'class' && <Class />}
+        </Suspense>
       </Content>
     </Layout>
   )

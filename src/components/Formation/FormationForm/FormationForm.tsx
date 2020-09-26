@@ -36,6 +36,7 @@ const FormationForm: FC<FormationFormProps> = props => {
     } else {
       onCreate({ variables: variables as FormationCreateInput })
     }
+    form.resetFields()
   }
 
   return (
@@ -54,7 +55,6 @@ const FormationForm: FC<FormationFormProps> = props => {
         onCancel={onHideForm}
         visible={visible}
         confirmLoading={loading}
-        // afterClose={form.resetFields}
       >
         <Form
           form={form}

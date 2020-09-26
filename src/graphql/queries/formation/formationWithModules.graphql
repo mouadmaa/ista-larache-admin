@@ -1,4 +1,4 @@
-query Formation(
+query FormationWithModules(
   $id: String!
 ) {
   formation(

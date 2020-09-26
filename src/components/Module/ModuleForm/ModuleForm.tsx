@@ -39,6 +39,7 @@ const ModuleForm: FC<ModuleFormProps> = props => {
     } else {
       onCreate({ variables: variables as ModuleCreateInput })
     }
+    form.resetFields()
   }
 
   return (
