@@ -25,7 +25,7 @@ export const useModule = () => {
       setFormVisible(false)
     },
     onError: () => {
-      message.warning('Maybe the number of module already exists.', 10)
+      message.warning('Maybe the number or name of module already exists.', 10)
     },
   })
 

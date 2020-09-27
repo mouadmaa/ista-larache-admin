@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react'
+import { Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import './Formation.css'
 import FormationList from '../../components/Formation/FormationList/FormationList'
@@ -27,8 +29,18 @@ const Formation: FC = () => {
   }
 
   const onDelete = (formation: FormationType) => {
-    deleteFormation({ variables: { id: formation.id } })
-    setFormation(undefined)
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `Modules, Classes, Students related to this formation
+        '${formation.name}' will also be deleted`,
+      okText: 'Confirm',
+      cancelText: 'Cancel',
+      onOk: () => {
+        deleteFormation({ variables: { id: formation.id } })
+        setFormation(undefined)
+      }
+    })
   }
 
   const onShowModules = (formation: FormationType) => {

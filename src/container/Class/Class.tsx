@@ -57,7 +57,7 @@ const Class: FC = () => {
         onHideForm={onHideForm}
       />
       <ClassTable
-        classes={classes.concat(classes, classes, classes, classes, classes)}
+        classes={classes}
         loading={classesLoading}
         onShowDrawer={onShowDrawer}
         onEdit={onEdit}
