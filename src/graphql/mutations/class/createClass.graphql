@@ -1,0 +1,23 @@
+mutation CreateClass(
+  $year: Year!
+  $group: Group!
+  $formation: FormationConnectClassInput!
+  $teacher: UserConnectClassInput!
+) {
+  createClass(
+    data: {
+      year: $year
+      group: $group
+      formation: $formation
+      teacher: $teacher
+    }
+  ) {
+    ...Class
+    formation {
+      ...Formation
+    }
+    teacher {
+      ...User
+    }
+  }
+}

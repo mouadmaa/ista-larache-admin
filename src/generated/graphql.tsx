@@ -254,6 +254,29 @@ export type UserFragment = (
   & Pick<User, 'id' | 'name' | 'email' | 'role'>
 );
 
+export type CreateClassMutationVariables = Exact<{
+  year: Year;
+  group: Group;
+  formation: FormationConnectClassInput;
+  teacher: UserConnectClassInput;
+}>;
+
+
+export type CreateClassMutation = (
+  { __typename?: 'Mutation' }
+  & { createClass: (
+    { __typename?: 'Class' }
+    & { formation: (
+      { __typename?: 'Formation' }
+      & FormationFragment
+    ), teacher: (
+      { __typename?: 'User' }
+      & UserFragment
+    ) }
+    & ClassFragment
+  ) }
+);
+
 export type CreateFormationMutationVariables = Exact<{
   name: Scalars['String'];
   descUrl: Scalars['String'];
@@ -462,6 +485,49 @@ export const UserFragmentDoc = gql`
   role
 }
     `;
+export const CreateClassDocument = gql`
+    mutation CreateClass($year: Year!, $group: Group!, $formation: FormationConnectClassInput!, $teacher: UserConnectClassInput!) {
+  createClass(data: {year: $year, group: $group, formation: $formation, teacher: $teacher}) {
+    ...Class
+    formation {
+      ...Formation
+    }
+    teacher {
+      ...User
+    }
+  }
+}
+    ${ClassFragmentDoc}
+${FormationFragmentDoc}
+${UserFragmentDoc}`;
+export type CreateClassMutationFn = Apollo.MutationFunction<CreateClassMutation, CreateClassMutationVariables>;
+
+/**
+ * __useCreateClassMutation__
+ *
+ * To run a mutation, you first call `useCreateClassMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateClassMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createClassMutation, { data, loading, error }] = useCreateClassMutation({
+ *   variables: {
+ *      year: // value for 'year'
+ *      group: // value for 'group'
+ *      formation: // value for 'formation'
+ *      teacher: // value for 'teacher'
+ *   },
+ * });
+ */
+export function useCreateClassMutation(baseOptions?: Apollo.MutationHookOptions<CreateClassMutation, CreateClassMutationVariables>) {
+        return Apollo.useMutation<CreateClassMutation, CreateClassMutationVariables>(CreateClassDocument, baseOptions);
+      }
+export type CreateClassMutationHookResult = ReturnType<typeof useCreateClassMutation>;
+export type CreateClassMutationResult = Apollo.MutationResult<CreateClassMutation>;
+export type CreateClassMutationOptions = Apollo.BaseMutationOptions<CreateClassMutation, CreateClassMutationVariables>;
 export const CreateFormationDocument = gql`
     mutation CreateFormation($name: String!, $descUrl: String!, $level: Level!) {
   createFormation(data: {name: $name, descUrl: $descUrl, level: $level}) {

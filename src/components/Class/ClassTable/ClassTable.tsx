@@ -57,7 +57,7 @@ const ClassTable: FC<ClassTableProps> = props => {
 
   return (
     <Table<DataSourceClasses>
-      style={{ minHeight: '80vh' }}
+      className='class-table'
       title={() => <h3>Classes</h3>}
       columns={columns}
       dataSource={getDataSourceClasses(classes)}

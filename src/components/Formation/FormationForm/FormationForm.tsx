@@ -2,7 +2,8 @@ import React, { FC, Fragment, useEffect } from 'react'
 import { Input, Modal, Form, Select, Button } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 
-import { FormationCreateInput, UpdateFormationMutationVariables, Formation, Level } from '../../../generated/graphql'
+import { FormationCreateInput, UpdateFormationMutationVariables, Formation } from '../../../generated/graphql'
+import { levels } from '../../../utils/getArrayEnum'
 
 interface FormationFormProps {
   formation?: Formation
@@ -24,7 +25,7 @@ const FormationForm: FC<FormationFormProps> = props => {
       form.setFieldsValue(formation)
     } else {
       form.setFieldsValue({
-        name: '', descUrl: '', level: Object.entries(Level)[0][1],
+        name: '', descUrl: '', level: levels[0],
       })
     }
   }, [form, formation])
@@ -94,10 +95,10 @@ const FormationForm: FC<FormationFormProps> = props => {
             <Input />
           </Form.Item>
           <Form.Item name="level" label="Level of Formation">
-            <Select defaultValue={Object.entries(Level)[0][1]}>
-              {Object.entries(Level).map(level => (
-                <Select.Option key={level[0]} value={level[1]} >
-                  {level[1].replace('_', ' ')}
+            <Select defaultValue={levels[0]}>
+              {levels.map(level => (
+                <Select.Option key={level} value={level} >
+                  {level.replace('_', ' ')}
                 </Select.Option>
               ))}
             </Select>
