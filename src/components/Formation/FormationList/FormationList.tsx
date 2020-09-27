@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Button, List, Popconfirm, Skeleton } from 'antd'
+import { Button, List, Popconfirm, Skeleton, Typography } from 'antd'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 import { Formation } from '../../../generated/graphql'
@@ -19,7 +19,7 @@ const FormationList: FC<FormationListProps> = props => {
     <List
       className='formation-list'
       itemLayout="horizontal"
-      header={<h3>Formations</h3>}
+      header={<Typography.Title level={4}>Formations</Typography.Title>}
       loading={loading}
       dataSource={formations}
       renderItem={formation => (

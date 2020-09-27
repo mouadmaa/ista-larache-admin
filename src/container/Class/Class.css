@@ -9,3 +9,13 @@
   border-radius: 4px;
   padding: 0 10px;
 }
+
+.class-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.class-search input {
+  width: 300px;
+}

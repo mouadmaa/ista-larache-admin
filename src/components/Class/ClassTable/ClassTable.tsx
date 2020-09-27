@@ -1,12 +1,14 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Button, Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
-import { Class } from '../../../generated/graphql'
+import { Class, Formation } from '../../../generated/graphql'
+import ClassSearch from '../ClassSearch/ClassSearch'
 
 interface ClassTableProps {
   classes: Class[]
+  formations: Formation[]
   loading: boolean
   onShowDrawer: (viewClass: Class) => void
   onEdit: (editedClass: Class) => void
@@ -17,8 +19,20 @@ interface DataSourceClasses extends Class {
   formationName: string
 }
 
+let previousSearch = ''
+
 const ClassTable: FC<ClassTableProps> = props => {
-  const { classes, loading, onShowDrawer, onDelete, onEdit } = props
+  const { classes, loading, formations, onShowDrawer, onDelete, onEdit } = props
+
+  const [data, setData] = useState<DataSourceClasses[]>([])
+
+  useEffect(() => {
+    getClasses(classes, previousSearch, setData)
+  }, [classes])
+
+  const onSearch = (name: string) => {
+    getClasses(classes, name, setData)
+  }
 
   const columns: ColumnsType<DataSourceClasses> = [
     {
@@ -66,9 +80,14 @@ const ClassTable: FC<ClassTableProps> = props => {
   return (
     <Table<DataSourceClasses>
       className='class-table'
-      title={() => <h3>Classes</h3>}
+      title={() => (
+        <ClassSearch
+          formations={formations}
+          onSearch={onSearch}
+        />
+      )}
       columns={columns}
-      dataSource={getDataSourceClasses(classes)}
+      dataSource={data}
       loading={loading}
       pagination={{ pageSize: 10 }}
       size='large'
@@ -78,6 +97,17 @@ const ClassTable: FC<ClassTableProps> = props => {
 
 export default ClassTable
 
-const getDataSourceClasses = (classes: Class[]): DataSourceClasses[] => {
-  return classes.map(c => ({ ...c, formationName: c.formation.name }))
+const getClasses = (classes: Class[], name: string, setData: React.Dispatch<React.SetStateAction<DataSourceClasses[]>>) => {
+  previousSearch = name
+  const data = classes.map(
+    c => ({ ...c, formationName: c.formation.name })
+  )
+  if (name) {
+    setData(data.filter(c => (
+      c.formationName === name
+    )))
+  } else {
+    setData(data)
+  }
 }
+

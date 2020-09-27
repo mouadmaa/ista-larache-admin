@@ -58,6 +58,7 @@ const Class: FC = () => {
       />
       <ClassTable
         classes={classes}
+        formations={formations}
         loading={classesLoading}
         onShowDrawer={onShowDrawer}
         onEdit={onEdit}
