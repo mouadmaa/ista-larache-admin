@@ -1,0 +1,11 @@
+mutation DeleteClass(
+  $id: String!
+) {
+  deleteClass(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Class
+  }
+}

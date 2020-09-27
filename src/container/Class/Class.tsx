@@ -13,13 +13,23 @@ const Class: FC = () => {
 
   const {
     classes, classesLoading, formVisible, setFormVisible, formLoading,
-    createClass,
+    createClass, updateClass, deleteClass
   } = useCLass()
   const { formations, loadingFormations } = useFormation()
   const { teachers, usersLoading } = useUser()
 
   const onShowForm = () => {
     setFormVisible(true)
+    setCurrentClass(undefined)
+  }
+
+  const onEdit = (updatedClass: ClassType) => {
+    setFormVisible(true)
+    setCurrentClass(updatedClass)
+  }
+
+  const onDelete = (deletedClass: ClassType) => {
+    deleteClass({ variables: { id: deletedClass.id } })
     setCurrentClass(undefined)
   }
 
@@ -34,12 +44,15 @@ const Class: FC = () => {
         loading={formLoading || loadingFormations || usersLoading}
         visible={formVisible}
         onCreate={createClass}
+        onUpdate={updateClass}
         onShowForm={onShowForm}
         onHideForm={onHideForm}
       />
       <ClassTable
-        classes={classes}
+        classes={classes.concat(classes, classes, classes, classes, classes)}
         loading={classesLoading}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </div>
   )

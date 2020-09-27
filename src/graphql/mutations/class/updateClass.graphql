@@ -1,0 +1,27 @@
+mutation UpdateClass(
+  $id: String!
+  $year: Year
+  $group: Group
+  $formation: FormationConnectClassInput
+  $teacher: UserConnectClassInput
+) {
+  updateClass(
+    where: {
+      id: $id
+    }
+    data: {
+      year: $year
+      group: $group
+      formation: $formation
+      teacher: $teacher
+    }
+  ) {
+    ...Class
+    formation {
+      ...Formation
+    }
+    teacher {
+      ...User
+    }
+  }
+}
