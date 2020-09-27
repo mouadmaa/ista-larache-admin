@@ -6,7 +6,7 @@ import { Class, ClassCreateInput, UpdateClassMutationVariables, Formation, User 
 import { groups, years } from '../../../utils/getArrayEnum'
 
 interface ClassFormProps {
-  class?: Class
+  currentClass?: Class
   formations: Formation[]
   teachers: User[]
   visible: boolean
@@ -19,7 +19,7 @@ interface ClassFormProps {
 
 const ClassForm: FC<ClassFormProps> = props => {
   const {
-    class: currentClass, formations, teachers, visible, loading,
+    currentClass, formations, teachers, visible, loading,
     onCreate, onUpdate, onShowForm, onHideForm
   } = props
 

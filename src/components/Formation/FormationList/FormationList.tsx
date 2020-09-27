@@ -26,7 +26,7 @@ const FormationList: FC<FormationListProps> = props => {
         <List.Item
           actions={[
             <Button onClick={() => onShowModules(formation)}>
-              Show Modules
+              View Modules
             </Button>,
             <Button
               icon={<EditOutlined />}

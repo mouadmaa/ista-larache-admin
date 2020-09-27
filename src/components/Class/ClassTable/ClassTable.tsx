@@ -8,6 +8,7 @@ import { Class } from '../../../generated/graphql'
 interface ClassTableProps {
   classes: Class[]
   loading: boolean
+  onShowDrawer: (viewClass: Class) => void
   onEdit: (editedClass: Class) => void
   onDelete: (deletedClass: Class) => void
 }
@@ -17,7 +18,7 @@ interface DataSourceClasses extends Class {
 }
 
 const ClassTable: FC<ClassTableProps> = props => {
-  const { classes, loading, onDelete, onEdit } = props
+  const { classes, loading, onShowDrawer, onDelete, onEdit } = props
 
   const columns: ColumnsType<DataSourceClasses> = [
     {
@@ -27,26 +28,31 @@ const ClassTable: FC<ClassTableProps> = props => {
     {
       title: "Year",
       dataIndex: "year",
+      width: '15%',
     },
     {
       title: "Group",
       dataIndex: "group",
+      width: '10%',
     },
     {
       title: 'operation',
       dataIndex: 'operation',
       width: '15%',
-      render: (_, module) => (
+      render: (_, record) => (
         <Space size="small">
+          <Button onClick={() => onShowDrawer(record)}>
+            View Class
+          </Button>
           <Button
             icon={<EditOutlined />}
-            onClick={() => onEdit(module)}
+            onClick={() => onEdit(record)}
           >
             Edit
           </Button>
           <Popconfirm
             title="Sure to delete?"
-            onConfirm={() => onDelete(module)}
+            onConfirm={() => onDelete(record)}
           >
             <Button icon={<DeleteOutlined />}>
               Delete
