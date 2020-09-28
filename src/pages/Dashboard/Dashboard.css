@@ -1,3 +1,30 @@
 .dashboard-layout {
   min-height: 100vh;
 }
+
+.taps-layout {
+  background-color: #f2f2f2;
+}
+
+.taps-content {
+  margin: 15px;
+  padding: 30px;
+  background-color: white;
+  box-shadow: 0 0 10px #eee;
+}
+
+.header-content {
+  height: 45px;
+  background-color: white;
+  box-shadow: 0 0 10px #eee;
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 30px;
+}
+
+.header-menu {
+  padding: 0;
+  height: 32px;
+  margin: 16px;
+  background-color: rgba(255, 255, 255, 0.2);
+}

@@ -3,8 +3,8 @@ import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons
 import { Avatar, Dropdown, Menu, Spin, Typography } from 'antd'
 
 import './ProfileDropdown.css'
-import AuthContext from '../../../../context/authContext'
-import { useLogoutMutation } from '../../../../generated/graphql'
+import AuthContext from '../../../context/authContext'
+import { useLogoutMutation } from '../../../generated/graphql'
 
 const ProfileDropdown: FC = () => {
   const { user, logout } = useContext(AuthContext)

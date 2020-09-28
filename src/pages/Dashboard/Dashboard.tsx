@@ -1,9 +1,15 @@
-import React, { FC, useState } from 'react'
-import { Layout } from 'antd'
+import React, { FC, lazy, Suspense, useState } from 'react'
+import { Layout, Menu } from 'antd'
+import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons'
 
 import './Dashboard.css'
-import SideMenu from '../../components/Dashboard/SideMenu/SideMenu'
-import TapsContent from '../../components/Dashboard/TapsContent/TapsContent'
+import ProfileDropdown from '../../components/Dashboard/ProfileDropdown/ProfileDropdown'
+import Spinner from '../../components/UI/Spinner/Spinner'
+
+const { Sider, Header, Content } = Layout
+
+const Formation = lazy(() => import('../../container/Formation/Formation'))
+const Class = lazy(() => import('../../container/Class/Class'))
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
@@ -15,13 +21,34 @@ const DashboardPage: FC = () => {
 
   return (
     <Layout className='dashboard-layout'>
-      <SideMenu
-        collapsed={collapsed}
-        setCollapsed={setCollapsed}
-        onSelect={onSelect}
-        selectedTap={selectedTap}
-      />
-      <TapsContent selectedTap={selectedTap} />
+      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+        <Header className="site-layout-background header-menu" />
+        <Menu theme="dark" defaultSelectedKeys={[selectedTap]} mode="inline" onSelect={onSelect}>
+          <Menu.Item key="home" icon={<PieChartOutlined />}>
+            Home
+          </Menu.Item>
+          <Menu.Item key="formation" icon={<DesktopOutlined />}>
+            Formation
+          </Menu.Item>
+          <Menu.Item key="class" icon={<DesktopOutlined />}>
+            Class
+          </Menu.Item>
+        </Menu>
+      </Sider>
+      <Layout className="site-layout taps-layout">
+        <header className='header-content'>
+          <ProfileDropdown />
+        </header>
+        <Content className='taps-content'>
+          <Suspense
+            fallback={<Spinner />}
+          >
+            {selectedTap === 'home' && <h3>Home</h3>}
+            {selectedTap === 'formation' && <Formation />}
+            {selectedTap === 'class' && <Class />}
+          </Suspense>
+        </Content>
+      </Layout>
     </Layout>
   )
 }
