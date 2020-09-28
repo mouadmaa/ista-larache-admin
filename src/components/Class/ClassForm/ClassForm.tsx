@@ -1,6 +1,7 @@
-import React, { FC, Fragment, useEffect } from 'react'
+import React, { FC, Fragment, useCallback, useEffect } from 'react'
 import { Modal, Form, Select, Button } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
+import { useForm } from 'antd/lib/form/Form'
 
 import { Class, ClassCreateInput, UpdateClassMutationVariables, Formation, User } from '../../../generated/graphql'
 import { groups, years } from '../../../utils/getArrayEnum'
@@ -23,7 +24,15 @@ const ClassForm: FC<ClassFormProps> = props => {
     onCreate, onUpdate, onShowForm, onHideForm
   } = props
 
-  const [form] = Form.useForm()
+  const [form] = useForm()
+
+  const defaultFormValues = useCallback(() => {
+    form.setFieldsValue({
+      year: years[0], group: groups[0],
+      formationId: formations[0]?.id || '',
+      teacherId: teachers[0]?.id || '',
+    })
+  }, [form, formations, teachers])
 
   useEffect(() => {
     if (currentClass) {
@@ -33,13 +42,9 @@ const ClassForm: FC<ClassFormProps> = props => {
         teacherId: currentClass.teacher.id,
       })
     } else {
-      form.setFieldsValue({
-        year: years[0], group: groups[0],
-        formationId: formations[0]?.id || '',
-        teacherId: teachers[0]?.id || '',
-      })
+      defaultFormValues()
     }
-  }, [form, currentClass, formations, teachers])
+  }, [form, currentClass, formations, teachers, defaultFormValues])
 
   const handleOk = async () => {
     const variables = await form.validateFields()
@@ -50,7 +55,6 @@ const ClassForm: FC<ClassFormProps> = props => {
     } else {
       onCreate({ variables: variables as ClassCreateInput })
     }
-    form.resetFields()
   }
 
   return (
@@ -69,6 +73,7 @@ const ClassForm: FC<ClassFormProps> = props => {
         onCancel={onHideForm}
         visible={visible}
         confirmLoading={loading}
+        afterClose={defaultFormValues}
       >
         <Form
           form={form}

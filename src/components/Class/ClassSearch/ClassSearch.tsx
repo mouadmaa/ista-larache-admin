@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react'
 import { Select, Typography } from 'antd'
-import { CloseCircleOutlined } from '@ant-design/icons'
 
 import { Formation } from '../../../generated/graphql'
 
@@ -12,7 +11,7 @@ interface ClassSearchProps {
 const ClassSearch: FC<ClassSearchProps> = props => {
   const { formations, onSearch } = props
 
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<string>()
 
   const handleChange = (value: string) => {
     setValue(value)
@@ -29,11 +28,8 @@ const ClassSearch: FC<ClassSearchProps> = props => {
         showSearch
         value={value}
         onChange={handleChange}
-        placeholder='Search with formation name'
-        defaultActiveFirstOption={false}
+        placeholder='Filter with formation name'
         showArrow={false}
-        notFoundContent={null}
-        suffixIcon={<CloseCircleOutlined />}
         allowClear
         filterOption={(input, option) =>
           option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0

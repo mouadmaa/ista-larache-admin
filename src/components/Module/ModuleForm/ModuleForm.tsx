@@ -1,6 +1,7 @@
-import React, { FC, Fragment, useEffect } from 'react'
+import React, { FC, Fragment, useCallback, useEffect } from 'react'
 import { Input, Modal, Form, Button, InputNumber } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
+import { useForm } from 'antd/lib/form/Form'
 
 import { Formation, Module, ModuleCreateInput, UpdateModuleMutationVariables } from '../../../generated/graphql'
 
@@ -21,15 +22,19 @@ const ModuleForm: FC<ModuleFormProps> = props => {
     onHideForm, onCreate, onUpdate
   } = props
 
-  const [form] = Form.useForm()
+  const [form] = useForm()
+
+  const defaultFormValues = useCallback(() => {
+    form.setFieldsValue({ number: 1, name: '' })
+  }, [form])
 
   useEffect(() => {
     if (module) {
       form.setFieldsValue(module)
     } else {
-      form.setFieldsValue({ number: 1, name: '' })
+      defaultFormValues()
     }
-  }, [form, module])
+  }, [form, module, defaultFormValues])
 
   const handleOk = async () => {
     const variables = await form.validateFields()
@@ -39,7 +44,6 @@ const ModuleForm: FC<ModuleFormProps> = props => {
     } else {
       onCreate({ variables: variables as ModuleCreateInput })
     }
-    form.resetFields()
   }
 
   return (
@@ -58,6 +62,7 @@ const ModuleForm: FC<ModuleFormProps> = props => {
         onCancel={onHideForm}
         visible={visible}
         confirmLoading={loading}
+        afterClose={defaultFormValues}
       >
         <Form
           form={form}

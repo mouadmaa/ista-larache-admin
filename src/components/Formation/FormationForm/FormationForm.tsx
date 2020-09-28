@@ -1,6 +1,7 @@
-import React, { FC, Fragment, useEffect } from 'react'
+import React, { FC, Fragment, useCallback, useEffect } from 'react'
 import { Input, Modal, Form, Select, Button } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
+import { useForm } from 'antd/lib/form/Form'
 
 import { FormationCreateInput, UpdateFormationMutationVariables, Formation } from '../../../generated/graphql'
 import { levels } from '../../../utils/getArrayEnum'
@@ -18,17 +19,21 @@ interface FormationFormProps {
 const FormationForm: FC<FormationFormProps> = props => {
   const { formation, visible, loading, onCreate, onUpdate, onShowForm, onHideForm } = props
 
-  const [form] = Form.useForm()
+  const [form] = useForm()
+
+  const defaultFormValues = useCallback(() => {
+    form.setFieldsValue({
+      name: '', descUrl: '', level: levels[0],
+    })
+  }, [form])
 
   useEffect(() => {
     if (formation) {
       form.setFieldsValue(formation)
     } else {
-      form.setFieldsValue({
-        name: '', descUrl: '', level: levels[0],
-      })
+      defaultFormValues()
     }
-  }, [form, formation])
+  }, [form, formation, defaultFormValues])
 
   const handleOk = async () => {
     const variables = await form.validateFields()
@@ -37,7 +42,6 @@ const FormationForm: FC<FormationFormProps> = props => {
     } else {
       onCreate({ variables: variables as FormationCreateInput })
     }
-    form.resetFields()
   }
 
   return (
@@ -56,6 +60,7 @@ const FormationForm: FC<FormationFormProps> = props => {
         onCancel={onHideForm}
         visible={visible}
         confirmLoading={loading}
+        afterClose={defaultFormValues}
       >
         <Form
           form={form}

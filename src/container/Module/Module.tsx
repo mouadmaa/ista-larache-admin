@@ -1,4 +1,6 @@
 import React, { FC, Fragment, useState } from 'react'
+import { Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import ModuleForm from '../../components/Module/ModuleForm/ModuleForm'
 import ModuleTable from '../../components/Module/ModuleTable/ModuleTable'
@@ -28,12 +30,23 @@ const Module: FC<ModuleProps> = props => {
 
   const onEdit = (module: ModuleType) => {
     setFormVisible(true)
-    setModule(module)
+    setModule({ ...module })
   }
 
   const onDelete = (module: ModuleType) => {
-    deleteModule({ variables: { id: module.id } })
-    setModule(undefined)
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `All the Notes related to this Module "${module.name}"
+        they will also be permanently deleted`,
+      okText: 'Confirm',
+      cancelText: 'Cancel',
+      onOk: () => {
+        deleteModule({ variables: { id: module.id } })
+        setModule(undefined)
+      }
+    })
+
   }
 
   const onHideForm = () => setFormVisible(false)

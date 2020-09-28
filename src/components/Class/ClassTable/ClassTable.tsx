@@ -50,7 +50,7 @@ const ClassTable: FC<ClassTableProps> = props => {
       width: '10%',
     },
     {
-      title: 'operation',
+      title: 'Operation',
       dataIndex: 'operation',
       width: '15%',
       render: (_, record) => (

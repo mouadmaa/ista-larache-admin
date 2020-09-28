@@ -1,4 +1,6 @@
 import React, { FC, useState } from 'react'
+import { Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import './Class.css'
 import ClassForm from '../../components/Class/ClassForm/ClassForm'
@@ -26,18 +28,28 @@ const Class: FC = () => {
   }
 
   const onShowDrawer = (viewClass: ClassType) => {
-    setCurrentClass(viewClass)
     setVisibleDrawer(true)
+    setCurrentClass(viewClass)
   }
 
   const onEdit = (updatedClass: ClassType) => {
     setFormVisible(true)
-    setCurrentClass(updatedClass)
+    setCurrentClass({ ...updatedClass })
   }
 
   const onDelete = (deletedClass: ClassType) => {
-    deleteClass({ variables: { id: deletedClass.id } })
-    setCurrentClass(undefined)
+    Modal.confirm({
+      title: 'Confirm',
+      icon: <ExclamationCircleOutlined />,
+      content: `All the Students related to this class "${deletedClass.formation.name}"
+        they will also be permanently deleted`,
+      okText: 'Confirm',
+      cancelText: 'Cancel',
+      onOk: () => {
+        deleteClass({ variables: { id: deletedClass.id } })
+        setCurrentClass(undefined)
+      }
+    })
   }
 
   const onHideForm = () => setFormVisible(false)

@@ -19,6 +19,8 @@ export type Query = {
   formations: Array<Formation>;
   modules: Array<Module>;
   classes: Array<Class>;
+  students: Array<Student>;
+  notes: Array<Note>;
 };
 
 
@@ -95,6 +97,31 @@ export enum Group {
   E = 'E'
 }
 
+export type Student = {
+  __typename?: 'Student';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  cef?: Maybe<Scalars['String']>;
+  cin?: Maybe<Scalars['String']>;
+  password: Scalars['String'];
+  dateBirth: Scalars['String'];
+  notes: Array<Note>;
+  finalNote1?: Maybe<Scalars['Float']>;
+  finalNote2?: Maybe<Scalars['Float']>;
+  class: Class;
+};
+
+export type Note = {
+  __typename?: 'Note';
+  id: Scalars['String'];
+  note1?: Maybe<Scalars['Float']>;
+  note2?: Maybe<Scalars['Float']>;
+  note3?: Maybe<Scalars['Float']>;
+  efm?: Maybe<Scalars['Float']>;
+  student: Student;
+  module: Module;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register?: Maybe<User>;
@@ -109,6 +136,9 @@ export type Mutation = {
   createClass: Class;
   updateClass: Class;
   deleteClass: Class;
+  createStudent: Student;
+  updateStudent: Student;
+  deleteStudent: Student;
 };
 
 
@@ -172,6 +202,22 @@ export type MutationDeleteClassArgs = {
   where: ClassWhereUniqueInput;
 };
 
+
+export type MutationCreateStudentArgs = {
+  data: StudentCreateInput;
+};
+
+
+export type MutationUpdateStudentArgs = {
+  where: StudentWhereUniqueInput;
+  data: StudentUpdateInput;
+};
+
+
+export type MutationDeleteStudentArgs = {
+  where: StudentWhereUniqueInput;
+};
+
 export type FormationCreateInput = {
   name: Scalars['String'];
   descUrl: Scalars['String'];
@@ -232,6 +278,36 @@ export type ClassUpdateInput = {
   group?: Maybe<Group>;
   formation?: Maybe<FormationConnectClassInput>;
   teacher?: Maybe<UserConnectClassInput>;
+};
+
+export type StudentCreateInput = {
+  name: Scalars['String'];
+  cef?: Maybe<Scalars['String']>;
+  cin?: Maybe<Scalars['String']>;
+  password: Scalars['String'];
+  dateBirth: Scalars['String'];
+  finalNote1?: Maybe<Scalars['Float']>;
+  finalNote2?: Maybe<Scalars['Float']>;
+  class: ClassConnectStudentInput;
+};
+
+export type ClassConnectStudentInput = {
+  connect: StudentWhereUniqueInput;
+};
+
+export type StudentWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type StudentUpdateInput = {
+  name?: Maybe<Scalars['String']>;
+  cef?: Maybe<Scalars['String']>;
+  cin?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  dateBirth?: Maybe<Scalars['String']>;
+  finalNote1?: Maybe<Scalars['Float']>;
+  finalNote2?: Maybe<Scalars['Float']>;
+  class?: Maybe<ClassConnectStudentInput>;
 };
 
 export type ClassFragment = (

@@ -25,15 +25,15 @@ const Formation: FC = () => {
 
   const onEdit = (formation: FormationType) => {
     setFormVisible(true)
-    setFormation(formation)
+    setFormation({ ...formation })
   }
 
   const onDelete = (formation: FormationType) => {
     Modal.confirm({
       title: 'Confirm',
       icon: <ExclamationCircleOutlined />,
-      content: `Modules, Classes, Students related to this formation
-        '${formation.name}' will also be deleted`,
+      content: `All the Modules, Classes and Students related to this formation
+        "${formation.name}" they will also be permanently deleted`,
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: () => {

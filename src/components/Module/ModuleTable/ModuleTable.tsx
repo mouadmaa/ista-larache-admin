@@ -27,7 +27,7 @@ const ModuleTable: FC<ModuleTableProps> = props => {
       dataIndex: "name",
     },
     {
-      title: 'operation',
+      title: 'Operation',
       dataIndex: 'operation',
       width: '15%',
       render: (_, module) => (
