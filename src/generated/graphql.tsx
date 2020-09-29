@@ -556,6 +556,39 @@ export type CreateStudentMutation = (
   ) }
 );
 
+export type DeleteStudentMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteStudentMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteStudent: (
+    { __typename?: 'Student' }
+    & StudentFragment
+  ) }
+);
+
+export type UpdateStudentMutationVariables = Exact<{
+  id: Scalars['String'];
+  fullName?: Maybe<Scalars['String']>;
+  cef?: Maybe<Scalars['String']>;
+  cin?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  dateBirth?: Maybe<Scalars['String']>;
+  finalNote1?: Maybe<Scalars['Float']>;
+  finalNote2?: Maybe<Scalars['Float']>;
+}>;
+
+
+export type UpdateStudentMutation = (
+  { __typename?: 'Mutation' }
+  & { updateStudent: (
+    { __typename?: 'Student' }
+    & StudentFragment
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -1078,6 +1111,77 @@ export function useCreateStudentMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateStudentMutationHookResult = ReturnType<typeof useCreateStudentMutation>;
 export type CreateStudentMutationResult = Apollo.MutationResult<CreateStudentMutation>;
 export type CreateStudentMutationOptions = Apollo.BaseMutationOptions<CreateStudentMutation, CreateStudentMutationVariables>;
+export const DeleteStudentDocument = gql`
+    mutation DeleteStudent($id: String!) {
+  deleteStudent(where: {id: $id}) {
+    ...Student
+  }
+}
+    ${StudentFragmentDoc}`;
+export type DeleteStudentMutationFn = Apollo.MutationFunction<DeleteStudentMutation, DeleteStudentMutationVariables>;
+
+/**
+ * __useDeleteStudentMutation__
+ *
+ * To run a mutation, you first call `useDeleteStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteStudentMutation, { data, loading, error }] = useDeleteStudentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteStudentMutation(baseOptions?: Apollo.MutationHookOptions<DeleteStudentMutation, DeleteStudentMutationVariables>) {
+        return Apollo.useMutation<DeleteStudentMutation, DeleteStudentMutationVariables>(DeleteStudentDocument, baseOptions);
+      }
+export type DeleteStudentMutationHookResult = ReturnType<typeof useDeleteStudentMutation>;
+export type DeleteStudentMutationResult = Apollo.MutationResult<DeleteStudentMutation>;
+export type DeleteStudentMutationOptions = Apollo.BaseMutationOptions<DeleteStudentMutation, DeleteStudentMutationVariables>;
+export const UpdateStudentDocument = gql`
+    mutation UpdateStudent($id: String!, $fullName: String, $cef: String, $cin: String, $password: String, $dateBirth: String, $finalNote1: Float, $finalNote2: Float) {
+  updateStudent(where: {id: $id}, data: {fullName: $fullName, cef: $cef, cin: $cin, password: $password, dateBirth: $dateBirth, finalNote1: $finalNote1, finalNote2: $finalNote2}) {
+    ...Student
+  }
+}
+    ${StudentFragmentDoc}`;
+export type UpdateStudentMutationFn = Apollo.MutationFunction<UpdateStudentMutation, UpdateStudentMutationVariables>;
+
+/**
+ * __useUpdateStudentMutation__
+ *
+ * To run a mutation, you first call `useUpdateStudentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateStudentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateStudentMutation, { data, loading, error }] = useUpdateStudentMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      fullName: // value for 'fullName'
+ *      cef: // value for 'cef'
+ *      cin: // value for 'cin'
+ *      password: // value for 'password'
+ *      dateBirth: // value for 'dateBirth'
+ *      finalNote1: // value for 'finalNote1'
+ *      finalNote2: // value for 'finalNote2'
+ *   },
+ * });
+ */
+export function useUpdateStudentMutation(baseOptions?: Apollo.MutationHookOptions<UpdateStudentMutation, UpdateStudentMutationVariables>) {
+        return Apollo.useMutation<UpdateStudentMutation, UpdateStudentMutationVariables>(UpdateStudentDocument, baseOptions);
+      }
+export type UpdateStudentMutationHookResult = ReturnType<typeof useUpdateStudentMutation>;
+export type UpdateStudentMutationResult = Apollo.MutationResult<UpdateStudentMutation>;
+export type UpdateStudentMutationOptions = Apollo.BaseMutationOptions<UpdateStudentMutation, UpdateStudentMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

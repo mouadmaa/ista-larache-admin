@@ -15,7 +15,8 @@ const Student = () => {
   const [student, setStudent] = useState<StudentType>()
 
   const {
-    createStudent, loadingForm, formVisible, setFormVisible
+    createStudent, loadingForm, formVisible, setFormVisible, loading,
+    deleteStudent, updateStudent
   } = useStudent()
   const {
     fetchFormationsWithClasses, formationsWithClasses, formationsWithClassesLoading
@@ -39,6 +40,17 @@ const Student = () => {
     setStudent(undefined)
   }
 
+  const onEdit = (student: StudentType) => {
+    setFormVisible(true)
+    setStudent({ ...student })
+  }
+
+  const onDelete = (student: StudentType) => {
+    setStudent(undefined)
+    deleteStudent({ variables: { id: student.id } })
+    message.loading({ key: 'deleteStudent', content: 'Loading...' })
+  }
+
   const onHideForm = () => setFormVisible(false)
 
   return (
@@ -54,6 +66,7 @@ const Student = () => {
           student={student}
           currentClass={classWithStudents}
           onCreate={createStudent}
+          onUpdate={updateStudent}
           onShowForm={onShowForm}
           onHideForm={onHideForm}
           visible={formVisible}
@@ -63,7 +76,9 @@ const Student = () => {
       <StudentTable
         currentClass={classWithStudents}
         students={students}
-        loading={classWithStudentsLoading}
+        loading={classWithStudentsLoading || loading}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </div>
   )

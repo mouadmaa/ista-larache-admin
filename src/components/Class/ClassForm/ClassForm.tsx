@@ -52,11 +52,11 @@ const ClassForm: FC<ClassFormProps> = props => {
     variables.teacher = { connect: { id: variables.teacherId } }
     let key = ''
     if (currentClass) {
-      onUpdate({ variables: { ...variables, id: currentClass.id } })
       key = 'updateClass'
+      onUpdate({ variables: { ...variables, id: currentClass.id } })
     } else {
-      onCreate({ variables: variables as ClassCreateInput })
       key = 'createClass'
+      onCreate({ variables: variables as ClassCreateInput })
     }
     message.loading({ key, content: 'Loading...' })
   }

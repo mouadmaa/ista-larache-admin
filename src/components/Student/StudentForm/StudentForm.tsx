@@ -4,7 +4,7 @@ import { PlusCircleOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 import moment from 'moment'
 
-import { Class, Student, StudentCreateInput } from '../../../generated/graphql'
+import { Class, Student, StudentCreateInput, UpdateStudentMutationVariables } from '../../../generated/graphql'
 
 interface StudentFormProps {
   student?: Student
@@ -12,6 +12,7 @@ interface StudentFormProps {
   visible: boolean
   loading: boolean
   onCreate: ({ variables }: { variables: StudentCreateInput }) => void
+  onUpdate: ({ variables }: { variables: UpdateStudentMutationVariables }) => void
   onShowForm: () => void
   onHideForm: () => void
 }
@@ -19,7 +20,7 @@ interface StudentFormProps {
 const StudentForm: FC<StudentFormProps> = props => {
   const {
     student, currentClass, visible, loading,
-    onShowForm, onHideForm, onCreate
+    onShowForm, onHideForm, onCreate, onUpdate
   } = props
 
   const [form] = useForm()
@@ -30,21 +31,25 @@ const StudentForm: FC<StudentFormProps> = props => {
       password = Math.floor(Math.random() * 1000000).toString()
     } while (password.length !== 6)
     form.setFieldsValue({
-      password,
-      dateBirth: moment('2020/1/1'),
+      fullName: '', cin: '', cef: '', password,
+      dateBirth: moment('2020/1/1', 'YYYY/MM/DD'),
     })
   }, [form])
 
   useEffect(() => {
     if (student) {
-      form.setFieldsValue(student)
+      form.setFieldsValue({
+        ...student, dateBirth: moment(
+          new Date(parseInt(student.dateBirth)).toLocaleDateString()
+        ),
+      })
     } else {
       defaultFormValues()
     }
   }, [form, student, defaultFormValues])
 
   const handleOk = async () => {
-    const variables = await form.validateFields() as StudentCreateInput
+    const variables = await form.validateFields()
     if (!variables.cef && !variables.cin) {
       message.info('Enter at least one (cin or cef)!', 6)
       return
@@ -52,8 +57,13 @@ const StudentForm: FC<StudentFormProps> = props => {
     variables.class = { connect: { id: currentClass.id } }
     variables.dateBirth = (variables.dateBirth as any).toISOString()
     let key = ''
-    onCreate({ variables: variables as StudentCreateInput })
-    key = 'createStudent'
+    if (student) {
+      key = 'updateStudent'
+      onUpdate({ variables: { ...variables, id: student.id } })
+    } else {
+      key = 'createStudent'
+      onCreate({ variables: variables as StudentCreateInput })
+    }
     message.loading({ key, content: 'Loading...' })
   }
 
@@ -138,7 +148,7 @@ const StudentForm: FC<StudentFormProps> = props => {
           >
             <DatePicker
               style={{ width: '100%' }}
-              defaultValue={moment('2020/1/1')}
+              defaultValue={moment('2020/1/1', 'YYYY/MM/DD')}
               allowClear={false}
             />
           </Form.Item>

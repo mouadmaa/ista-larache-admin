@@ -1,0 +1,11 @@
+mutation DeleteStudent(
+  $id: String!
+) {
+  deleteStudent(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Student
+  }
+}

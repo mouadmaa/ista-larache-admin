@@ -9,10 +9,12 @@ interface StudentTableProps {
   students: Student[]
   currentClass?: Class
   loading: boolean
+  onEdit: (student: Student) => void
+  onDelete: (student: Student) => void
 }
 
 const StudentTable: FC<StudentTableProps> = props => {
-  const { students, loading } = props
+  const { students, loading, onEdit, onDelete } = props
 
   const columns: ColumnsType<Student> = [
     {
@@ -38,13 +40,13 @@ const StudentTable: FC<StudentTableProps> = props => {
           </Button>
           <Button
             icon={<EditOutlined />}
-            onClick={() => console.log(record)}
+            onClick={() => onEdit(record)}
           >
             Edit
           </Button>
           <Popconfirm
             title="Sure to delete?"
-            onConfirm={() => console.log(record)}
+            onConfirm={() => onDelete(record)}
           >
             <Button icon={<DeleteOutlined />}>
               Delete

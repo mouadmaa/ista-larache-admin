@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { message } from 'antd'
 
-import { useCreateStudentMutation } from '../generated/graphql'
+import { useCreateStudentMutation, useUpdateStudentMutation, useDeleteStudentMutation } from '../generated/graphql'
 
 export const useStudent = () => {
   const [formVisible, setFormVisible] = useState(false)
@@ -19,10 +19,32 @@ export const useStudent = () => {
     },
   })
 
+  const [updateStudent, { loading: loadingUpdate }] = useUpdateStudentMutation({
+    onCompleted: () => {
+      message.success({ key: 'updateStudent', content: 'The student has been edited successfully.' })
+      setFormVisible(false)
+    },
+    onError: () => {
+      message.warning({ key: 'updateStudent', content: 'Maybe the cin or cef of student already exists.' })
+    },
+  })
+
+  const [deleteStudent, { loading: loadingDelete }] = useDeleteStudentMutation({
+    onCompleted: () => {
+      message.success({ key: 'deleteStudent', content: 'The student has been removed successfully.' })
+    },
+    update: (cache, { data }) => {
+      if (data?.deleteStudent) cache.evict({ id: cache.identify(data.deleteStudent) })
+    },
+  })
+
   return {
     formVisible,
     setFormVisible,
+    loading: loadingDelete,
+    loadingForm: loadingCreate || loadingUpdate,
     createStudent,
-    loadingForm: loadingCreate,
+    updateStudent,
+    deleteStudent,
   }
 }
