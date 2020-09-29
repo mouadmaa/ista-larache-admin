@@ -7,7 +7,7 @@ export const memoryCacheConfig: InMemoryCacheConfig = {
     Query: {
       fields: {
         formations: {
-          merge: (existing = [], incoming: Formation[]) => [...incoming, ...existing],
+          merge: (_existing = [], incoming: Formation[]) => incoming,
         },
       },
     },

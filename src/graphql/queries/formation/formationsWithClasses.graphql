@@ -1,0 +1,8 @@
+query FormationsWithClasses {
+  formations {
+    ...Formation
+    classes {
+      ...Class
+    }
+  }
+}

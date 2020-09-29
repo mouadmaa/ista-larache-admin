@@ -10,10 +10,11 @@ const { Sider, Header, Content } = Layout
 
 const Formation = lazy(() => import('../../container/Formation/Formation'))
 const Class = lazy(() => import('../../container/Class/Class'))
+const Student = lazy(() => import('../../container/Student/Student'))
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [selectedTap, setSelectedTap] = useState('class')
+  const [selectedTap, setSelectedTap] = useState('student')
 
   const onSelect = ({ key }: { key: React.Key }) => {
     setSelectedTap(key as string)
@@ -33,6 +34,9 @@ const DashboardPage: FC = () => {
           <Menu.Item key="class" icon={<DesktopOutlined />}>
             Class
           </Menu.Item>
+          <Menu.Item key="student" icon={<DesktopOutlined />}>
+            Student
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout taps-layout">
@@ -46,6 +50,7 @@ const DashboardPage: FC = () => {
             {selectedTap === 'home' && <h3>Home</h3>}
             {selectedTap === 'formation' && <Formation />}
             {selectedTap === 'class' && <Class />}
+            {selectedTap === 'student' && <Student />}
           </Suspense>
         </Content>
       </Layout>

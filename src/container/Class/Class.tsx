@@ -7,7 +7,7 @@ import ClassForm from '../../components/Class/ClassForm/ClassForm'
 import ClassTable from '../../components/Class/ClassTable/ClassTable'
 import ClassDrawer from '../../components/Class/ClassDrawer/ClassDrawer'
 import { Class as ClassType } from '../../generated/graphql'
-import { useCLass } from '../../hooks/useClassHook'
+import { useClass } from '../../hooks/useClassHook'
 import { useFormation } from '../../hooks/useFormationHook'
 import { useUser } from '../../hooks/useUserHook'
 
@@ -18,8 +18,8 @@ const Class: FC = () => {
   const {
     classes, classesLoading, formVisible, setFormVisible, formLoading,
     createClass, updateClass, deleteClass
-  } = useCLass()
-  const { formations, loadingFormations } = useFormation()
+  } = useClass()
+  const { formations, formationsLoading } = useFormation()
   const { teachers, usersLoading } = useUser()
 
   const onShowForm = () => {
@@ -61,7 +61,7 @@ const Class: FC = () => {
         currentClass={currentClass}
         formations={formations}
         teachers={teachers}
-        loading={formLoading || loadingFormations || usersLoading}
+        loading={formLoading || formationsLoading || usersLoading}
         visible={formVisible}
         onCreate={createClass}
         onUpdate={updateClass}

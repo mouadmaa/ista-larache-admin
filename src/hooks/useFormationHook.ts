@@ -3,7 +3,7 @@ import { message } from 'antd'
 
 import {
   Formation, useCreateFormationMutation, useFormationsQuery, useDeleteFormationMutation,
-  useUpdateFormationMutation, useFormationWithModulesLazyQuery, Module
+  useUpdateFormationMutation, useFormationWithModulesLazyQuery, Module, useFormationsWithClassesLazyQuery
 } from '../generated/graphql'
 
 export const useFormation = () => {
@@ -13,6 +13,9 @@ export const useFormation = () => {
   const [
     fetchFormationWithModules, { data: formationWithModulesData, loading: formationWithModulesLoading }
   ] = useFormationWithModulesLazyQuery()
+  const [
+    fetchFormationsWithClasses, { data: formationsWithClassesData, loading: formationsWithClassesLoading }
+  ] = useFormationsWithClassesLazyQuery()
 
   const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
     onCompleted: () => {
@@ -48,14 +51,17 @@ export const useFormation = () => {
 
   return {
     formations: formationsData?.formations as Formation[] || [],
-    loadingFormations: formationsLoading || loadingDelete,
-    loadingForm: loadingCreate || loadingUpdate,
+    formationsLoading: formationsLoading || loadingDelete,
+    formLoading: loadingCreate || loadingUpdate,
     createFormation,
     updateFormation,
     deleteFormation,
     fetchFormationWithModules,
     modules: formationWithModulesData?.formation?.modules as Module[] || [],
     loadingModules: formationWithModulesLoading,
+    fetchFormationsWithClasses,
+    formationsWithClasses: formationsWithClassesData?.formations as Formation[] || [],
+    formationsWithClassesLoading,
     formVisible,
     setFormVisible,
   }

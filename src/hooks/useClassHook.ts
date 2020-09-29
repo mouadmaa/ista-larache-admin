@@ -3,7 +3,7 @@ import { message } from 'antd'
 
 import { Class, useClassesQuery, useCreateClassMutation, useDeleteClassMutation, useUpdateClassMutation } from '../generated/graphql'
 
-export const useCLass = () => {
+export const useClass = () => {
   const [formVisible, setFormVisible] = useState(false)
 
   const { data: classesData, loading: classesLoading } = useClassesQuery()

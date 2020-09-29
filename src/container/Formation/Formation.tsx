@@ -13,8 +13,8 @@ const Formation: FC = () => {
   const [formation, setFormation] = useState<FormationType>()
 
   const {
-    formations, loadingFormations, formVisible, setFormVisible,
-    createFormation, updateFormation, deleteFormation, loadingForm,
+    formations, formationsLoading, formVisible, setFormVisible,
+    createFormation, updateFormation, deleteFormation, formLoading: loadingForm,
     fetchFormationWithModules, modules, loadingModules,
   } = useFormation()
 
@@ -63,7 +63,7 @@ const Formation: FC = () => {
       />
       <FormationList
         formations={formations}
-        loading={loadingFormations}
+        loading={formationsLoading}
         onEdit={onEdit}
         onDelete={onDelete}
         onShowModules={onShowModules}

@@ -71,6 +71,7 @@ export type Module = {
   number: Scalars['Int'];
   name: Scalars['String'];
   classes: Array<Class>;
+  notes: Array<Note>;
   formation: Formation;
 };
 
@@ -97,20 +98,6 @@ export enum Group {
   E = 'E'
 }
 
-export type Student = {
-  __typename?: 'Student';
-  id: Scalars['String'];
-  name: Scalars['String'];
-  cef?: Maybe<Scalars['String']>;
-  cin?: Maybe<Scalars['String']>;
-  password: Scalars['String'];
-  dateBirth: Scalars['String'];
-  notes: Array<Note>;
-  finalNote1?: Maybe<Scalars['Float']>;
-  finalNote2?: Maybe<Scalars['Float']>;
-  class: Class;
-};
-
 export type Note = {
   __typename?: 'Note';
   id: Scalars['String'];
@@ -120,6 +107,20 @@ export type Note = {
   efm?: Maybe<Scalars['Float']>;
   student: Student;
   module: Module;
+};
+
+export type Student = {
+  __typename?: 'Student';
+  id: Scalars['String'];
+  fullName: Scalars['String'];
+  cef?: Maybe<Scalars['String']>;
+  cin?: Maybe<Scalars['String']>;
+  password: Scalars['String'];
+  dateBirth: Scalars['String'];
+  notes: Array<Note>;
+  finalNote1?: Maybe<Scalars['Float']>;
+  finalNote2?: Maybe<Scalars['Float']>;
+  class: Class;
 };
 
 export type Mutation = {
@@ -139,6 +140,9 @@ export type Mutation = {
   createStudent: Student;
   updateStudent: Student;
   deleteStudent: Student;
+  createNote: Note;
+  updateNote: Note;
+  deleteNote: Note;
 };
 
 
@@ -218,6 +222,22 @@ export type MutationDeleteStudentArgs = {
   where: StudentWhereUniqueInput;
 };
 
+
+export type MutationCreateNoteArgs = {
+  data: NoteCreateInput;
+};
+
+
+export type MutationUpdateNoteArgs = {
+  where: NoteWhereUniqueInput;
+  data: NoteUpdateInput;
+};
+
+
+export type MutationDeleteNoteArgs = {
+  where: NoteWhereUniqueInput;
+};
+
 export type FormationCreateInput = {
   name: Scalars['String'];
   descUrl: Scalars['String'];
@@ -281,7 +301,7 @@ export type ClassUpdateInput = {
 };
 
 export type StudentCreateInput = {
-  name: Scalars['String'];
+  fullName: Scalars['String'];
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password: Scalars['String'];
@@ -292,7 +312,7 @@ export type StudentCreateInput = {
 };
 
 export type ClassConnectStudentInput = {
-  connect: StudentWhereUniqueInput;
+  connect: ClassWhereUniqueInput;
 };
 
 export type StudentWhereUniqueInput = {
@@ -300,7 +320,7 @@ export type StudentWhereUniqueInput = {
 };
 
 export type StudentUpdateInput = {
-  name?: Maybe<Scalars['String']>;
+  fullName?: Maybe<Scalars['String']>;
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
@@ -308,6 +328,34 @@ export type StudentUpdateInput = {
   finalNote1?: Maybe<Scalars['Float']>;
   finalNote2?: Maybe<Scalars['Float']>;
   class?: Maybe<ClassConnectStudentInput>;
+};
+
+export type NoteCreateInput = {
+  note1?: Maybe<Scalars['Float']>;
+  note2?: Maybe<Scalars['Float']>;
+  note3?: Maybe<Scalars['Float']>;
+  efm?: Maybe<Scalars['Float']>;
+  student: StudentConnectNoteInput;
+  module: ModuleConnectNoteInput;
+};
+
+export type StudentConnectNoteInput = {
+  connect: StudentWhereUniqueInput;
+};
+
+export type ModuleConnectNoteInput = {
+  connect: ModuleWhereUniqueInput;
+};
+
+export type NoteWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type NoteUpdateInput = {
+  note1?: Maybe<Scalars['Float']>;
+  note2?: Maybe<Scalars['Float']>;
+  note3?: Maybe<Scalars['Float']>;
+  efm?: Maybe<Scalars['Float']>;
 };
 
 export type ClassFragment = (
@@ -542,6 +590,21 @@ export type FormationsQuery = (
   { __typename?: 'Query' }
   & { formations: Array<(
     { __typename?: 'Formation' }
+    & FormationFragment
+  )> }
+);
+
+export type FormationsWithClassesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FormationsWithClassesQuery = (
+  { __typename?: 'Query' }
+  & { formations: Array<(
+    { __typename?: 'Formation' }
+    & { classes: Array<(
+      { __typename?: 'Class' }
+      & ClassFragment
+    )> }
     & FormationFragment
   )> }
 );
@@ -1090,6 +1153,42 @@ export function useFormationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type FormationsQueryHookResult = ReturnType<typeof useFormationsQuery>;
 export type FormationsLazyQueryHookResult = ReturnType<typeof useFormationsLazyQuery>;
 export type FormationsQueryResult = Apollo.QueryResult<FormationsQuery, FormationsQueryVariables>;
+export const FormationsWithClassesDocument = gql`
+    query FormationsWithClasses {
+  formations {
+    ...Formation
+    classes {
+      ...Class
+    }
+  }
+}
+    ${FormationFragmentDoc}
+${ClassFragmentDoc}`;
+
+/**
+ * __useFormationsWithClassesQuery__
+ *
+ * To run a query within a React component, call `useFormationsWithClassesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFormationsWithClassesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFormationsWithClassesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFormationsWithClassesQuery(baseOptions?: Apollo.QueryHookOptions<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>) {
+        return Apollo.useQuery<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>(FormationsWithClassesDocument, baseOptions);
+      }
+export function useFormationsWithClassesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>) {
+          return Apollo.useLazyQuery<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>(FormationsWithClassesDocument, baseOptions);
+        }
+export type FormationsWithClassesQueryHookResult = ReturnType<typeof useFormationsWithClassesQuery>;
+export type FormationsWithClassesLazyQueryHookResult = ReturnType<typeof useFormationsWithClassesLazyQuery>;
+export type FormationsWithClassesQueryResult = Apollo.QueryResult<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {
