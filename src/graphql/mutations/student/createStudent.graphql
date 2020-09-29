@@ -1,0 +1,21 @@
+mutation CreateStudent(
+  $fullName: String!
+  $cef: String
+  $cin: String
+  $password: String!
+  $dateBirth: String!
+  $class: ClassConnectStudentInput!
+) {
+  createStudent(
+    data: {
+      fullName: $fullName
+      cef: $cef
+      cin: $cin
+      password: $password
+      dateBirth: $dateBirth
+      class: $class
+    }
+  ) {
+    ...Student
+  }
+}

@@ -42,6 +42,7 @@ const SelectClass: FC<SelectClassProps> = props => {
       </Col>
       <Col flex={30}>
         <Cascader
+          defaultValue={['ckfmseo7r0035c3v86064m0io', 'ckfmxbsuk0060syv8cgl2ek8t']}
           style={{ width: '100%' }}
           options={options}
           onChange={onChange}

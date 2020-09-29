@@ -14,7 +14,7 @@ const Formation: FC = () => {
 
   const {
     formations, formationsLoading, formVisible, setFormVisible,
-    createFormation, updateFormation, deleteFormation, formLoading: loadingForm,
+    createFormation, updateFormation, deleteFormation, formLoading,
     fetchFormationWithModules, modules, loadingModules,
   } = useFormation()
 
@@ -55,7 +55,7 @@ const Formation: FC = () => {
       <FormationForm
         formation={formation}
         visible={formVisible}
-        loading={loadingForm}
+        loading={formLoading}
         onCreate={createFormation}
         onUpdate={updateFormation}
         onShowForm={onShowForm}

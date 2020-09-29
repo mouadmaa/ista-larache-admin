@@ -1,7 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC } from 'react'
-import { Divider, Popconfirm, Space, Table } from 'antd'
+import { Button, Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 import { Class, Student } from '../../../generated/graphql'
 
@@ -30,22 +30,25 @@ const StudentTable: FC<StudentTableProps> = props => {
     {
       title: 'Operation',
       dataIndex: 'operation',
-      width: '20%',
+      width: '24%',
       render: (_, record) => (
-        <Space size="small">
-          <a onClick={() => console.log(record)}>
+        <Space>
+          <Button onClick={() => console.log(record)}>
             View Notes
-          </a>
-          <Divider plain />
-          <a onClick={() => console.log(record)}>
+          </Button>
+          <Button
+            icon={<EditOutlined />}
+            onClick={() => console.log(record)}
+          >
             Edit
-          </a>
-          <Divider plain />
+          </Button>
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => console.log(record)}
           >
-            <a>Delete</a>
+            <Button icon={<DeleteOutlined />}>
+              Delete
+            </Button>
           </Popconfirm>
         </Space>
       ),
