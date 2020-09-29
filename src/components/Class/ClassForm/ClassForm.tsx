@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Modal, Form, Select, Button } from 'antd'
+import { Modal, Form, Select, Button, message } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 
@@ -50,11 +50,15 @@ const ClassForm: FC<ClassFormProps> = props => {
     const variables = await form.validateFields()
     variables.formation = { connect: { id: variables.formationId } }
     variables.teacher = { connect: { id: variables.teacherId } }
+    let key = ''
     if (currentClass) {
       onUpdate({ variables: { ...variables, id: currentClass.id } })
+      key = 'updateClass'
     } else {
       onCreate({ variables: variables as ClassCreateInput })
+      key = 'createClass'
     }
+    message.loading({ key, content: 'Loading...' })
   }
 
   return (

@@ -110,4 +110,3 @@ const getClasses = (classes: Class[], name: string, setData: React.Dispatch<Reac
     setData(data)
   }
 }
-

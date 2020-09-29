@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import './Class.css'
@@ -46,8 +46,9 @@ const Class: FC = () => {
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: () => {
-        deleteClass({ variables: { id: deletedClass.id } })
         setCurrentClass(undefined)
+        deleteClass({ variables: { id: deletedClass.id } })
+        message.loading({ key: 'deleteClass', content: 'Loading...' })
       }
     })
   }

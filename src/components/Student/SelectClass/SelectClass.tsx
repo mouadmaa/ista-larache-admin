@@ -8,10 +8,11 @@ interface SelectClassProps {
   fetchFormationsWithClasses: () => void
   formationsWithClasses: Formation[]
   loading: boolean
+  onSelect: (formationId: string | undefined, classId: string | undefined) => void
 }
 
 const SelectClass: FC<SelectClassProps> = props => {
-  const { fetchFormationsWithClasses, formationsWithClasses, loading } = props
+  const { fetchFormationsWithClasses, formationsWithClasses, loading, onSelect } = props
 
   const [options, setOptions] = useState<CascaderOptionType[]>([])
 
@@ -23,8 +24,8 @@ const SelectClass: FC<SelectClassProps> = props => {
     setOptions(getOptions(formationsWithClasses))
   }, [formationsWithClasses])
 
-  const onChange = (value: CascaderValueType, selectedOptions?: CascaderOptionType[] | undefined) => {
-    console.log('onChange', value, selectedOptions)
+  const onChange = (value: CascaderValueType) => {
+    onSelect(value[0]?.toString(), value[1]?.toString())
   }
 
   const filter = (inputValue: string, path: CascaderOptionType[]) => {

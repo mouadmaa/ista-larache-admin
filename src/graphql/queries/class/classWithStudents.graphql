@@ -1,0 +1,14 @@
+query ClassWithStudents(
+  $id: String!
+) {
+  class(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Class
+    students {
+      ...Student
+    }
+  }
+}

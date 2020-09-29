@@ -23,24 +23,29 @@ const ClassSearch: FC<ClassSearchProps> = props => {
       <Typography.Title level={4}>
         Classes
       </Typography.Title>
-      <Select
-        style={{ width: 300 }}
-        showSearch
-        value={value}
-        onChange={handleChange}
-        placeholder='Filter with formation name'
-        showArrow={false}
-        allowClear
-        filterOption={(input, option) =>
-          option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {formations.map(formation => (
-          <Select.Option key={formation.id} value={formation.name}>
-            {formation.name}
-          </Select.Option>
-        ))}
-      </Select>
+      <span>
+        <Typography.Text>
+          Filter with formation name:
+        </Typography.Text>
+        <Select
+          style={{ width: 300 }}
+          showSearch
+          value={value}
+          onChange={handleChange}
+          placeholder='Filter with formation name'
+          showArrow={false}
+          allowClear
+          filterOption={(input, option) =>
+            option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+          }
+        >
+          {formations.map(formation => (
+            <Select.Option key={formation.id} value={formation.name}>
+              {formation.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </span>
     </div>
   )
 }

@@ -19,3 +19,7 @@
 .class-search input {
   width: 300px;
 }
+
+.class-search > span > span {
+  margin-right: 10px;
+}

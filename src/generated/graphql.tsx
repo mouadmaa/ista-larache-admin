@@ -18,6 +18,7 @@ export type Query = {
   formation?: Maybe<Formation>;
   formations: Array<Formation>;
   modules: Array<Module>;
+  class?: Maybe<Class>;
   classes: Array<Class>;
   students: Array<Student>;
   notes: Array<Note>;
@@ -26,6 +27,11 @@ export type Query = {
 
 export type QueryFormationArgs = {
   where: FormationWhereUniqueInput;
+};
+
+
+export type QueryClassArgs = {
+  where: ClassWhereUniqueInput;
 };
 
 export type User = {
@@ -80,6 +86,7 @@ export type Class = {
   id: Scalars['String'];
   year: Year;
   group: Group;
+  students: Array<Student>;
   modules: Array<Module>;
   formation: Formation;
   teacher: User;
@@ -98,17 +105,6 @@ export enum Group {
   E = 'E'
 }
 
-export type Note = {
-  __typename?: 'Note';
-  id: Scalars['String'];
-  note1?: Maybe<Scalars['Float']>;
-  note2?: Maybe<Scalars['Float']>;
-  note3?: Maybe<Scalars['Float']>;
-  efm?: Maybe<Scalars['Float']>;
-  student: Student;
-  module: Module;
-};
-
 export type Student = {
   __typename?: 'Student';
   id: Scalars['String'];
@@ -121,6 +117,21 @@ export type Student = {
   finalNote1?: Maybe<Scalars['Float']>;
   finalNote2?: Maybe<Scalars['Float']>;
   class: Class;
+};
+
+export type Note = {
+  __typename?: 'Note';
+  id: Scalars['String'];
+  note1?: Maybe<Scalars['Float']>;
+  note2?: Maybe<Scalars['Float']>;
+  note3?: Maybe<Scalars['Float']>;
+  efm?: Maybe<Scalars['Float']>;
+  student: Student;
+  module: Module;
+};
+
+export type ClassWhereUniqueInput = {
+  id: Scalars['String'];
 };
 
 export type Mutation = {
@@ -289,10 +300,6 @@ export type UserWhereUniqueInput = {
   id: Scalars['String'];
 };
 
-export type ClassWhereUniqueInput = {
-  id: Scalars['String'];
-};
-
 export type ClassUpdateInput = {
   year?: Maybe<Year>;
   group?: Maybe<Group>;
@@ -371,6 +378,11 @@ export type FormationFragment = (
 export type ModuleFragment = (
   { __typename?: 'Module' }
   & Pick<Module, 'id' | 'number' | 'name'>
+);
+
+export type StudentFragment = (
+  { __typename?: 'Student' }
+  & Pick<Student, 'id' | 'fullName' | 'cef' | 'cin' | 'password' | 'dateBirth' | 'finalNote1' | 'finalNote2'>
 );
 
 export type UserFragment = (
@@ -548,6 +560,23 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type ClassWithStudentsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ClassWithStudentsQuery = (
+  { __typename?: 'Query' }
+  & { class?: Maybe<(
+    { __typename?: 'Class' }
+    & { students: Array<(
+      { __typename?: 'Student' }
+      & StudentFragment
+    )> }
+    & ClassFragment
+  )> }
+);
+
 export type ClassesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -651,6 +680,18 @@ export const ModuleFragmentDoc = gql`
   id
   number
   name
+}
+    `;
+export const StudentFragmentDoc = gql`
+    fragment Student on Student {
+  id
+  fullName
+  cef
+  cin
+  password
+  dateBirth
+  finalNote1
+  finalNote2
 }
     `;
 export const UserFragmentDoc = gql`
@@ -1044,6 +1085,43 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const ClassWithStudentsDocument = gql`
+    query ClassWithStudents($id: String!) {
+  class(where: {id: $id}) {
+    ...Class
+    students {
+      ...Student
+    }
+  }
+}
+    ${ClassFragmentDoc}
+${StudentFragmentDoc}`;
+
+/**
+ * __useClassWithStudentsQuery__
+ *
+ * To run a query within a React component, call `useClassWithStudentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useClassWithStudentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useClassWithStudentsQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useClassWithStudentsQuery(baseOptions?: Apollo.QueryHookOptions<ClassWithStudentsQuery, ClassWithStudentsQueryVariables>) {
+        return Apollo.useQuery<ClassWithStudentsQuery, ClassWithStudentsQueryVariables>(ClassWithStudentsDocument, baseOptions);
+      }
+export function useClassWithStudentsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ClassWithStudentsQuery, ClassWithStudentsQueryVariables>) {
+          return Apollo.useLazyQuery<ClassWithStudentsQuery, ClassWithStudentsQueryVariables>(ClassWithStudentsDocument, baseOptions);
+        }
+export type ClassWithStudentsQueryHookResult = ReturnType<typeof useClassWithStudentsQuery>;
+export type ClassWithStudentsLazyQueryHookResult = ReturnType<typeof useClassWithStudentsLazyQuery>;
+export type ClassWithStudentsQueryResult = Apollo.QueryResult<ClassWithStudentsQuery, ClassWithStudentsQueryVariables>;
 export const ClassesDocument = gql`
     query Classes {
   classes {

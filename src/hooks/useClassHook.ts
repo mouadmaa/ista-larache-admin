@@ -1,20 +1,23 @@
 import { useState } from 'react'
 import { message } from 'antd'
 
-import { Class, useClassesQuery, useCreateClassMutation, useDeleteClassMutation, useUpdateClassMutation } from '../generated/graphql'
+import { Class, useClassesQuery, useClassWithStudentsLazyQuery, useCreateClassMutation, useDeleteClassMutation, useUpdateClassMutation } from '../generated/graphql'
 
 export const useClass = () => {
   const [formVisible, setFormVisible] = useState(false)
 
   const { data: classesData, loading: classesLoading } = useClassesQuery()
+  const [
+    fetchClassClassWithStudents, { data: classWithStudentsData, loading: classWithStudentsLoading }
+  ] = useClassWithStudentsLazyQuery()
 
   const [createClass, { loading: createLoading }] = useCreateClassMutation({
     onCompleted: () => {
-      message.success('A new class has been added successfully.')
+      message.success({ key: 'createClass', content: 'A new class has been added successfully.' })
       setFormVisible(false)
     },
     onError: () => {
-      message.warning('Maybe the class already exists.', 10)
+      message.warning({ key: 'createClass', content: 'Maybe the class already exists.', duration: 10 })
     },
     update: (cache) => {
       cache.evict({ fieldName: 'classes' })
@@ -23,17 +26,17 @@ export const useClass = () => {
 
   const [updateClass, { loading: loadingUpdate }] = useUpdateClassMutation({
     onCompleted: () => {
-      message.success('The class has been edited successfully.')
+      message.success({ key: 'updateClass', content: 'The class has been edited successfully.' })
       setFormVisible(false)
     },
     onError: () => {
-      message.warning('Maybe the class already exists.', 10)
+      message.warning({ key: 'updateClass', content: 'Maybe the class already exists.', duration: 10 })
     },
   })
 
   const [deleteClass, { loading: deleteLoading }] = useDeleteClassMutation({
     onCompleted: () => {
-      message.success('The class has been removed successfully.')
+      message.success({ key: 'deleteClass', content: 'The class has been removed successfully.' })
     },
     update: (cache, { data }) => {
       if (data?.deleteClass) cache.evict({ id: cache.identify(data.deleteClass) })
@@ -47,6 +50,9 @@ export const useClass = () => {
     createClass,
     updateClass,
     deleteClass,
+    fetchClassClassWithStudents,
+    classWithStudents: classWithStudentsData?.class as Class | undefined,
+    classWithStudentsLoading,
     formVisible,
     setFormVisible,
   }
