@@ -3,7 +3,6 @@ mutation CreateStudent(
   $cef: String
   $cin: String
   $password: String!
-  $dateBirth: String!
   $class: ClassConnectStudentInput!
 ) {
   createStudent(
@@ -12,7 +11,6 @@ mutation CreateStudent(
       cef: $cef
       cin: $cin
       password: $password
-      dateBirth: $dateBirth
       class: $class
     }
   ) {

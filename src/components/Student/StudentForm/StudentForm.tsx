@@ -1,8 +1,7 @@
 import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Modal, Form, Button, message, Input, DatePicker } from 'antd'
+import { Modal, Form, Button, message, Input } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
-import moment from 'moment'
 
 import { Class, Student, StudentCreateInput, UpdateStudentMutationVariables } from '../../../generated/graphql'
 
@@ -32,17 +31,12 @@ const StudentForm: FC<StudentFormProps> = props => {
     } while (password.length !== 6)
     form.setFieldsValue({
       fullName: '', cin: '', cef: '', password,
-      dateBirth: moment('2020/1/1', 'YYYY/MM/DD'),
     })
   }, [form])
 
   useEffect(() => {
     if (student) {
-      form.setFieldsValue({
-        ...student, dateBirth: moment(
-          new Date(parseInt(student.dateBirth)).toLocaleDateString()
-        ),
-      })
+      form.setFieldsValue(student)
     } else {
       defaultFormValues()
     }
@@ -55,7 +49,6 @@ const StudentForm: FC<StudentFormProps> = props => {
       return
     }
     variables.class = { connect: { id: currentClass.id } }
-    variables.dateBirth = (variables.dateBirth as any).toISOString()
     let key = ''
     if (student) {
       key = 'updateStudent'
@@ -141,16 +134,6 @@ const StudentForm: FC<StudentFormProps> = props => {
             ]}
           >
             <Input placeholder='auto generate password (6 characters)' />
-          </Form.Item>
-          <Form.Item
-            name="dateBirth"
-            label="Date Birth"
-          >
-            <DatePicker
-              style={{ width: '100%' }}
-              defaultValue={moment('2020/1/1', 'YYYY/MM/DD')}
-              allowClear={false}
-            />
           </Form.Item>
         </Form>
       </Modal>

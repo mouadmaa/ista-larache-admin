@@ -9,12 +9,13 @@ interface StudentTableProps {
   students: Student[]
   currentClass?: Class
   loading: boolean
+  onShowDrawer: (student: Student) => void
   onEdit: (student: Student) => void
   onDelete: (student: Student) => void
 }
 
 const StudentTable: FC<StudentTableProps> = props => {
-  const { students, loading, onEdit, onDelete } = props
+  const { students, onShowDrawer, loading, onEdit, onDelete } = props
 
   const columns: ColumnsType<Student> = [
     {
@@ -35,8 +36,8 @@ const StudentTable: FC<StudentTableProps> = props => {
       width: '24%',
       render: (_, record) => (
         <Space>
-          <Button onClick={() => console.log(record)}>
-            View Notes
+          <Button onClick={() => onShowDrawer(record)}>
+            View Student Details
           </Button>
           <Button
             icon={<EditOutlined />}

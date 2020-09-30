@@ -93,8 +93,8 @@ export type Class = {
 };
 
 export enum Year {
-  Premiere = 'Premiere',
-  Deuxieme = 'Deuxieme'
+  First = 'First',
+  Second = 'Second'
 }
 
 export enum Group {
@@ -112,7 +112,6 @@ export type Student = {
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password: Scalars['String'];
-  dateBirth: Scalars['String'];
   notes: Array<Note>;
   finalNote1?: Maybe<Scalars['Float']>;
   finalNote2?: Maybe<Scalars['Float']>;
@@ -138,7 +137,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   register?: Maybe<User>;
   login?: Maybe<User>;
-  logout?: Maybe<Scalars['Boolean']>;
+  logout: Scalars['Boolean'];
   createFormation: Formation;
   updateFormation: Formation;
   deleteFormation: Formation;
@@ -312,7 +311,6 @@ export type StudentCreateInput = {
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password: Scalars['String'];
-  dateBirth: Scalars['String'];
   finalNote1?: Maybe<Scalars['Float']>;
   finalNote2?: Maybe<Scalars['Float']>;
   class: ClassConnectStudentInput;
@@ -331,7 +329,6 @@ export type StudentUpdateInput = {
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
-  dateBirth?: Maybe<Scalars['String']>;
   finalNote1?: Maybe<Scalars['Float']>;
   finalNote2?: Maybe<Scalars['Float']>;
   class?: Maybe<ClassConnectStudentInput>;
@@ -382,7 +379,7 @@ export type ModuleFragment = (
 
 export type StudentFragment = (
   { __typename?: 'Student' }
-  & Pick<Student, 'id' | 'fullName' | 'cef' | 'cin' | 'password' | 'dateBirth' | 'finalNote1' | 'finalNote2'>
+  & Pick<Student, 'id' | 'fullName' | 'cef' | 'cin' | 'password' | 'finalNote1' | 'finalNote2'>
 );
 
 export type UserFragment = (
@@ -543,7 +540,6 @@ export type CreateStudentMutationVariables = Exact<{
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password: Scalars['String'];
-  dateBirth: Scalars['String'];
   class: ClassConnectStudentInput;
 }>;
 
@@ -575,7 +571,6 @@ export type UpdateStudentMutationVariables = Exact<{
   cef?: Maybe<Scalars['String']>;
   cin?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
-  dateBirth?: Maybe<Scalars['String']>;
   finalNote1?: Maybe<Scalars['Float']>;
   finalNote2?: Maybe<Scalars['Float']>;
 }>;
@@ -740,7 +735,6 @@ export const StudentFragmentDoc = gql`
   cef
   cin
   password
-  dateBirth
   finalNote1
   finalNote2
 }
@@ -1075,8 +1069,8 @@ export type UpdateModuleMutationHookResult = ReturnType<typeof useUpdateModuleMu
 export type UpdateModuleMutationResult = Apollo.MutationResult<UpdateModuleMutation>;
 export type UpdateModuleMutationOptions = Apollo.BaseMutationOptions<UpdateModuleMutation, UpdateModuleMutationVariables>;
 export const CreateStudentDocument = gql`
-    mutation CreateStudent($fullName: String!, $cef: String, $cin: String, $password: String!, $dateBirth: String!, $class: ClassConnectStudentInput!) {
-  createStudent(data: {fullName: $fullName, cef: $cef, cin: $cin, password: $password, dateBirth: $dateBirth, class: $class}) {
+    mutation CreateStudent($fullName: String!, $cef: String, $cin: String, $password: String!, $class: ClassConnectStudentInput!) {
+  createStudent(data: {fullName: $fullName, cef: $cef, cin: $cin, password: $password, class: $class}) {
     ...Student
   }
 }
@@ -1100,7 +1094,6 @@ export type CreateStudentMutationFn = Apollo.MutationFunction<CreateStudentMutat
  *      cef: // value for 'cef'
  *      cin: // value for 'cin'
  *      password: // value for 'password'
- *      dateBirth: // value for 'dateBirth'
  *      class: // value for 'class'
  *   },
  * });
@@ -1144,8 +1137,8 @@ export type DeleteStudentMutationHookResult = ReturnType<typeof useDeleteStudent
 export type DeleteStudentMutationResult = Apollo.MutationResult<DeleteStudentMutation>;
 export type DeleteStudentMutationOptions = Apollo.BaseMutationOptions<DeleteStudentMutation, DeleteStudentMutationVariables>;
 export const UpdateStudentDocument = gql`
-    mutation UpdateStudent($id: String!, $fullName: String, $cef: String, $cin: String, $password: String, $dateBirth: String, $finalNote1: Float, $finalNote2: Float) {
-  updateStudent(where: {id: $id}, data: {fullName: $fullName, cef: $cef, cin: $cin, password: $password, dateBirth: $dateBirth, finalNote1: $finalNote1, finalNote2: $finalNote2}) {
+    mutation UpdateStudent($id: String!, $fullName: String, $cef: String, $cin: String, $password: String, $finalNote1: Float, $finalNote2: Float) {
+  updateStudent(where: {id: $id}, data: {fullName: $fullName, cef: $cef, cin: $cin, password: $password, finalNote1: $finalNote1, finalNote2: $finalNote2}) {
     ...Student
   }
 }
@@ -1170,7 +1163,6 @@ export type UpdateStudentMutationFn = Apollo.MutationFunction<UpdateStudentMutat
  *      cef: // value for 'cef'
  *      cin: // value for 'cin'
  *      password: // value for 'password'
- *      dateBirth: // value for 'dateBirth'
  *      finalNote1: // value for 'finalNote1'
  *      finalNote2: // value for 'finalNote2'
  *   },

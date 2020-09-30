@@ -56,7 +56,7 @@ const ClassTable: FC<ClassTableProps> = props => {
       render: (_, record) => (
         <Space size="small">
           <Button onClick={() => onShowDrawer(record)}>
-            View Class
+            View Class Details
           </Button>
           <Button
             icon={<EditOutlined />}

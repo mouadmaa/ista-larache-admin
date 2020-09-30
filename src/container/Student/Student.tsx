@@ -9,10 +9,12 @@ import { useClass } from '../../hooks/useClassHook'
 import { Student as StudentType } from '../../generated/graphql'
 import StudentForm from '../../components/Student/StudentForm/StudentForm'
 import { useStudent } from '../../hooks/useStudentHook'
+import StudentDrawer from '../../components/Student/StudentDrawer/StudentDrawer'
 
 const Student = () => {
   const [students, setStudents] = useState<StudentType[]>([])
   const [student, setStudent] = useState<StudentType>()
+  const [visibleDrawer, setVisibleDrawer] = useState(false)
 
   const {
     createStudent, loadingForm, formVisible, setFormVisible, loading,
@@ -40,6 +42,11 @@ const Student = () => {
     setStudent(undefined)
   }
 
+  const onShowDrawer = (student: StudentType) => {
+    setVisibleDrawer(true)
+    setStudent(student)
+  }
+
   const onEdit = (student: StudentType) => {
     setFormVisible(true)
     setStudent({ ...student })
@@ -52,6 +59,7 @@ const Student = () => {
   }
 
   const onHideForm = () => setFormVisible(false)
+  const onCloseDrawer = () => setVisibleDrawer(false)
 
   return (
     <div className='student-container'>
@@ -77,8 +85,16 @@ const Student = () => {
         currentClass={classWithStudents}
         students={students}
         loading={classWithStudentsLoading || loading}
+        onShowDrawer={onShowDrawer}
         onEdit={onEdit}
         onDelete={onDelete}
+      />
+      <StudentDrawer
+        student={student}
+        currentClass={classWithStudents}
+        formations={formationsWithClasses}
+        visibleDrawer={visibleDrawer}
+        onCloseDrawer={onCloseDrawer}
       />
     </div>
   )

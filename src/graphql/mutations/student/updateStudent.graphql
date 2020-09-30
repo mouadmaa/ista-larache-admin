@@ -4,7 +4,6 @@ mutation UpdateStudent(
   $cef: String
   $cin: String
   $password: String
-  $dateBirth: String
   $finalNote1: Float
   $finalNote2: Float
 ) {
@@ -17,7 +16,6 @@ mutation UpdateStudent(
       cef: $cef
       cin: $cin
       password: $password
-      dateBirth: $dateBirth
       finalNote1: $finalNote1
       finalNote2: $finalNote2
     }

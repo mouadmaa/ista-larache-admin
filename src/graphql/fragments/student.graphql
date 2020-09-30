@@ -4,7 +4,6 @@ fragment Student on Student {
   cef
   cin
   password
-  dateBirth
   finalNote1
   finalNote2
 }
