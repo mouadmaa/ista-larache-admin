@@ -50,7 +50,7 @@ export const useClass = () => {
     createClass,
     updateClass,
     deleteClass,
-    fetchClassClassWithStudents,
+    fetchClassWithStudents: fetchClassClassWithStudents,
     classWithStudents: classWithStudentsData?.class as Class | undefined,
     classWithStudentsLoading,
     formVisible,

@@ -11,6 +11,7 @@ interface StudentTableProps {
   currentClass?: Class
   loading: boolean
   onShowDrawer: (student: Student) => void
+  onShowNotes: (student: Student) => void
   onEdit: (student: Student) => void
   onDelete: (student: Student) => void
 }
@@ -18,7 +19,7 @@ interface StudentTableProps {
 let previousSearch = ''
 
 const StudentTable: FC<StudentTableProps> = props => {
-  const { students, onShowDrawer, loading, onEdit, onDelete } = props
+  const { students, onShowDrawer, loading, onEdit, onDelete, onShowNotes } = props
 
   const [data, setData] = useState<Student[]>([])
 
@@ -51,6 +52,9 @@ const StudentTable: FC<StudentTableProps> = props => {
         <Space>
           <Button onClick={() => onShowDrawer(record)}>
             View Student Details
+          </Button>
+          <Button onClick={() => onShowNotes(record)}>
+            View Notes
           </Button>
           <Button
             icon={<EditOutlined />}

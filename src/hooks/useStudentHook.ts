@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import { message } from 'antd'
 
-import { useCreateStudentMutation, useUpdateStudentMutation, useDeleteStudentMutation } from '../generated/graphql'
+import { useCreateStudentMutation, useUpdateStudentMutation, useDeleteStudentMutation, useStudentWithNotesLazyQuery, Note } from '../generated/graphql'
 
 export const useStudent = () => {
   const [formVisible, setFormVisible] = useState(false)
+
+  const [
+    fetchStudentWithNotes, { data: studentWithNotesData, loading: studentWithNotesLoading }
+  ] = useStudentWithNotesLazyQuery()
 
   const [createStudent, { loading: loadingCreate }] = useCreateStudentMutation({
     onCompleted: () => {
@@ -46,5 +50,8 @@ export const useStudent = () => {
     createStudent,
     updateStudent,
     deleteStudent,
+    fetchStudentWithNotes,
+    notes: studentWithNotesData?.student?.notes as Note[] || [],
+    loadingModules: studentWithNotesLoading,
   }
 }

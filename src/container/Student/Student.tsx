@@ -10,6 +10,7 @@ import { Student as StudentType } from '../../generated/graphql'
 import StudentForm from '../../components/Student/StudentForm/StudentForm'
 import { useStudent } from '../../hooks/useStudentHook'
 import StudentDrawer from '../../components/Student/StudentDrawer/StudentDrawer'
+import Note from '../Note/Note'
 
 const Student = () => {
   const [students, setStudents] = useState<StudentType[]>([])
@@ -18,13 +19,13 @@ const Student = () => {
 
   const {
     createStudent, loadingForm, formVisible, setFormVisible, loading,
-    deleteStudent, updateStudent
+    deleteStudent, updateStudent, fetchStudentWithNotes, notes, loadingModules
   } = useStudent()
   const {
     fetchFormationsWithClasses, formationsWithClasses, formationsWithClassesLoading
   } = useFormation()
   const {
-    fetchClassClassWithStudents, classWithStudents, classWithStudentsLoading
+    fetchClassWithStudents, classWithStudents, classWithStudentsLoading
   } = useClass()
 
   useEffect(() => {
@@ -32,7 +33,7 @@ const Student = () => {
   }, [classWithStudents])
 
   const onSelectClass = (formationId: string | undefined, classId: string | undefined) => {
-    if (classId) fetchClassClassWithStudents({ variables: { id: classId } })
+    if (classId) fetchClassWithStudents({ variables: { id: classId } })
     else if (formationId && !classId) message.info('This formation does not have any classes.')
     setStudents([])
   }
@@ -56,6 +57,11 @@ const Student = () => {
     setStudent(undefined)
     deleteStudent({ variables: { id: student.id } })
     message.loading({ key: 'deleteStudent', content: 'Loading...' })
+  }
+
+  const onShowNotes = (student: StudentType) => {
+    setStudent(student)
+    fetchStudentWithNotes({ variables: { id: student.id } })
   }
 
   const onHideForm = () => setFormVisible(false)
@@ -88,6 +94,7 @@ const Student = () => {
         onShowDrawer={onShowDrawer}
         onEdit={onEdit}
         onDelete={onDelete}
+        onShowNotes={onShowNotes}
       />
       <StudentDrawer
         student={student}
@@ -95,6 +102,11 @@ const Student = () => {
         formations={formationsWithClasses}
         visibleDrawer={visibleDrawer}
         onCloseDrawer={onCloseDrawer}
+      />
+      <Note
+        notes={notes}
+        loading={loadingModules}
+        student={student}
       />
     </div>
   )

@@ -20,6 +20,7 @@ export type Query = {
   modules: Array<Module>;
   class?: Maybe<Class>;
   classes: Array<Class>;
+  student?: Maybe<Student>;
   students: Array<Student>;
   notes: Array<Note>;
 };
@@ -32,6 +33,11 @@ export type QueryFormationArgs = {
 
 export type QueryClassArgs = {
   where: ClassWhereUniqueInput;
+};
+
+
+export type QueryStudentArgs = {
+  where: StudentWhereUniqueInput;
 };
 
 export type User = {
@@ -130,6 +136,10 @@ export type Note = {
 };
 
 export type ClassWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type StudentWhereUniqueInput = {
   id: Scalars['String'];
 };
 
@@ -320,10 +330,6 @@ export type ClassConnectStudentInput = {
   connect: ClassWhereUniqueInput;
 };
 
-export type StudentWhereUniqueInput = {
-  id: Scalars['String'];
-};
-
 export type StudentUpdateInput = {
   fullName?: Maybe<Scalars['String']>;
   cef?: Maybe<Scalars['String']>;
@@ -375,6 +381,11 @@ export type FormationFragment = (
 export type ModuleFragment = (
   { __typename?: 'Module' }
   & Pick<Module, 'id' | 'number' | 'name'>
+);
+
+export type NoteFragment = (
+  { __typename?: 'Note' }
+  & Pick<Note, 'id' | 'note1' | 'note2' | 'note3' | 'efm'>
 );
 
 export type StudentFragment = (
@@ -684,6 +695,23 @@ export type FormationsWithClassesQuery = (
   )> }
 );
 
+export type StudentWithNotesQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type StudentWithNotesQuery = (
+  { __typename?: 'Query' }
+  & { student?: Maybe<(
+    { __typename?: 'Student' }
+    & { notes: Array<(
+      { __typename?: 'Note' }
+      & NoteFragment
+    )> }
+    & StudentFragment
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -726,6 +754,15 @@ export const ModuleFragmentDoc = gql`
   id
   number
   name
+}
+    `;
+export const NoteFragmentDoc = gql`
+    fragment Note on Note {
+  id
+  note1
+  note2
+  note3
+  efm
 }
     `;
 export const StudentFragmentDoc = gql`
@@ -1418,6 +1455,43 @@ export function useFormationsWithClassesLazyQuery(baseOptions?: Apollo.LazyQuery
 export type FormationsWithClassesQueryHookResult = ReturnType<typeof useFormationsWithClassesQuery>;
 export type FormationsWithClassesLazyQueryHookResult = ReturnType<typeof useFormationsWithClassesLazyQuery>;
 export type FormationsWithClassesQueryResult = Apollo.QueryResult<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>;
+export const StudentWithNotesDocument = gql`
+    query StudentWithNotes($id: String!) {
+  student(where: {id: $id}) {
+    ...Student
+    notes {
+      ...Note
+    }
+  }
+}
+    ${StudentFragmentDoc}
+${NoteFragmentDoc}`;
+
+/**
+ * __useStudentWithNotesQuery__
+ *
+ * To run a query within a React component, call `useStudentWithNotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useStudentWithNotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useStudentWithNotesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useStudentWithNotesQuery(baseOptions?: Apollo.QueryHookOptions<StudentWithNotesQuery, StudentWithNotesQueryVariables>) {
+        return Apollo.useQuery<StudentWithNotesQuery, StudentWithNotesQueryVariables>(StudentWithNotesDocument, baseOptions);
+      }
+export function useStudentWithNotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<StudentWithNotesQuery, StudentWithNotesQueryVariables>) {
+          return Apollo.useLazyQuery<StudentWithNotesQuery, StudentWithNotesQueryVariables>(StudentWithNotesDocument, baseOptions);
+        }
+export type StudentWithNotesQueryHookResult = ReturnType<typeof useStudentWithNotesQuery>;
+export type StudentWithNotesLazyQueryHookResult = ReturnType<typeof useStudentWithNotesLazyQuery>;
+export type StudentWithNotesQueryResult = Apollo.QueryResult<StudentWithNotesQuery, StudentWithNotesQueryVariables>;
 export const MeDocument = gql`
     query Me {
   me {

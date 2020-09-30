@@ -1,0 +1,14 @@
+query StudentWithNotes(
+  $id: String!
+) {
+  student(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Student
+    notes {
+      ...Note
+    }
+  }
+}

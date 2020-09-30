@@ -1,0 +1,7 @@
+fragment Note on Note {
+  id
+  note1
+  note2
+  note3
+  efm
+}
