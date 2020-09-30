@@ -30,7 +30,7 @@ const StudentForm: FC<StudentFormProps> = props => {
       password = Math.floor(Math.random() * 1000000).toString()
     } while (password.length !== 6)
     form.setFieldsValue({
-      fullName: '', cin: '', cef: '', password,
+      fullName: '', cin: null, cef: null, password,
     })
   }, [form])
 

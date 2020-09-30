@@ -5,12 +5,27 @@
   margin-top: 15px;
 }
 
-.student-container > div > div:nth-child(1) > span {
-  margin-left: 15px;
+.student-container > div > div:nth-child(1) > h5 {
+  margin-top: 10px;
+  margin-left: 20px;
 }
 
 .student-container > button {
   width: 100%;
   margin-top: 15px;
   border-radius: 4px;
+}
+
+.student-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.student-search input {
+  width: 300px;
+}
+
+.student-search > span > span {
+  margin-right: 10px;
 }

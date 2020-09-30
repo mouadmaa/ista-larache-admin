@@ -36,13 +36,13 @@ const SelectClass: FC<SelectClassProps> = props => {
   return (
     <Row align='middle'>
       <Col flex={1}>
-        <Typography.Text>
+        <Typography.Title level={5}>
           Please select the class:
-        </Typography.Text>
+        </Typography.Title>
       </Col>
       <Col flex={30}>
         <Cascader
-          // defaultValue={['ckfmseo7r0035c3v86064m0io', 'ckfmxbsuk0060syv8cgl2ek8t']}
+          size='large'
           style={{ width: '100%' }}
           placeholder="Please select the class"
           options={options}

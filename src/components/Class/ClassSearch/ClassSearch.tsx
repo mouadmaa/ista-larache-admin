@@ -32,7 +32,7 @@ const ClassSearch: FC<ClassSearchProps> = props => {
           showSearch
           value={value}
           onChange={handleChange}
-          placeholder='Filter with formation name'
+          placeholder='Filter by with formation name'
           showArrow={false}
           allowClear
           filterOption={(input, option) =>

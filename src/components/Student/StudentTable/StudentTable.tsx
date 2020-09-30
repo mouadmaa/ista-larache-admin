@@ -1,9 +1,10 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Button, Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 import { Class, Student } from '../../../generated/graphql'
+import StudentSearch from '../StudentSearch/StudentSearch'
 
 interface StudentTableProps {
   students: Student[]
@@ -14,8 +15,20 @@ interface StudentTableProps {
   onDelete: (student: Student) => void
 }
 
+let previousSearch = ''
+
 const StudentTable: FC<StudentTableProps> = props => {
   const { students, onShowDrawer, loading, onEdit, onDelete } = props
+
+  const [data, setData] = useState<Student[]>([])
+
+  useEffect(() => {
+    getStudents(previousSearch, students, setData)
+  }, [students])
+
+  const onSelect = (name: string) => {
+    getStudents(name, students, setData)
+  }
 
   const columns: ColumnsType<Student> = [
     {
@@ -61,9 +74,14 @@ const StudentTable: FC<StudentTableProps> = props => {
   return (
     <Table<Student>
       className='student-table'
-      title={() => 'Students'}
+      title={() => (
+        <StudentSearch
+          students={students}
+          onSearch={onSelect}
+        />
+      )}
       columns={columns}
-      dataSource={students}
+      dataSource={data}
       loading={loading}
       pagination={{ pageSize: 6 }}
     />
@@ -71,3 +89,14 @@ const StudentTable: FC<StudentTableProps> = props => {
 }
 
 export default StudentTable
+
+const getStudents = (name: string, data: Student[], setData: React.Dispatch<React.SetStateAction<Student[]>>) => {
+  previousSearch = name
+  if (name) {
+    setData(data.filter(
+      c => c.fullName.toUpperCase().includes(name.toUpperCase()))
+    )
+  } else {
+    setData(data)
+  }
+}
