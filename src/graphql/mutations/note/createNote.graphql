@@ -1,0 +1,21 @@
+mutation CreateNote(
+  $note1: Float
+  $note2: Float
+  $note3: Float
+  $efm: Float
+  $student: StudentConnectNoteInput!
+  $module: ModuleConnectNoteInput!
+) {
+  createNote(
+    data: {
+      note1: $note1
+      note2: $note2
+      note3: $note3
+      efm: $efm
+      student: $student
+      module: $module
+    }
+  ) {
+    ...Note
+  }
+}

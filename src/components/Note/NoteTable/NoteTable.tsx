@@ -1,40 +1,57 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Divider, Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 
-import { Note, Student } from '../../../generated/graphql'
+import { Module, Note, Student } from '../../../generated/graphql'
 
 interface ModuleTableProps {
   notes: Note[]
   loading: boolean
   student?: Student
-  // onDelete: (note: Note) => void
-  // onEdit: (note: Note) => void
+  modules: Module[]
+  onDelete: (note: Note) => void
+  onEdit: (note: Note) => void
+}
+
+interface DataSourceNotes extends Note {
+  moduleName: string
 }
 
 const ModuleTable: FC<ModuleTableProps> = props => {
-  const { notes, student, loading } = props
+  const { notes, student, modules, loading, onDelete, onEdit } = props
+
+  const [data, setData] = useState<DataSourceNotes[]>([])
+
+  useEffect(() => {
+    if (!modules.length || !notes.length) {
+      setData([])
+      return
+    }
+    setData(notes.map(
+      note => ({ ...note, moduleName: note.module.name })
+    ))
+  }, [notes, modules])
 
   const columns: ColumnsType<Note> = [
     {
       title: "Module",
-      dataIndex: "module",
+      dataIndex: "moduleName",
     },
     {
-      title: "Note 1",
+      title: "First Note",
       dataIndex: "note1",
     },
     {
-      title: "Note 2",
+      title: "Second Note",
       dataIndex: "note2",
     },
     {
-      title: "Note 3",
+      title: "Third Note",
       dataIndex: "note3",
     },
     {
-      title: "EFM",
+      title: "Note of EFM",
       dataIndex: "efm",
     },
     {
@@ -43,13 +60,13 @@ const ModuleTable: FC<ModuleTableProps> = props => {
       width: '15%',
       render: (_, note) => (
         <Space size="small">
-          <a onClick={() => console.log(note)}>
+          <a onClick={() => onEdit(note)}>
             Edit
           </a>
           <Divider type="vertical" />
           <Popconfirm
             title="Sure to delete?"
-            onConfirm={() => console.log(note)}
+            onConfirm={() => onDelete(note)}
           >
             <a>Delete</a>
           </Popconfirm>
@@ -62,7 +79,7 @@ const ModuleTable: FC<ModuleTableProps> = props => {
     <Table<Note>
       title={() => getTitle(notes, loading, student)}
       columns={columns}
-      dataSource={notes}
+      dataSource={data}
       loading={loading}
       pagination={{ pageSize: 8 }}
       size='small'
@@ -74,8 +91,8 @@ const ModuleTable: FC<ModuleTableProps> = props => {
 export default ModuleTable
 
 const getTitle = (notes: Note[], loading: boolean, student?: Student) => {
-  return loading ? 'Modules is Loading...' : student && notes.length
-    ? `Modules Related to Formation: ${student.fullName}`
-    : student ? 'This Formation does not have any modules'
-      : 'Modules (Choose a formation)'
+  return loading ? 'Notes is Loading...' : student && notes.length
+    ? `Notes Related to Student: ${student.fullName}`
+    : student ? 'This Student does not have any notes'
+      : 'Notes (Choose a student)'
 }

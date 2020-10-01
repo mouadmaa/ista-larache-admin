@@ -2,8 +2,7 @@
   border: 1px solid #e8e8e8;
   border-radius: 4px;
   padding: 0 10px;
-  margin-top: 15px;
-  margin-bottom: 25px;
+  margin: 10px 0 15px;
 }
 
 .student-container > div > div:nth-child(1) > h5 {
@@ -11,9 +10,15 @@
   margin-left: 20px;
 }
 
-.student-container > button {
+.student-container > button:first-of-type {
   width: 100%;
   margin-top: 15px;
+  border-radius: 4px;
+}
+
+.student-container > button:last-of-type {
+  width: 100%;
+  margin-bottom: 10px;
   border-radius: 4px;
 }
 

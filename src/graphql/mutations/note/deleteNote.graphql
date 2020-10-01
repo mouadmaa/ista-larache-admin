@@ -1,0 +1,11 @@
+mutation DeleteNote(
+  $id: String!
+) {
+  deleteNote(
+    where: {
+      id: $id
+    }
+  ) {
+    ...Note
+  }
+}

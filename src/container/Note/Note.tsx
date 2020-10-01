@@ -1,46 +1,56 @@
-import React, { FC, Fragment } from 'react'
+import { message } from 'antd'
+import React, { FC, Fragment, useState } from 'react'
+import NoteForm from '../../components/Note/NoteForm/NoteForm'
 
 import NoteTable from '../../components/Note/NoteTable/NoteTable'
-import { Student, Note as NoteType } from '../../generated/graphql'
+import { Student, Note as NoteType, Module } from '../../generated/graphql'
+import { useNote } from '../../hooks/useNote'
 
 interface NoteProps {
   notes: NoteType[]
-  loading: boolean
+  loadingNotes: boolean
   student?: Student
+  modules: Module[]
+  loadingModules: boolean
+  viewNote: boolean
 }
 
 const Note: FC<NoteProps> = props => {
-  const { notes, loading, student } = props
+  const { notes, loadingNotes, student, modules, loadingModules, viewNote } = props
 
-  // const [note, setNote] = useState<NoteType>()
+  const [note, setNote] = useState<NoteType>()
 
-  // const {
-  //   formVisible, setFormVisible, loadingTable,
-  // } = useNote()
+  const {
+    formVisible, setFormVisible, loadingTable, loadingForm,
+    createNote, updateNote, deleteNote
+  } = useNote()
 
-  // const onShowForm = () => {
-  //   setFormVisible(true)
-  //   setNote(undefined)
-  // }
+  const onShowForm = () => {
+    setFormVisible(true)
+    setNote(undefined)
+  }
 
-  // const onEdit = (note: NoteType) => {
-  //   setFormVisible(true)
-  //   setNote({ ...note })
-  // }
+  const onEdit = (note: NoteType) => {
+    setFormVisible(true)
+    setNote({ ...note })
+  }
 
-  // const onDelete = (note: NoteType) => {
-  //   deleteNote({ variables: { id: note.id } })
-  //   setNote(undefined)
-  // }
+  const onDelete = (note: NoteType) => {
+    setNote(undefined)
+    deleteNote({ variables: { id: note.id } })
+    message.loading({ key: 'deleteNote', content: 'Loading...' })
+  }
 
-  // const onHideForm = () => setFormVisible(false)
+  const onHideForm = () => setFormVisible(false)
 
   return (
     <Fragment>
-      {/* {student && (
+      {student && viewNote && (
         <NoteForm
           note={note}
+          notes={notes}
           student={student}
+          modules={modules}
           visible={formVisible}
           loading={loadingForm}
           onCreate={createNote}
@@ -48,13 +58,14 @@ const Note: FC<NoteProps> = props => {
           onShowForm={onShowForm}
           onHideForm={onHideForm}
         />
-      )} */}
+      )}
       <NoteTable
-        notes={student ? notes : []}
-        loading={loading /*|| loadingTable*/}
+        notes={viewNote ? notes : []}
+        loading={loadingNotes || loadingModules || loadingTable}
         student={student}
-      // onEdit={onEdit}
-      // onDelete={onDelete}
+        modules={modules}
+        onEdit={onEdit}
+        onDelete={onDelete}
       />
     </Fragment>
   )

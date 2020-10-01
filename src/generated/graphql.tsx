@@ -366,6 +366,7 @@ export type NoteUpdateInput = {
   note2?: Maybe<Scalars['Float']>;
   note3?: Maybe<Scalars['Float']>;
   efm?: Maybe<Scalars['Float']>;
+  module?: Maybe<ModuleConnectNoteInput>;
 };
 
 export type ClassFragment = (
@@ -546,6 +547,55 @@ export type UpdateModuleMutation = (
   ) }
 );
 
+export type CreateNoteMutationVariables = Exact<{
+  note1?: Maybe<Scalars['Float']>;
+  note2?: Maybe<Scalars['Float']>;
+  note3?: Maybe<Scalars['Float']>;
+  efm?: Maybe<Scalars['Float']>;
+  student: StudentConnectNoteInput;
+  module: ModuleConnectNoteInput;
+}>;
+
+
+export type CreateNoteMutation = (
+  { __typename?: 'Mutation' }
+  & { createNote: (
+    { __typename?: 'Note' }
+    & NoteFragment
+  ) }
+);
+
+export type DeleteNoteMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteNoteMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteNote: (
+    { __typename?: 'Note' }
+    & NoteFragment
+  ) }
+);
+
+export type UpdateNoteMutationVariables = Exact<{
+  id: Scalars['String'];
+  note1?: Maybe<Scalars['Float']>;
+  note2?: Maybe<Scalars['Float']>;
+  note3?: Maybe<Scalars['Float']>;
+  efm?: Maybe<Scalars['Float']>;
+  module?: Maybe<ModuleConnectNoteInput>;
+}>;
+
+
+export type UpdateNoteMutation = (
+  { __typename?: 'Mutation' }
+  & { updateNote: (
+    { __typename?: 'Note' }
+    & NoteFragment
+  ) }
+);
+
 export type CreateStudentMutationVariables = Exact<{
   fullName: Scalars['String'];
   cef?: Maybe<Scalars['String']>;
@@ -706,6 +756,10 @@ export type StudentWithNotesQuery = (
     { __typename?: 'Student' }
     & { notes: Array<(
       { __typename?: 'Note' }
+      & { module: (
+        { __typename?: 'Module' }
+        & ModuleFragment
+      ) }
       & NoteFragment
     )> }
     & StudentFragment
@@ -1105,6 +1159,112 @@ export function useUpdateModuleMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpdateModuleMutationHookResult = ReturnType<typeof useUpdateModuleMutation>;
 export type UpdateModuleMutationResult = Apollo.MutationResult<UpdateModuleMutation>;
 export type UpdateModuleMutationOptions = Apollo.BaseMutationOptions<UpdateModuleMutation, UpdateModuleMutationVariables>;
+export const CreateNoteDocument = gql`
+    mutation CreateNote($note1: Float, $note2: Float, $note3: Float, $efm: Float, $student: StudentConnectNoteInput!, $module: ModuleConnectNoteInput!) {
+  createNote(data: {note1: $note1, note2: $note2, note3: $note3, efm: $efm, student: $student, module: $module}) {
+    ...Note
+  }
+}
+    ${NoteFragmentDoc}`;
+export type CreateNoteMutationFn = Apollo.MutationFunction<CreateNoteMutation, CreateNoteMutationVariables>;
+
+/**
+ * __useCreateNoteMutation__
+ *
+ * To run a mutation, you first call `useCreateNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNoteMutation, { data, loading, error }] = useCreateNoteMutation({
+ *   variables: {
+ *      note1: // value for 'note1'
+ *      note2: // value for 'note2'
+ *      note3: // value for 'note3'
+ *      efm: // value for 'efm'
+ *      student: // value for 'student'
+ *      module: // value for 'module'
+ *   },
+ * });
+ */
+export function useCreateNoteMutation(baseOptions?: Apollo.MutationHookOptions<CreateNoteMutation, CreateNoteMutationVariables>) {
+        return Apollo.useMutation<CreateNoteMutation, CreateNoteMutationVariables>(CreateNoteDocument, baseOptions);
+      }
+export type CreateNoteMutationHookResult = ReturnType<typeof useCreateNoteMutation>;
+export type CreateNoteMutationResult = Apollo.MutationResult<CreateNoteMutation>;
+export type CreateNoteMutationOptions = Apollo.BaseMutationOptions<CreateNoteMutation, CreateNoteMutationVariables>;
+export const DeleteNoteDocument = gql`
+    mutation DeleteNote($id: String!) {
+  deleteNote(where: {id: $id}) {
+    ...Note
+  }
+}
+    ${NoteFragmentDoc}`;
+export type DeleteNoteMutationFn = Apollo.MutationFunction<DeleteNoteMutation, DeleteNoteMutationVariables>;
+
+/**
+ * __useDeleteNoteMutation__
+ *
+ * To run a mutation, you first call `useDeleteNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNoteMutation, { data, loading, error }] = useDeleteNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteNoteMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNoteMutation, DeleteNoteMutationVariables>) {
+        return Apollo.useMutation<DeleteNoteMutation, DeleteNoteMutationVariables>(DeleteNoteDocument, baseOptions);
+      }
+export type DeleteNoteMutationHookResult = ReturnType<typeof useDeleteNoteMutation>;
+export type DeleteNoteMutationResult = Apollo.MutationResult<DeleteNoteMutation>;
+export type DeleteNoteMutationOptions = Apollo.BaseMutationOptions<DeleteNoteMutation, DeleteNoteMutationVariables>;
+export const UpdateNoteDocument = gql`
+    mutation UpdateNote($id: String!, $note1: Float, $note2: Float, $note3: Float, $efm: Float, $module: ModuleConnectNoteInput) {
+  updateNote(where: {id: $id}, data: {note1: $note1, note2: $note2, note3: $note3, efm: $efm, module: $module}) {
+    ...Note
+  }
+}
+    ${NoteFragmentDoc}`;
+export type UpdateNoteMutationFn = Apollo.MutationFunction<UpdateNoteMutation, UpdateNoteMutationVariables>;
+
+/**
+ * __useUpdateNoteMutation__
+ *
+ * To run a mutation, you first call `useUpdateNoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNoteMutation, { data, loading, error }] = useUpdateNoteMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      note1: // value for 'note1'
+ *      note2: // value for 'note2'
+ *      note3: // value for 'note3'
+ *      efm: // value for 'efm'
+ *      module: // value for 'module'
+ *   },
+ * });
+ */
+export function useUpdateNoteMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNoteMutation, UpdateNoteMutationVariables>) {
+        return Apollo.useMutation<UpdateNoteMutation, UpdateNoteMutationVariables>(UpdateNoteDocument, baseOptions);
+      }
+export type UpdateNoteMutationHookResult = ReturnType<typeof useUpdateNoteMutation>;
+export type UpdateNoteMutationResult = Apollo.MutationResult<UpdateNoteMutation>;
+export type UpdateNoteMutationOptions = Apollo.BaseMutationOptions<UpdateNoteMutation, UpdateNoteMutationVariables>;
 export const CreateStudentDocument = gql`
     mutation CreateStudent($fullName: String!, $cef: String, $cin: String, $password: String!, $class: ClassConnectStudentInput!) {
   createStudent(data: {fullName: $fullName, cef: $cef, cin: $cin, password: $password, class: $class}) {
@@ -1461,11 +1621,15 @@ export const StudentWithNotesDocument = gql`
     ...Student
     notes {
       ...Note
+      module {
+        ...Module
+      }
     }
   }
 }
     ${StudentFragmentDoc}
-${NoteFragmentDoc}`;
+${NoteFragmentDoc}
+${ModuleFragmentDoc}`;
 
 /**
  * __useStudentWithNotesQuery__

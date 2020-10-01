@@ -9,6 +9,9 @@ query StudentWithNotes(
     ...Student
     notes {
       ...Note
+      module {
+        ...Module
+      }
     }
   }
 }

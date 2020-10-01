@@ -15,14 +15,18 @@ import Note from '../Note/Note'
 const Student = () => {
   const [students, setStudents] = useState<StudentType[]>([])
   const [student, setStudent] = useState<StudentType>()
+  const [formationId, setFormationId] = useState<string>('')
+  const [classId, setClassId] = useState<string>()
   const [visibleDrawer, setVisibleDrawer] = useState(false)
+  const [viewNote, setViewNote] = useState(false)
 
   const {
     createStudent, loadingForm, formVisible, setFormVisible, loading,
-    deleteStudent, updateStudent, fetchStudentWithNotes, notes, loadingModules
+    deleteStudent, updateStudent, fetchStudentWithNotes, notes, loadingNotes
   } = useStudent()
   const {
-    fetchFormationsWithClasses, formationsWithClasses, formationsWithClassesLoading
+    fetchFormationsWithClasses, formationsWithClasses, formationsWithClassesLoading,
+    fetchFormationWithModules, modules, loadingModules
   } = useFormation()
   const {
     fetchClassWithStudents, classWithStudents, classWithStudentsLoading
@@ -35,6 +39,10 @@ const Student = () => {
   const onSelectClass = (formationId: string | undefined, classId: string | undefined) => {
     if (classId) fetchClassWithStudents({ variables: { id: classId } })
     else if (formationId && !classId) message.info('This formation does not have any classes.')
+    if (formationId) setFormationId(formationId)
+    setClassId(classId)
+    setStudent(undefined)
+    setViewNote(false)
     setStudents([])
   }
 
@@ -60,8 +68,10 @@ const Student = () => {
   }
 
   const onShowNotes = (student: StudentType) => {
+    setViewNote(true)
     setStudent(student)
     fetchStudentWithNotes({ variables: { id: student.id } })
+    fetchFormationWithModules({ variables: { id: formationId } })
   }
 
   const onHideForm = () => setFormVisible(false)
@@ -75,7 +85,7 @@ const Student = () => {
         loading={formationsWithClassesLoading}
         onSelect={onSelectClass}
       />
-      {classWithStudents && (
+      {classWithStudents && classId && (
         <StudentForm
           student={student}
           currentClass={classWithStudents}
@@ -105,8 +115,11 @@ const Student = () => {
       />
       <Note
         notes={notes}
-        loading={loadingModules}
+        viewNote={viewNote}
+        loadingNotes={loadingNotes}
         student={student}
+        modules={modules}
+        loadingModules={loadingModules}
       />
     </div>
   )

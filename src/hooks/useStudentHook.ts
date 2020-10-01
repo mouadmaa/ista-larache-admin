@@ -52,6 +52,6 @@ export const useStudent = () => {
     deleteStudent,
     fetchStudentWithNotes,
     notes: studentWithNotesData?.student?.notes as Note[] || [],
-    loadingModules: studentWithNotesLoading,
+    loadingNotes: studentWithNotesLoading,
   }
 }
