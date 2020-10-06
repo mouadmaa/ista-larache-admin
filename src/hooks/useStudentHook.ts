@@ -16,7 +16,7 @@ export const useStudent = () => {
       setFormVisible(false)
     },
     onError: () => {
-      message.warning({ key: 'createStudent', content: 'Maybe the cin or cef of student already exists.' })
+      message.warning({ key: 'createStudent', content: 'Maybe the cin or cef of student already exists.', duration: 10 })
     },
     update: (cache) => {
       cache.evict({ fieldName: 'class' })
@@ -29,7 +29,7 @@ export const useStudent = () => {
       setFormVisible(false)
     },
     onError: () => {
-      message.warning({ key: 'updateStudent', content: 'Maybe the cin or cef of student already exists.' })
+      message.warning({ key: 'updateStudent', content: 'Maybe the cin or cef of student already exists.', duration: 10 })
     },
   })
 

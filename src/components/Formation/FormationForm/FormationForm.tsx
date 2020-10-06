@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Input, Modal, Form, Select, Button } from 'antd'
+import { Input, Modal, Form, Select, Button, message } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 
@@ -37,11 +37,15 @@ const FormationForm: FC<FormationFormProps> = props => {
 
   const handleOk = async () => {
     const variables = await form.validateFields()
+    let key = ''
     if (formation) {
+      key = 'updateFormation'
       onUpdate({ variables: { ...variables, id: formation.id } })
     } else {
+      key = 'createFormation'
       onCreate({ variables: variables as FormationCreateInput })
     }
+    message.loading({ key, content: 'Loading...' })
   }
 
   return (

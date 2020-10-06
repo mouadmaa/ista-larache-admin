@@ -1,5 +1,5 @@
-import React, { FC, Fragment, useState } from 'react'
-import { Button, Upload, Image, message } from 'antd'
+import React, { FC, useState } from 'react'
+import { Button, Upload, Image, message, Row, Col } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 
 import './Timetable.css'
@@ -35,6 +35,7 @@ const Timetable: FC = () => {
 
     if (errors) message.error('Upload image failed.')
     if (data?.updateClass) setCurrentClass(data.updateClass as Class)
+    setFile(undefined)
   }
 
   const handleDelete = async () => {
@@ -47,6 +48,7 @@ const Timetable: FC = () => {
 
     if (errors) message.error('Delete image failed.')
     if (data?.updateClass) setCurrentClass(data?.updateClass as Class)
+    setFile(undefined)
   }
 
   const beforeUpload = (file: any) => {
@@ -64,43 +66,50 @@ const Timetable: FC = () => {
         loading={formationsWithClassesLoading}
         onSelect={onSelectClass}
       />
-      <Upload
-        fileList={file ? [file] : []}
-        beforeUpload={beforeUpload}
-        onRemove={onRemove}
-      >
-        <Button icon={<UploadOutlined />}>
-          Select Image
-        </Button>
-      </Upload>
-      {currentClass && (
-        <Button
-          className='select-button'
-          type="primary"
-          onClick={handleUpload}
-          disabled={!file}
-          loading={formLoading}
-        >
-          {formLoading ? 'Uploading...' : 'Start Upload'}
-        </Button>
-      )}
-      {currentClass?.timetable && (
-        <Fragment>
-          <div className='image'>
-            <Image
-              width='100%'
-              height={500}
-              src={currentClass.timetable}
-            />
-          </div>
-          <Button
-            type="primary"
-            onClick={handleDelete}
-            loading={classesLoading}
+      <Row align='middle' justify='space-around'>
+        <Col span={10}>
+          <Upload
+            fileList={file ? [file] : []}
+            beforeUpload={beforeUpload}
+            onRemove={onRemove}
           >
-            {classesLoading ? 'Deleting...' : 'Delete Image Timetable'}
-          </Button>
-        </Fragment>
+            <Button icon={<UploadOutlined />}>
+              Select Image
+            </Button>
+          </Upload>
+        </Col>
+        <Col span={6}>
+          {currentClass && (
+            <Button
+              type="primary"
+              onClick={handleUpload}
+              disabled={!file}
+              loading={formLoading}
+            >
+              {formLoading ? 'Uploading...' : 'Start Upload'}
+            </Button>
+          )}
+        </Col>
+        <Col span={6}>
+          {currentClass?.timetable && (
+            <Button
+              type="primary"
+              onClick={handleDelete}
+              loading={classesLoading}
+            >
+              {classesLoading ? 'Deleting...' : 'Delete Image Timetable'}
+            </Button>
+          )}
+        </Col>
+      </Row>
+      {currentClass?.timetable && (
+        <div className='image'>
+          <Image
+            width='100%'
+            height={500}
+            src={currentClass.timetable}
+          />
+        </div>
       )}
     </div>
   )

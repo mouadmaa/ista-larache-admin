@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Input, Modal, Form, Button, InputNumber } from 'antd'
+import { Input, Modal, Form, Button, InputNumber, message } from 'antd'
 import { PlusCircleOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 
@@ -7,6 +7,7 @@ import { Formation, Module, ModuleCreateInput, UpdateModuleMutationVariables } f
 
 interface ModuleFormProps {
   module?: Module
+  modules: Module[]
   formation: Formation
   visible: boolean
   loading: boolean
@@ -18,15 +19,16 @@ interface ModuleFormProps {
 
 const ModuleForm: FC<ModuleFormProps> = props => {
   const {
-    module, loading, formation, visible, onShowForm,
-    onHideForm, onCreate, onUpdate
+    module, modules, loading, formation, visible,
+    onShowForm, onHideForm, onCreate, onUpdate
   } = props
 
   const [form] = useForm()
 
   const defaultFormValues = useCallback(() => {
-    form.setFieldsValue({ number: 1, name: '' })
-  }, [form])
+    const number = modules[modules.length - 1]?.number + 1 || 1
+    form.setFieldsValue({ number, name: '' })
+  }, [form, modules])
 
   useEffect(() => {
     if (module) {
@@ -39,11 +41,15 @@ const ModuleForm: FC<ModuleFormProps> = props => {
   const handleOk = async () => {
     const variables = await form.validateFields()
     variables.formation = { connect: { id: formation.id } }
+    let key = ''
     if (module) {
+      key = 'updateModule'
       onUpdate({ variables: { ...variables, id: module.id } })
     } else {
+      key = 'createModule'
       onCreate({ variables: variables as ModuleCreateInput })
     }
+    message.loading({ key, content: 'Loading...' })
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import './Formation.css'
@@ -37,8 +37,9 @@ const Formation: FC = () => {
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: () => {
-        deleteFormation({ variables: { id: formation.id } })
         setFormation(undefined)
+        deleteFormation({ variables: { id: formation.id } })
+        message.loading({ key: 'deleteFormation', content: 'Loading...' })
       }
     })
   }

@@ -15,7 +15,7 @@ const Student = lazy(() => import('../../container/Student/Student'))
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [selectedTap, setSelectedTap] = useState('timetable')
+  const [selectedTap, setSelectedTap] = useState('student')
 
   const onSelect = ({ key }: { key: React.Key }) => {
     setSelectedTap(key as string)

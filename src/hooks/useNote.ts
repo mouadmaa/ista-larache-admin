@@ -12,7 +12,7 @@ export const useNote = () => {
       setFormVisible(false)
     },
     onError: () => {
-      message.warning({ key: 'createNote', content: 'Maybe the module already noted.' })
+      message.warning({ key: 'createNote', content: 'Maybe the module already noted.', duration: 10 })
     },
     update: (cache) => {
       cache.evict({ fieldName: 'student' })
@@ -28,7 +28,7 @@ export const useNote = () => {
       cache.evict({ fieldName: 'student' })
     },
     onError: () => {
-      message.warning({ key: 'updateNote', content: 'Maybe the module already noted.' })
+      message.warning({ key: 'updateNote', content: 'Maybe the module already noted.', duration: 10 })
     },
   })
 

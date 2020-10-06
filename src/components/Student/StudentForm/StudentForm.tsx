@@ -48,13 +48,13 @@ const StudentForm: FC<StudentFormProps> = props => {
       message.info('Enter at least one (cin or cef)!', 6)
       return
     }
-    variables.class = { connect: { id: currentClass.id } }
     let key = ''
     if (student) {
       key = 'updateStudent'
       onUpdate({ variables: { ...variables, id: student.id } })
     } else {
       key = 'createStudent'
+      variables.class = { connect: { id: currentClass.id } }
       onCreate({ variables: variables as StudentCreateInput })
     }
     message.loading({ key, content: 'Loading...' })

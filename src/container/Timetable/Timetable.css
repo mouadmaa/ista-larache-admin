@@ -5,10 +5,7 @@
   align-items: center;
   justify-content: center;
 }
+
 .timetable-container .select-class {
   margin-bottom: 20px;
-}
-
-.timetable-container .select-button {
-  margin-top: 10px;
 }

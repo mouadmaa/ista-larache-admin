@@ -11,6 +11,7 @@ import StudentForm from '../../components/Student/StudentForm/StudentForm'
 import { useStudent } from '../../hooks/useStudentHook'
 import StudentDrawer from '../../components/Student/StudentDrawer/StudentDrawer'
 import Note from '../Note/Note'
+import StudentNoteFinal from '../../components/Student/StudentNoteFinal/StudentNoteFinal'
 
 const Student = () => {
   const [students, setStudents] = useState<StudentType[]>([])
@@ -113,6 +114,14 @@ const Student = () => {
         visibleDrawer={visibleDrawer}
         onCloseDrawer={onCloseDrawer}
       />
+      {student && viewNote && (
+        <StudentNoteFinal
+          student={student}
+          loading={loadingForm}
+          currentClass={classWithStudents}
+          onUpdate={updateStudent}
+        />
+      )}
       <Note
         notes={notes}
         viewNote={viewNote}

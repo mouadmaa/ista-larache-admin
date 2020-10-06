@@ -19,11 +19,11 @@ export const useFormation = () => {
 
   const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
     onCompleted: () => {
-      message.success('A new formation has been added successfully.')
+      message.success({ key: 'createFormation', content: 'A new formation has been added successfully.' })
       setFormVisible(false)
     },
     onError: () => {
-      message.warning('Maybe the name of formation already exists.', 10)
+      message.warning({ key: 'createFormation', content: 'Maybe the name of formation already exists.', duration: 10 })
     },
     update: (cache) => {
       cache.evict({ fieldName: 'formations' })
@@ -32,17 +32,17 @@ export const useFormation = () => {
 
   const [updateFormation, { loading: loadingUpdate }] = useUpdateFormationMutation({
     onCompleted: () => {
-      message.success('The formation has been edited successfully.')
+      message.success({ key: 'updateFormation', content: 'The formation has been edited successfully.' })
       setFormVisible(false)
     },
     onError: () => {
-      message.warning('Maybe the name of formation already exists.', 10)
+      message.warning({ key: 'updateFormation', content: 'Maybe the name of formation already exists.', duration: 10 })
     },
   })
 
   const [deleteFormation, { loading: loadingDelete }] = useDeleteFormationMutation({
     onCompleted: () => {
-      message.success('The formation has been removed successfully.')
+      message.success({ key: 'deleteFormation', content: 'The formation has been removed successfully.' })
     },
     update: (cache, { data }) => {
       if (data?.deleteFormation) cache.evict({ id: cache.identify(data.deleteFormation) })

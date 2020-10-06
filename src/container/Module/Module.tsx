@@ -1,5 +1,5 @@
 import React, { FC, Fragment, useState } from 'react'
-import { Modal } from 'antd'
+import { message, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
 import ModuleForm from '../../components/Module/ModuleForm/ModuleForm'
@@ -42,8 +42,9 @@ const Module: FC<ModuleProps> = props => {
       okText: 'Confirm',
       cancelText: 'Cancel',
       onOk: () => {
-        deleteModule({ variables: { id: module.id } })
         setModule(undefined)
+        deleteModule({ variables: { id: module.id } })
+        message.loading({ key: 'deleteModule', content: 'Loading...' })
       }
     })
 
@@ -56,6 +57,7 @@ const Module: FC<ModuleProps> = props => {
       {formation && (
         <ModuleForm
           module={module}
+          modules={modules}
           formation={formation}
           visible={formVisible}
           loading={loadingForm}
