@@ -92,6 +92,7 @@ export type Class = {
   id: Scalars['String'];
   year: Year;
   group: Group;
+  timetable?: Maybe<Scalars['String']>;
   students: Array<Student>;
   modules: Array<Module>;
   formation: Formation;
@@ -213,12 +214,14 @@ export type MutationDeleteModuleArgs = {
 
 export type MutationCreateClassArgs = {
   data: ClassCreateInput;
+  file?: Maybe<Scalars['String']>;
 };
 
 
 export type MutationUpdateClassArgs = {
   where: ClassWhereUniqueInput;
   data: ClassUpdateInput;
+  file?: Maybe<Scalars['String']>;
 };
 
 
@@ -293,6 +296,7 @@ export type ModuleUpdateInput = {
 export type ClassCreateInput = {
   year: Year;
   group: Group;
+  timetable?: Maybe<Scalars['String']>;
   formation: FormationConnectClassInput;
   teacher: UserConnectClassInput;
 };
@@ -312,6 +316,7 @@ export type UserWhereUniqueInput = {
 export type ClassUpdateInput = {
   year?: Maybe<Year>;
   group?: Maybe<Group>;
+  timetable?: Maybe<Scalars['String']>;
   formation?: Maybe<FormationConnectClassInput>;
   teacher?: Maybe<UserConnectClassInput>;
 };
@@ -371,7 +376,7 @@ export type NoteUpdateInput = {
 
 export type ClassFragment = (
   { __typename?: 'Class' }
-  & Pick<Class, 'id' | 'year' | 'group'>
+  & Pick<Class, 'id' | 'year' | 'group' | 'timetable'>
 );
 
 export type FormationFragment = (
@@ -402,8 +407,10 @@ export type UserFragment = (
 export type CreateClassMutationVariables = Exact<{
   year: Year;
   group: Group;
+  timetable?: Maybe<Scalars['String']>;
   formation: FormationConnectClassInput;
   teacher: UserConnectClassInput;
+  file?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -439,8 +446,10 @@ export type UpdateClassMutationVariables = Exact<{
   id: Scalars['String'];
   year?: Maybe<Year>;
   group?: Maybe<Group>;
+  timetable?: Maybe<Scalars['String']>;
   formation?: Maybe<FormationConnectClassInput>;
   teacher?: Maybe<UserConnectClassInput>;
+  file?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -793,6 +802,7 @@ export const ClassFragmentDoc = gql`
   id
   year
   group
+  timetable
 }
     `;
 export const FormationFragmentDoc = gql`
@@ -839,8 +849,8 @@ export const UserFragmentDoc = gql`
 }
     `;
 export const CreateClassDocument = gql`
-    mutation CreateClass($year: Year!, $group: Group!, $formation: FormationConnectClassInput!, $teacher: UserConnectClassInput!) {
-  createClass(data: {year: $year, group: $group, formation: $formation, teacher: $teacher}) {
+    mutation CreateClass($year: Year!, $group: Group!, $timetable: String, $formation: FormationConnectClassInput!, $teacher: UserConnectClassInput!, $file: String) {
+  createClass(data: {year: $year, group: $group, timetable: $timetable, formation: $formation, teacher: $teacher}, file: $file) {
     ...Class
     formation {
       ...Formation
@@ -870,8 +880,10 @@ export type CreateClassMutationFn = Apollo.MutationFunction<CreateClassMutation,
  *   variables: {
  *      year: // value for 'year'
  *      group: // value for 'group'
+ *      timetable: // value for 'timetable'
  *      formation: // value for 'formation'
  *      teacher: // value for 'teacher'
+ *      file: // value for 'file'
  *   },
  * });
  */
@@ -914,8 +926,8 @@ export type DeleteClassMutationHookResult = ReturnType<typeof useDeleteClassMuta
 export type DeleteClassMutationResult = Apollo.MutationResult<DeleteClassMutation>;
 export type DeleteClassMutationOptions = Apollo.BaseMutationOptions<DeleteClassMutation, DeleteClassMutationVariables>;
 export const UpdateClassDocument = gql`
-    mutation UpdateClass($id: String!, $year: Year, $group: Group, $formation: FormationConnectClassInput, $teacher: UserConnectClassInput) {
-  updateClass(where: {id: $id}, data: {year: $year, group: $group, formation: $formation, teacher: $teacher}) {
+    mutation UpdateClass($id: String!, $year: Year, $group: Group, $timetable: String, $formation: FormationConnectClassInput, $teacher: UserConnectClassInput, $file: String) {
+  updateClass(where: {id: $id}, data: {year: $year, group: $group, timetable: $timetable, formation: $formation, teacher: $teacher}, file: $file) {
     ...Class
     formation {
       ...Formation
@@ -946,8 +958,10 @@ export type UpdateClassMutationFn = Apollo.MutationFunction<UpdateClassMutation,
  *      id: // value for 'id'
  *      year: // value for 'year'
  *      group: // value for 'group'
+ *      timetable: // value for 'timetable'
  *      formation: // value for 'formation'
  *      teacher: // value for 'teacher'
+ *      file: // value for 'file'
  *   },
  * });
  */

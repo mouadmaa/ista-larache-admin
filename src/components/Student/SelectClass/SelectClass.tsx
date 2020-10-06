@@ -34,7 +34,7 @@ const SelectClass: FC<SelectClassProps> = props => {
   }
 
   return (
-    <Row align='middle'>
+    <Row align='middle' className='select-class'>
       <Col flex={1}>
         <Typography.Title level={5}>
           Please select the class:

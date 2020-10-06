@@ -2,8 +2,10 @@ mutation UpdateClass(
   $id: String!
   $year: Year
   $group: Group
+  $timetable: String
   $formation: FormationConnectClassInput
   $teacher: UserConnectClassInput
+  $file: String
 ) {
   updateClass(
     where: {
@@ -12,9 +14,11 @@ mutation UpdateClass(
     data: {
       year: $year
       group: $group
+      timetable: $timetable
       formation: $formation
       teacher: $teacher
     }
+    file: $file
   ) {
     ...Class
     formation {

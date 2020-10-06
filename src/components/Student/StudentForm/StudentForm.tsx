@@ -66,7 +66,7 @@ const StudentForm: FC<StudentFormProps> = props => {
         icon={<PlusCircleOutlined />}
         onClick={onShowForm}
       >
-        Add Class
+        Add Student
       </Button>
       <Modal
         title={`${student ? 'Edit the' : 'Create a new'} student`}

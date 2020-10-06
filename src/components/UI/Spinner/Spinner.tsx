@@ -3,9 +3,21 @@ import { Space, Spin } from 'antd'
 
 import './Spinner.css'
 
-const Spinner: FC = () => {
+interface SpinnerProps {
+  isPage?: boolean
+}
+
+const Spinner: FC<SpinnerProps> = props => {
+  const { isPage = false } = props
+
   return (
-    <Space className='spinner-space' size='large'>
+    <Space
+      className='spinner-space'
+      style={{
+        minHeight: `${isPage ? '100vh' : '80vh'}`
+      }}
+      size='large'
+    >
       <Spin size="large" tip="Loading..." />
     </Space>
   )

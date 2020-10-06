@@ -36,7 +36,7 @@ const Student = () => {
     if (classWithStudents?.students) setStudents(classWithStudents.students)
   }, [classWithStudents])
 
-  const onSelectClass = (formationId: string | undefined, classId: string | undefined) => {
+  const onSelectClass = (formationId?: string, classId?: string) => {
     if (classId) fetchClassWithStudents({ variables: { id: classId } })
     else if (formationId && !classId) message.info('This formation does not have any classes.')
     if (formationId) setFormationId(formationId)

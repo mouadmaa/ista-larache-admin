@@ -1,0 +1,14 @@
+.timetable-container .image {
+  margin: 20px 0;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.timetable-container .select-class {
+  margin-bottom: 20px;
+}
+
+.timetable-container .select-button {
+  margin-top: 10px;
+}
