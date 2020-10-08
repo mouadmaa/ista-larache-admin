@@ -1,17 +1,42 @@
-import React, { FC, Fragment } from 'react'
-import ActivityList from '../../components/Activity/ActivityList'
+import React, { FC, Fragment, useState } from 'react'
 
+import './Activity.css'
+import ActivityList from '../../components/Activity/ActivityList/ActivityList'
 import { useActivity } from '../../hooks/useActivityHook'
+import ActivityForm from '../../components/Activity/ActivityForm/ActivityForm'
+import { Activity as ActivityType } from '../../generated/graphql'
 
 const Activity: FC = () => {
-  const { activities, activitiesLoading } = useActivity()
+  const [activity, setActivity] = useState<ActivityType>()
+
+  const {
+    activities, activitiesLoading, loadingForm, formVisible, setFormVisible,
+    createActivity
+  } = useActivity()
+
+  const onShowForm = (activity?: ActivityType) => {
+    setFormVisible(true)
+    setActivity(activity)
+  }
+
+  const onHideForm = () => setFormVisible(false)
 
   return (
     <Fragment>
-      <ActivityList
-        activities={activities}
-        loading={activitiesLoading}
-      />
+      {formVisible ? (
+        <ActivityForm
+          activity={activity}
+          onHideForm={onHideForm}
+          loading={loadingForm}
+          onCreate={createActivity}
+        />
+      ) : (
+        <ActivityList
+          activities={activities}
+          loading={activitiesLoading}
+            onShowForm={onShowForm}
+        />
+        )}
     </Fragment>
   )
 }

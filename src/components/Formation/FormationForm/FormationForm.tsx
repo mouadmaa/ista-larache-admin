@@ -57,7 +57,7 @@ const FormationForm: FC<FormationFormProps> = props => {
         Add Formation
       </Button>
       <Modal
-        title={`${formation ? 'Edit the' : 'Create a new'} formation`}
+        title={`${formation ? `Edit ${formation.name}` : 'Create a new'} Formation`}
         okText={`${formation ? 'Save' : 'Create'}`}
         cancelText="Cancel"
         onOk={handleOk}

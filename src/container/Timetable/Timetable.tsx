@@ -69,13 +69,16 @@ const Timetable: FC = () => {
       <Row align='middle' justify='space-around'>
         <Col span={10}>
           <Upload
-            fileList={file ? [file] : []}
+            defaultFileList={file ? [file] : []}
             beforeUpload={beforeUpload}
             onRemove={onRemove}
+            listType="picture"
           >
-            <Button icon={<UploadOutlined />}>
-              Select Image
-            </Button>
+            {!file && (
+              <Button icon={<UploadOutlined />}>
+                Choose An Image
+              </Button>
+            )}
           </Upload>
         </Col>
         <Col span={6}>
@@ -97,7 +100,7 @@ const Timetable: FC = () => {
               onClick={handleDelete}
               loading={classesLoading}
             >
-              {classesLoading ? 'Deleting...' : 'Delete Image Timetable'}
+              {classesLoading ? 'Deleting...' : 'Delete Timetable'}
             </Button>
           )}
         </Col>

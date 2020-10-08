@@ -1,0 +1,9 @@
+.activity-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.activity-form button:first-of-type {
+  margin-right: 10px;
+}

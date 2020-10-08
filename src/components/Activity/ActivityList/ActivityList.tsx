@@ -1,22 +1,35 @@
 import React, { FC } from 'react'
 import { Button, List, Popconfirm, Skeleton, Typography } from 'antd'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlusCircleOutlined } from '@ant-design/icons'
 import moment from 'moment'
 
-import { Activity } from '../../generated/graphql'
+import { Activity } from '../../../generated/graphql'
 
 interface ActivityListProps {
   activities: Activity[]
   loading: boolean
+  onShowForm: (activity?: Activity) => void
 }
 
 const ActivityList: FC<ActivityListProps> = props => {
-  const { activities, loading } = props
+  const { activities, loading, onShowForm } = props
 
   return (
     <List
-      className='activity-list'
-      header={<Typography.Title level={4}>Activities</Typography.Title>}
+      header={(
+        <div className='activity-list-header'>
+          <Typography.Title level={4}>
+            Activities
+          </Typography.Title>
+          <Button
+            type='primary'
+            icon={<PlusCircleOutlined />}
+            onClick={() => onShowForm()}
+          >
+            Add Activity
+          </Button>
+        </div>
+      )}
       dataSource={activities}
       loading={loading}
       pagination={{
@@ -32,7 +45,7 @@ const ActivityList: FC<ActivityListProps> = props => {
             <Button
               type='link'
               icon={<EditOutlined />}
-              onClick={() => console.log(activity)}
+              onClick={() => onShowForm(activity)}
             >
               Edit
             </Button>,
@@ -50,6 +63,7 @@ const ActivityList: FC<ActivityListProps> = props => {
           ]}
           extra={
             <img
+              style={{ borderRadius: 5 }}
               width={272}
               alt="activity img"
               src={activity.image}
@@ -64,7 +78,12 @@ const ActivityList: FC<ActivityListProps> = props => {
                 Date: ${moment(+activity.date).format('YYYY/MM/DD')}`
               }
             />
-            description={activity.desc.substring(0, 200)}
+            <div
+              dangerouslySetInnerHTML={{
+                __html: `${activity.desc.substring(0, 200)}
+                ${activity.desc.length >= 200 && '...'}`
+              }}
+            />
           </Skeleton>
         </List.Item>
       )}
