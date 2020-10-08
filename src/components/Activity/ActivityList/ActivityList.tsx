@@ -9,10 +9,11 @@ interface ActivityListProps {
   activities: Activity[]
   loading: boolean
   onShowForm: (activity?: Activity) => void
+  onDelete: (activity: Activity) => void
 }
 
 const ActivityList: FC<ActivityListProps> = props => {
-  const { activities, loading, onShowForm } = props
+  const { activities, loading, onShowForm, onDelete } = props
 
   return (
     <List
@@ -51,7 +52,7 @@ const ActivityList: FC<ActivityListProps> = props => {
             </Button>,
             <Popconfirm
               title="Sure to delete?"
-              onConfirm={() => console.log(activity)}
+              onConfirm={() => onDelete(activity)}
             >
               <Button
                 type='link'
@@ -81,7 +82,7 @@ const ActivityList: FC<ActivityListProps> = props => {
             <div
               dangerouslySetInnerHTML={{
                 __html: `${activity.desc.substring(0, 200)}
-                ${activity.desc.length >= 200 && '...'}`
+                ${activity.desc.length >= 200 ? '...' : ''}`
               }}
             />
           </Skeleton>

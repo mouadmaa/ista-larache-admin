@@ -1,10 +1,12 @@
 mutation DeleteClass(
   $id: String!
+  $timetable: String
 ) {
   deleteClass(
     where: {
       id: $id
     }
+    timetable: $timetable
   ) {
     ...Class
   }

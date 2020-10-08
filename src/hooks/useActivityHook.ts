@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { message } from 'antd'
 
-import { Activity, useActivitiesQuery, useCreateActivityMutation } from '../generated/graphql'
+import {
+  Activity, useActivitiesQuery, useCreateActivityMutation, useDeleteActivityMutation, useUpdateActivityMutation
+} from '../generated/graphql'
 
 export const useActivity = () => {
   const [formVisible, setFormVisible] = useState(false)
@@ -21,11 +23,32 @@ export const useActivity = () => {
     },
   })
 
+  const [updateActivity, { loading: loadingUpdate }] = useUpdateActivityMutation({
+    onCompleted: () => {
+      message.success({ key: 'updateActivity', content: 'The activity has been edited successfully.' })
+      setFormVisible(false)
+    },
+    onError: () => {
+      message.warning({ key: 'updateActivity', content: 'Maybe the title of activity already exists.', duration: 10 })
+    },
+  })
+
+  const [deleteActivity, { loading: loadingDelete }] = useDeleteActivityMutation({
+    onCompleted: () => {
+      message.success({ key: 'deleteActivity', content: 'The activity has been removed successfully.' })
+    },
+    update: (cache, { data }) => {
+      if (data?.deleteActivity) cache.evict({ id: cache.identify(data.deleteActivity) })
+    },
+  })
+
   return {
     activities: activitiesData?.activities as Activity[] || [],
-    activitiesLoading,
-    loadingForm: loadingCreate,
+    activitiesLoading: activitiesLoading || loadingDelete,
+    loadingForm: loadingCreate || loadingUpdate,
     createActivity,
+    updateActivity,
+    deleteActivity,
     formVisible,
     setFormVisible,
   }

@@ -177,6 +177,8 @@ export type Mutation = {
   updateNote: Note;
   deleteNote: Note;
   createActivity: Activity;
+  updateActivity: Activity;
+  deleteActivity: Activity;
 };
 
 
@@ -239,6 +241,7 @@ export type MutationUpdateClassArgs = {
 
 export type MutationDeleteClassArgs = {
   where: ClassWhereUniqueInput;
+  timetable?: Maybe<Scalars['String']>;
 };
 
 
@@ -277,6 +280,19 @@ export type MutationDeleteNoteArgs = {
 export type MutationCreateActivityArgs = {
   data: ActivityCreateInput;
   file: Scalars['String'];
+};
+
+
+export type MutationUpdateActivityArgs = {
+  where: ActivityWhereUniqueInput;
+  data: ActivityUpdateInput;
+  file?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationDeleteActivityArgs = {
+  where: ActivityWhereUniqueInput;
+  image: Scalars['String'];
 };
 
 export type FormationCreateInput = {
@@ -398,16 +414,16 @@ export type ActivityCreateInput = {
   creator: Scalars['String'];
 };
 
+export type ActivityWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
 export type ActivityUpdateInput = {
   image?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   desc?: Maybe<Scalars['String']>;
   date?: Maybe<Scalars['String']>;
   creator?: Maybe<Scalars['String']>;
-};
-
-export type ActivityWhereUniqueInput = {
-  id: Scalars['String'];
 };
 
 export type ActivityFragment = (
@@ -462,6 +478,39 @@ export type CreateActivityMutation = (
   ) }
 );
 
+export type DeleteActivityMutationVariables = Exact<{
+  id: Scalars['String'];
+  image: Scalars['String'];
+}>;
+
+
+export type DeleteActivityMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteActivity: (
+    { __typename?: 'Activity' }
+    & ActivityFragment
+  ) }
+);
+
+export type UpdateActivityMutationVariables = Exact<{
+  id: Scalars['String'];
+  image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  desc?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+  creator?: Maybe<Scalars['String']>;
+  file?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateActivityMutation = (
+  { __typename?: 'Mutation' }
+  & { updateActivity: (
+    { __typename?: 'Activity' }
+    & ActivityFragment
+  ) }
+);
+
 export type CreateClassMutationVariables = Exact<{
   year: Year;
   group: Group;
@@ -487,6 +536,7 @@ export type CreateClassMutation = (
 
 export type DeleteClassMutationVariables = Exact<{
   id: Scalars['String'];
+  timetable?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -962,6 +1012,77 @@ export function useCreateActivityMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateActivityMutationHookResult = ReturnType<typeof useCreateActivityMutation>;
 export type CreateActivityMutationResult = Apollo.MutationResult<CreateActivityMutation>;
 export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<CreateActivityMutation, CreateActivityMutationVariables>;
+export const DeleteActivityDocument = gql`
+    mutation DeleteActivity($id: String!, $image: String!) {
+  deleteActivity(where: {id: $id}, image: $image) {
+    ...Activity
+  }
+}
+    ${ActivityFragmentDoc}`;
+export type DeleteActivityMutationFn = Apollo.MutationFunction<DeleteActivityMutation, DeleteActivityMutationVariables>;
+
+/**
+ * __useDeleteActivityMutation__
+ *
+ * To run a mutation, you first call `useDeleteActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteActivityMutation, { data, loading, error }] = useDeleteActivityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      image: // value for 'image'
+ *   },
+ * });
+ */
+export function useDeleteActivityMutation(baseOptions?: Apollo.MutationHookOptions<DeleteActivityMutation, DeleteActivityMutationVariables>) {
+        return Apollo.useMutation<DeleteActivityMutation, DeleteActivityMutationVariables>(DeleteActivityDocument, baseOptions);
+      }
+export type DeleteActivityMutationHookResult = ReturnType<typeof useDeleteActivityMutation>;
+export type DeleteActivityMutationResult = Apollo.MutationResult<DeleteActivityMutation>;
+export type DeleteActivityMutationOptions = Apollo.BaseMutationOptions<DeleteActivityMutation, DeleteActivityMutationVariables>;
+export const UpdateActivityDocument = gql`
+    mutation UpdateActivity($id: String!, $image: String, $title: String, $desc: String, $date: String, $creator: String, $file: String) {
+  updateActivity(where: {id: $id}, data: {image: $image, title: $title, desc: $desc, date: $date, creator: $creator}, file: $file) {
+    ...Activity
+  }
+}
+    ${ActivityFragmentDoc}`;
+export type UpdateActivityMutationFn = Apollo.MutationFunction<UpdateActivityMutation, UpdateActivityMutationVariables>;
+
+/**
+ * __useUpdateActivityMutation__
+ *
+ * To run a mutation, you first call `useUpdateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateActivityMutation, { data, loading, error }] = useUpdateActivityMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      image: // value for 'image'
+ *      title: // value for 'title'
+ *      desc: // value for 'desc'
+ *      date: // value for 'date'
+ *      creator: // value for 'creator'
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useUpdateActivityMutation(baseOptions?: Apollo.MutationHookOptions<UpdateActivityMutation, UpdateActivityMutationVariables>) {
+        return Apollo.useMutation<UpdateActivityMutation, UpdateActivityMutationVariables>(UpdateActivityDocument, baseOptions);
+      }
+export type UpdateActivityMutationHookResult = ReturnType<typeof useUpdateActivityMutation>;
+export type UpdateActivityMutationResult = Apollo.MutationResult<UpdateActivityMutation>;
+export type UpdateActivityMutationOptions = Apollo.BaseMutationOptions<UpdateActivityMutation, UpdateActivityMutationVariables>;
 export const CreateClassDocument = gql`
     mutation CreateClass($year: Year!, $group: Group!, $formation: FormationConnectClassInput!, $teacher: UserConnectClassInput!) {
   createClass(data: {year: $year, group: $group, formation: $formation, teacher: $teacher}) {
@@ -1006,8 +1127,8 @@ export type CreateClassMutationHookResult = ReturnType<typeof useCreateClassMuta
 export type CreateClassMutationResult = Apollo.MutationResult<CreateClassMutation>;
 export type CreateClassMutationOptions = Apollo.BaseMutationOptions<CreateClassMutation, CreateClassMutationVariables>;
 export const DeleteClassDocument = gql`
-    mutation DeleteClass($id: String!) {
-  deleteClass(where: {id: $id}) {
+    mutation DeleteClass($id: String!, $timetable: String) {
+  deleteClass(where: {id: $id}, timetable: $timetable) {
     ...Class
   }
 }
@@ -1028,6 +1149,7 @@ export type DeleteClassMutationFn = Apollo.MutationFunction<DeleteClassMutation,
  * const [deleteClassMutation, { data, loading, error }] = useDeleteClassMutation({
  *   variables: {
  *      id: // value for 'id'
+ *      timetable: // value for 'timetable'
  *   },
  * });
  */

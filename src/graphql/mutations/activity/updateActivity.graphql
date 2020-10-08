@@ -1,0 +1,25 @@
+mutation UpdateActivity(
+  $id: String!
+  $image: String
+  $title: String
+  $desc:  String
+  $date: String
+  $creator: String
+  $file: String
+) {
+  updateActivity(
+    where: {
+      id: $id
+    }
+    data: {
+      image: $image
+      title: $title
+      desc: $desc
+      date: $date
+      creator: $creator
+    }
+    file: $file
+  ) {
+    ...Activity
+  }
+}

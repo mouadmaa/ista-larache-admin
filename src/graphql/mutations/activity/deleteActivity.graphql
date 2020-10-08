@@ -1,0 +1,13 @@
+mutation DeleteActivity(
+  $id: String!
+  $image: String!
+) {
+  deleteActivity(
+    where: {
+      id: $id
+    }
+    image: $image
+  ) {
+    ...Activity
+  }
+}

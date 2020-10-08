@@ -1,21 +1,25 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import BraftEditor from 'braft-editor'
 
 import 'braft-editor/dist/index.css'
 
 interface RichTextEditorProps {
-  html: string
-  setHtml: (text: string) => void
+  htmlContent: string
+  setHtmlContent: (text: string) => void
 }
 
 const RichTextEditor: FC<RichTextEditorProps> = props => {
-  const { setHtml } = props
+  const { htmlContent, setHtmlContent } = props
 
   const [editorState, setEditorState] = useState(BraftEditor.createEditorState(''))
 
+  useEffect(() => {
+    setEditorState(BraftEditor.createEditorState(htmlContent))
+  }, [htmlContent])
+
   const handleChange = (editorState: any) => {
     setEditorState(editorState)
-    setHtml(editorState.toHTML())
+    setHtmlContent(editorState.toHTML())
   }
 
   return (

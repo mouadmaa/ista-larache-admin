@@ -6,18 +6,19 @@ import moment from 'moment'
 
 import AuthContext from '../../../context/authContext'
 import RichTextEditor from '../../UI/RichTextEditor/RichTextEditor'
-import { Activity, ActivityCreateInput } from '../../../generated/graphql'
+import { Activity, ActivityCreateInput, UpdateActivityMutationVariables } from '../../../generated/graphql'
 import { getImageBase64 } from '../../../utils/getImageBase64'
 
 interface ActivityFormProps {
   activity?: Activity
   loading: boolean
   onCreate: ({ variables }: { variables: ActivityCreateInput & { file: string } }) => void
+  onUpdate: ({ variables }: { variables: UpdateActivityMutationVariables }) => void
   onHideForm: () => void
 }
 
 const ActivityForm: FC<ActivityFormProps> = props => {
-  const { activity, onHideForm, onCreate, loading } = props
+  const { activity, loading, onHideForm, onCreate, onUpdate } = props
 
   const [file, setFile] = useState<any>()
   const [desc, setDesc] = useState('')
@@ -32,7 +33,9 @@ const ActivityForm: FC<ActivityFormProps> = props => {
   }, [form])
 
   useEffect(() => {
-    if (activity) form.setFieldsValue(activity)
+    if (activity) form.setFieldsValue({
+      ...activity, date: moment(+activity.date)
+    })
     else defaultFormValues()
   }, [form, activity, defaultFormValues])
 
@@ -49,7 +52,11 @@ const ActivityForm: FC<ActivityFormProps> = props => {
 
     let key = 'updateActivity'
     if (activity) {
-      if (file) variables.file = await getImageBase64(file)
+      if (file) {
+        variables.file = await getImageBase64(file)
+        variables.image = activity.image
+      }
+      onUpdate({ variables: { ...variables, id: activity.id } })
     } else {
       key = 'createActivity'
       if (!file) {
@@ -59,7 +66,6 @@ const ActivityForm: FC<ActivityFormProps> = props => {
       variables.file = await getImageBase64(file)
       onCreate({ variables: variables as ActivityCreateInput & { file: string } })
     }
-    console.log(variables)
     message.loading({ key, content: 'Loading...' })
   }
 
@@ -124,8 +130,8 @@ const ActivityForm: FC<ActivityFormProps> = props => {
           label="Description"
         >
           <RichTextEditor
-            html={desc}
-            setHtml={setDesc}
+            htmlContent={activity?.desc || ''}
+            setHtmlContent={setDesc}
           />
         </Form.Item>
       </Form>
