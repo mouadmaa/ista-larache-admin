@@ -24,6 +24,7 @@ const FormationList: FC<FormationListProps> = props => {
       dataSource={formations}
       renderItem={formation => (
         <List.Item
+          key={formation.id}
           actions={[
             <Button onClick={() => onShowModules(formation)}>
               View Modules

@@ -23,6 +23,7 @@ export type Query = {
   student?: Maybe<Student>;
   students: Array<Student>;
   notes: Array<Note>;
+  activities: Array<Activity>;
 };
 
 
@@ -144,6 +145,17 @@ export type StudentWhereUniqueInput = {
   id: Scalars['String'];
 };
 
+export type Activity = {
+  __typename?: 'Activity';
+  id: Scalars['String'];
+  image: Scalars['String'];
+  title: Scalars['String'];
+  desc: Scalars['String'];
+  date: Scalars['String'];
+  creator: Scalars['String'];
+  slug: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register?: Maybe<User>;
@@ -164,6 +176,7 @@ export type Mutation = {
   createNote: Note;
   updateNote: Note;
   deleteNote: Note;
+  createActivity: Activity;
 };
 
 
@@ -214,7 +227,6 @@ export type MutationDeleteModuleArgs = {
 
 export type MutationCreateClassArgs = {
   data: ClassCreateInput;
-  file?: Maybe<Scalars['String']>;
 };
 
 
@@ -261,6 +273,12 @@ export type MutationDeleteNoteArgs = {
   where: NoteWhereUniqueInput;
 };
 
+
+export type MutationCreateActivityArgs = {
+  data: ActivityCreateInput;
+  file: Scalars['String'];
+};
+
 export type FormationCreateInput = {
   name: Scalars['String'];
   descUrl: Scalars['String'];
@@ -296,7 +314,6 @@ export type ModuleUpdateInput = {
 export type ClassCreateInput = {
   year: Year;
   group: Group;
-  timetable?: Maybe<Scalars['String']>;
   formation: FormationConnectClassInput;
   teacher: UserConnectClassInput;
 };
@@ -374,6 +391,30 @@ export type NoteUpdateInput = {
   module?: Maybe<ModuleConnectNoteInput>;
 };
 
+export type ActivityCreateInput = {
+  title: Scalars['String'];
+  desc: Scalars['String'];
+  date: Scalars['String'];
+  creator: Scalars['String'];
+};
+
+export type ActivityUpdateInput = {
+  image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  desc?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+  creator?: Maybe<Scalars['String']>;
+};
+
+export type ActivityWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
+export type ActivityFragment = (
+  { __typename?: 'Activity' }
+  & Pick<Activity, 'id' | 'image' | 'title' | 'desc' | 'date' | 'creator' | 'slug'>
+);
+
 export type ClassFragment = (
   { __typename?: 'Class' }
   & Pick<Class, 'id' | 'year' | 'group' | 'timetable'>
@@ -404,13 +445,28 @@ export type UserFragment = (
   & Pick<User, 'id' | 'name' | 'email' | 'role'>
 );
 
+export type CreateActivityMutationVariables = Exact<{
+  title: Scalars['String'];
+  desc: Scalars['String'];
+  date: Scalars['String'];
+  creator: Scalars['String'];
+  file: Scalars['String'];
+}>;
+
+
+export type CreateActivityMutation = (
+  { __typename?: 'Mutation' }
+  & { createActivity: (
+    { __typename?: 'Activity' }
+    & ActivityFragment
+  ) }
+);
+
 export type CreateClassMutationVariables = Exact<{
   year: Year;
   group: Group;
-  timetable?: Maybe<Scalars['String']>;
   formation: FormationConnectClassInput;
   teacher: UserConnectClassInput;
-  file?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -676,6 +732,17 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type ActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ActivitiesQuery = (
+  { __typename?: 'Query' }
+  & { activities: Array<(
+    { __typename?: 'Activity' }
+    & ActivityFragment
+  )> }
+);
+
 export type ClassWithStudentsQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -797,6 +864,17 @@ export type UsersQuery = (
   )> }
 );
 
+export const ActivityFragmentDoc = gql`
+    fragment Activity on Activity {
+  id
+  image
+  title
+  desc
+  date
+  creator
+  slug
+}
+    `;
 export const ClassFragmentDoc = gql`
     fragment Class on Class {
   id
@@ -848,9 +926,45 @@ export const UserFragmentDoc = gql`
   role
 }
     `;
+export const CreateActivityDocument = gql`
+    mutation CreateActivity($title: String!, $desc: String!, $date: String!, $creator: String!, $file: String!) {
+  createActivity(data: {title: $title, desc: $desc, date: $date, creator: $creator}, file: $file) {
+    ...Activity
+  }
+}
+    ${ActivityFragmentDoc}`;
+export type CreateActivityMutationFn = Apollo.MutationFunction<CreateActivityMutation, CreateActivityMutationVariables>;
+
+/**
+ * __useCreateActivityMutation__
+ *
+ * To run a mutation, you first call `useCreateActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createActivityMutation, { data, loading, error }] = useCreateActivityMutation({
+ *   variables: {
+ *      title: // value for 'title'
+ *      desc: // value for 'desc'
+ *      date: // value for 'date'
+ *      creator: // value for 'creator'
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useCreateActivityMutation(baseOptions?: Apollo.MutationHookOptions<CreateActivityMutation, CreateActivityMutationVariables>) {
+        return Apollo.useMutation<CreateActivityMutation, CreateActivityMutationVariables>(CreateActivityDocument, baseOptions);
+      }
+export type CreateActivityMutationHookResult = ReturnType<typeof useCreateActivityMutation>;
+export type CreateActivityMutationResult = Apollo.MutationResult<CreateActivityMutation>;
+export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<CreateActivityMutation, CreateActivityMutationVariables>;
 export const CreateClassDocument = gql`
-    mutation CreateClass($year: Year!, $group: Group!, $timetable: String, $formation: FormationConnectClassInput!, $teacher: UserConnectClassInput!, $file: String) {
-  createClass(data: {year: $year, group: $group, timetable: $timetable, formation: $formation, teacher: $teacher}, file: $file) {
+    mutation CreateClass($year: Year!, $group: Group!, $formation: FormationConnectClassInput!, $teacher: UserConnectClassInput!) {
+  createClass(data: {year: $year, group: $group, formation: $formation, teacher: $teacher}) {
     ...Class
     formation {
       ...Formation
@@ -880,10 +994,8 @@ export type CreateClassMutationFn = Apollo.MutationFunction<CreateClassMutation,
  *   variables: {
  *      year: // value for 'year'
  *      group: // value for 'group'
- *      timetable: // value for 'timetable'
  *      formation: // value for 'formation'
  *      teacher: // value for 'teacher'
- *      file: // value for 'file'
  *   },
  * });
  */
@@ -1447,6 +1559,38 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const ActivitiesDocument = gql`
+    query Activities {
+  activities {
+    ...Activity
+  }
+}
+    ${ActivityFragmentDoc}`;
+
+/**
+ * __useActivitiesQuery__
+ *
+ * To run a query within a React component, call `useActivitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useActivitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useActivitiesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useActivitiesQuery(baseOptions?: Apollo.QueryHookOptions<ActivitiesQuery, ActivitiesQueryVariables>) {
+        return Apollo.useQuery<ActivitiesQuery, ActivitiesQueryVariables>(ActivitiesDocument, baseOptions);
+      }
+export function useActivitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ActivitiesQuery, ActivitiesQueryVariables>) {
+          return Apollo.useLazyQuery<ActivitiesQuery, ActivitiesQueryVariables>(ActivitiesDocument, baseOptions);
+        }
+export type ActivitiesQueryHookResult = ReturnType<typeof useActivitiesQuery>;
+export type ActivitiesLazyQueryHookResult = ReturnType<typeof useActivitiesLazyQuery>;
+export type ActivitiesQueryResult = Apollo.QueryResult<ActivitiesQuery, ActivitiesQueryVariables>;
 export const ClassWithStudentsDocument = gql`
     query ClassWithStudents($id: String!) {
   class(where: {id: $id}) {

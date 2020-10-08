@@ -5,21 +5,20 @@ import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons'
 import './Dashboard.css'
 import ProfileDropdown from '../../components/Dashboard/ProfileDropdown/ProfileDropdown'
 import Spinner from '../../components/UI/Spinner/Spinner'
-import Timetable from '../../container/Timetable/Timetable'
 
 const { Sider, Header, Content } = Layout
 
 const Formation = lazy(() => import('../../container/Formation/Formation'))
 const Class = lazy(() => import('../../container/Class/Class'))
 const Student = lazy(() => import('../../container/Student/Student'))
+const Timetable = lazy(() => import('../../container/Timetable/Timetable'))
+const Activity = lazy(() => import('../../container/Activity/Activity'))
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [selectedTap, setSelectedTap] = useState('student')
+  const [selectedTap, setSelectedTap] = useState('activity')
 
-  const onSelect = ({ key }: { key: React.Key }) => {
-    setSelectedTap(key as string)
-  }
+  const onSelect = ({ key }: { key: React.Key }) => setSelectedTap(key as string)
 
   return (
     <Layout className='dashboard-layout'>
@@ -41,6 +40,9 @@ const DashboardPage: FC = () => {
           <Menu.Item key="timetable" icon={<DesktopOutlined />}>
             Timetable
           </Menu.Item>
+          <Menu.Item key="activity" icon={<DesktopOutlined />}>
+            Activity
+          </Menu.Item>
         </Menu>
       </Sider>
       <Layout className="site-layout taps-layout">
@@ -48,14 +50,13 @@ const DashboardPage: FC = () => {
           <ProfileDropdown />
         </header>
         <Content className='taps-content'>
-          <Suspense
-            fallback={<Spinner />}
-          >
+          <Suspense fallback={<Spinner />}>
             {selectedTap === 'home' && <h3>Home</h3>}
             {selectedTap === 'formation' && <Formation />}
             {selectedTap === 'class' && <Class />}
             {selectedTap === 'student' && <Student />}
             {selectedTap === 'timetable' && <Timetable />}
+            {selectedTap === 'activity' && <Activity />}
           </Suspense>
         </Content>
       </Layout>

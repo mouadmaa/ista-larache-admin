@@ -1,0 +1,9 @@
+fragment Activity on Activity {
+  id
+  image
+  title
+  desc
+  date
+  creator
+  slug
+}

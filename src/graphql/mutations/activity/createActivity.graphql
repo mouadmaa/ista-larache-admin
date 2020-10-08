@@ -1,0 +1,19 @@
+mutation CreateActivity(
+  $title: String!
+  $desc:  String!
+  $date: String!
+  $creator: String!
+  $file: String!
+) {
+  createActivity(
+    data: {
+      title: $title
+      desc: $desc
+      date: $date
+      creator: $creator
+    }
+    file: $file
+  ) {
+    ...Activity
+  }
+}

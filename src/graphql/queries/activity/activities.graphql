@@ -1,0 +1,5 @@
+query Activities {
+  activities {
+    ...Activity
+  }
+}
