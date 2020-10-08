@@ -47,7 +47,7 @@ const Timetable: FC = () => {
     })
 
     if (errors) message.error('Delete image failed.')
-    if (data?.updateClass) setCurrentClass(data?.updateClass as Class)
+    if (data?.updateClass) setCurrentClass(data.updateClass as Class)
     setFile(undefined)
   }
 

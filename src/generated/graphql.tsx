@@ -241,7 +241,6 @@ export type MutationUpdateClassArgs = {
 
 export type MutationDeleteClassArgs = {
   where: ClassWhereUniqueInput;
-  timetable?: Maybe<Scalars['String']>;
 };
 
 
@@ -292,7 +291,6 @@ export type MutationUpdateActivityArgs = {
 
 export type MutationDeleteActivityArgs = {
   where: ActivityWhereUniqueInput;
-  image: Scalars['String'];
 };
 
 export type FormationCreateInput = {
@@ -480,7 +478,6 @@ export type CreateActivityMutation = (
 
 export type DeleteActivityMutationVariables = Exact<{
   id: Scalars['String'];
-  image: Scalars['String'];
 }>;
 
 
@@ -536,7 +533,6 @@ export type CreateClassMutation = (
 
 export type DeleteClassMutationVariables = Exact<{
   id: Scalars['String'];
-  timetable?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -1013,8 +1009,8 @@ export type CreateActivityMutationHookResult = ReturnType<typeof useCreateActivi
 export type CreateActivityMutationResult = Apollo.MutationResult<CreateActivityMutation>;
 export type CreateActivityMutationOptions = Apollo.BaseMutationOptions<CreateActivityMutation, CreateActivityMutationVariables>;
 export const DeleteActivityDocument = gql`
-    mutation DeleteActivity($id: String!, $image: String!) {
-  deleteActivity(where: {id: $id}, image: $image) {
+    mutation DeleteActivity($id: String!) {
+  deleteActivity(where: {id: $id}) {
     ...Activity
   }
 }
@@ -1035,7 +1031,6 @@ export type DeleteActivityMutationFn = Apollo.MutationFunction<DeleteActivityMut
  * const [deleteActivityMutation, { data, loading, error }] = useDeleteActivityMutation({
  *   variables: {
  *      id: // value for 'id'
- *      image: // value for 'image'
  *   },
  * });
  */
@@ -1127,8 +1122,8 @@ export type CreateClassMutationHookResult = ReturnType<typeof useCreateClassMuta
 export type CreateClassMutationResult = Apollo.MutationResult<CreateClassMutation>;
 export type CreateClassMutationOptions = Apollo.BaseMutationOptions<CreateClassMutation, CreateClassMutationVariables>;
 export const DeleteClassDocument = gql`
-    mutation DeleteClass($id: String!, $timetable: String) {
-  deleteClass(where: {id: $id}, timetable: $timetable) {
+    mutation DeleteClass($id: String!) {
+  deleteClass(where: {id: $id}) {
     ...Class
   }
 }
@@ -1149,7 +1144,6 @@ export type DeleteClassMutationFn = Apollo.MutationFunction<DeleteClassMutation,
  * const [deleteClassMutation, { data, loading, error }] = useDeleteClassMutation({
  *   variables: {
  *      id: // value for 'id'
- *      timetable: // value for 'timetable'
  *   },
  * });
  */

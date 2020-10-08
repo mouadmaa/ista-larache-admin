@@ -47,7 +47,7 @@ const Class: FC = () => {
       cancelText: 'Cancel',
       onOk: () => {
         setCurrentClass(undefined)
-        deleteClass({ variables: { ...deletedClass } })
+        deleteClass({ variables: { id: deletedClass.id } })
         message.loading({ key: 'deleteClass', content: 'Loading...' })
       }
     })

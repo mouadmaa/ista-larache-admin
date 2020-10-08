@@ -24,7 +24,7 @@ const Activity: FC = () => {
 
   const onDelete = (activity: ActivityType) => {
     setActivity(undefined)
-    deleteActivity({ variables: { ...activity } })
+    deleteActivity({ variables: { id: activity.id } })
     message.loading({ key: 'deleteActivity', content: 'Loading...' })
   }
 
