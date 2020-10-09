@@ -17,6 +17,7 @@ export type Query = {
   users: Array<User>;
   formation?: Maybe<Formation>;
   formations: Array<Formation>;
+  teacherFormations: Array<Formation>;
   modules: Array<Module>;
   class?: Maybe<Class>;
   classes: Array<Class>;
@@ -196,6 +197,7 @@ export type Mutation = {
   register?: Maybe<User>;
   login?: Maybe<User>;
   logout: Scalars['Boolean'];
+  deleteUser: User;
   createFormation: Formation;
   updateFormation: Formation;
   deleteFormation: Formation;
@@ -227,6 +229,11 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationDeleteUserArgs = {
+  where: UserWhereUniqueInput;
 };
 
 
@@ -328,6 +335,10 @@ export type MutationDeleteActivityArgs = {
   where: ActivityWhereUniqueInput;
 };
 
+export type UserWhereUniqueInput = {
+  id: Scalars['String'];
+};
+
 export type FormationCreateInput = {
   name: Scalars['String'];
   descUrl: Scalars['String'];
@@ -373,10 +384,6 @@ export type FormationConnectClassInput = {
 
 export type UserConnectClassInput = {
   connect: UserWhereUniqueInput;
-};
-
-export type UserWhereUniqueInput = {
-  id: Scalars['String'];
 };
 
 export type ClassUpdateInput = {
@@ -791,6 +798,19 @@ export type UpdateStudentMutation = (
   ) }
 );
 
+export type DeleteUserMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteUserMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteUser: (
+    { __typename?: 'User' }
+    & UserFragment
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -811,6 +831,21 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
+);
+
+export type RegisterMutationVariables = Exact<{
+  name: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type RegisterMutation = (
+  { __typename?: 'Mutation' }
+  & { register?: Maybe<(
+    { __typename?: 'User' }
+    & UserFragment
+  )> }
 );
 
 export type ActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1652,6 +1687,38 @@ export function useUpdateStudentMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateStudentMutationHookResult = ReturnType<typeof useUpdateStudentMutation>;
 export type UpdateStudentMutationResult = Apollo.MutationResult<UpdateStudentMutation>;
 export type UpdateStudentMutationOptions = Apollo.BaseMutationOptions<UpdateStudentMutation, UpdateStudentMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($id: String!) {
+  deleteUser(where: {id: $id}) {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, baseOptions);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
@@ -1714,6 +1781,40 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const RegisterDocument = gql`
+    mutation Register($name: String!, $email: String!, $password: String!) {
+  register(name: $name, email: $email, password: $password) {
+    ...User
+  }
+}
+    ${UserFragmentDoc}`;
+export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
+
+/**
+ * __useRegisterMutation__
+ *
+ * To run a mutation, you first call `useRegisterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRegisterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [registerMutation, { data, loading, error }] = useRegisterMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
+        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+      }
+export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
+export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
+export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const ActivitiesDocument = gql`
     query Activities {
   activities {
