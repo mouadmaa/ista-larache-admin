@@ -1,15 +1,17 @@
 import React, { FC, useEffect, useState } from 'react'
-import { AutoComplete, Input, Typography } from 'antd'
+import { AutoComplete, Button, Input, Typography } from 'antd'
+import { PlusCircleOutlined } from '@ant-design/icons'
 
 import { Student } from '../../../generated/graphql'
 
 interface ClassSearchProps {
   students: Student[]
   onSearch: (name: string) => void
+  onShowForm: () => void
 }
 
 const StudentSearch: FC<ClassSearchProps> = props => {
-  const { students, onSearch } = props
+  const { students, onSearch, onShowForm } = props
 
   const [options, setOptions] = useState<{ value: string }[]>([])
 
@@ -23,13 +25,17 @@ const StudentSearch: FC<ClassSearchProps> = props => {
 
   return (
     <div className='student-search'>
-      <Typography.Title level={4}>
+      <Typography.Title level={5}>
         Students
       </Typography.Title>
-      <span>
-        <Typography.Text>
-          Search by student name:
-        </Typography.Text>
+      <div>
+        <Button
+          type='primary'
+          icon={<PlusCircleOutlined />}
+          onClick={onShowForm}
+        >
+          Add Student
+        </Button>
         <AutoComplete
           style={{ width: 300 }}
           options={options}
@@ -40,7 +46,7 @@ const StudentSearch: FC<ClassSearchProps> = props => {
         >
           <Input.Search placeholder="Search by student name" />
         </AutoComplete>
-      </span>
+      </div>
     </div>
   )
 }

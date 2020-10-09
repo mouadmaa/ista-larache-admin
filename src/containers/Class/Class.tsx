@@ -66,13 +66,13 @@ const Class: FC = () => {
         visible={formVisible}
         onCreate={createClass}
         onUpdate={updateClass}
-        onShowForm={onShowForm}
         onHideForm={onHideForm}
-      />
+        />
       <ClassTable
         classes={classes}
         formations={formations}
         loading={classesLoading}
+        onShowForm={onShowForm}
         onShowDrawer={onShowDrawer}
         onEdit={onEdit}
         onDelete={onDelete}

@@ -3,13 +3,13 @@ import { Button, Popconfirm, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
-import { Class, Student } from '../../../generated/graphql'
+import { Student } from '../../../generated/graphql'
 import StudentSearch from '../StudentSearch/StudentSearch'
 
 interface StudentTableProps {
   students: Student[]
-  currentClass?: Class
   loading: boolean
+  onShowForm: () => void
   onShowDrawer: (student: Student) => void
   onShowNotes: (student: Student) => void
   onEdit: (student: Student) => void
@@ -19,7 +19,9 @@ interface StudentTableProps {
 let previousSearch = ''
 
 const StudentTable: FC<StudentTableProps> = props => {
-  const { students, onShowDrawer, loading, onEdit, onDelete, onShowNotes } = props
+  const {
+    students, onShowDrawer, loading, onShowForm, onDelete, onEdit, onShowNotes
+  } = props
 
   const [data, setData] = useState<Student[]>([])
 
@@ -50,13 +52,20 @@ const StudentTable: FC<StudentTableProps> = props => {
       width: '24%',
       render: (_, record) => (
         <Space>
-          <Button onClick={() => onShowDrawer(record)}>
+          <Button
+            type='link'
+            onClick={() => onShowDrawer(record)}
+          >
             View Student Details
           </Button>
-          <Button onClick={() => onShowNotes(record)}>
+          <Button
+            type='link'
+            onClick={() => onShowNotes(record)}
+          >
             View Notes
           </Button>
           <Button
+            type='link'
             icon={<EditOutlined />}
             onClick={() => onEdit(record)}
           >
@@ -66,7 +75,10 @@ const StudentTable: FC<StudentTableProps> = props => {
             title="Sure to delete?"
             onConfirm={() => onDelete(record)}
           >
-            <Button icon={<DeleteOutlined />}>
+            <Button
+              type='link'
+              icon={<DeleteOutlined />}
+            >
               Delete
             </Button>
           </Popconfirm>
@@ -82,6 +94,7 @@ const StudentTable: FC<StudentTableProps> = props => {
         <StudentSearch
           students={students}
           onSearch={onSelect}
+          onShowForm={onShowForm}
         />
       )}
       columns={columns}

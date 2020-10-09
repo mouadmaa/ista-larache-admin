@@ -1,9 +1,3 @@
-.formation-container button {
-  width: 100%;
-  margin-bottom: 10px;
-  border-radius: 4px;
-}
-
 .formation-list {
   border: 1px solid #e8e8e8;
   border-radius: 4px;
@@ -11,4 +5,10 @@
   padding: 8px 24px;
   height: 500px;
   margin-bottom: 25px;
+}
+
+.formation-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

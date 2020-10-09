@@ -23,7 +23,8 @@ export type Query = {
   student?: Maybe<Student>;
   students: Array<Student>;
   notes: Array<Note>;
-  activities: Array<Activity>;
+  activity?: Maybe<Activity>;
+  activities?: Maybe<Activities>;
 };
 
 
@@ -39,6 +40,18 @@ export type QueryClassArgs = {
 
 export type QueryStudentArgs = {
   where: StudentWhereUniqueInput;
+};
+
+
+export type QueryActivityArgs = {
+  where: ActivityWhereInput;
+};
+
+
+export type QueryActivitiesArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  take?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<ActivityOrderByInput>;
 };
 
 export type User = {
@@ -145,6 +158,12 @@ export type StudentWhereUniqueInput = {
   id: Scalars['String'];
 };
 
+export type ActivityWhereInput = {
+  id?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
+};
+
 export type Activity = {
   __typename?: 'Activity';
   id: Scalars['String'];
@@ -154,6 +173,22 @@ export type Activity = {
   date: Scalars['String'];
   creator: Scalars['String'];
   slug: Scalars['String'];
+};
+
+export type ActivityOrderByInput = {
+  title?: Maybe<Sort>;
+  date?: Maybe<Sort>;
+};
+
+export enum Sort {
+  Asc = 'asc',
+  Desc = 'desc'
+}
+
+export type Activities = {
+  __typename?: 'Activities';
+  activities: Array<Activity>;
+  count: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -783,9 +818,13 @@ export type ActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ActivitiesQuery = (
   { __typename?: 'Query' }
-  & { activities: Array<(
-    { __typename?: 'Activity' }
-    & ActivityFragment
+  & { activities?: Maybe<(
+    { __typename?: 'Activities' }
+    & Pick<Activities, 'count'>
+    & { activities: Array<(
+      { __typename?: 'Activity' }
+      & ActivityFragment
+    )> }
   )> }
 );
 
@@ -1678,7 +1717,10 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const ActivitiesDocument = gql`
     query Activities {
   activities {
-    ...Activity
+    count
+    activities {
+      ...Activity
+    }
   }
 }
     ${ActivityFragmentDoc}`;

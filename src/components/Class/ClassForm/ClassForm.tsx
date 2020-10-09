@@ -1,6 +1,5 @@
-import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Modal, Form, Select, Button, message } from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import React, { FC, useCallback, useEffect } from 'react'
+import { Modal, Form, Select, message } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 
 import { Class, ClassCreateInput, UpdateClassMutationVariables, Formation, User } from '../../../generated/graphql'
@@ -14,14 +13,13 @@ interface ClassFormProps {
   loading: boolean
   onCreate: ({ variables }: { variables: ClassCreateInput }) => void
   onUpdate: ({ variables }: { variables: UpdateClassMutationVariables }) => void
-  onShowForm: () => void
   onHideForm: () => void
 }
 
 const ClassForm: FC<ClassFormProps> = props => {
   const {
     currentClass, formations, teachers, visible, loading,
-    onCreate, onUpdate, onShowForm, onHideForm
+    onCreate, onUpdate, onHideForm
   } = props
 
   const [form] = useForm()
@@ -62,13 +60,6 @@ const ClassForm: FC<ClassFormProps> = props => {
   }
 
   return (
-    <Fragment>
-      <Button
-        icon={<PlusCircleOutlined />}
-        onClick={onShowForm}
-      >
-        Add Class
-      </Button>
       <Modal
         title={`${currentClass ? 'Edit the' : 'Create a new'} class`}
         okText={`${currentClass ? 'Save' : 'Create'}`}
@@ -135,8 +126,7 @@ const ClassForm: FC<ClassFormProps> = props => {
             </Select>
           </Form.Item>
         </Form>
-      </Modal>
-    </Fragment>
+    </Modal>
   )
 }
 

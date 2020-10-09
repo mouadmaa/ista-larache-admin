@@ -1,5 +1,8 @@
 query Activities {
   activities {
-    ...Activity
+    count
+    activities {
+      ...Activity
+    }
   }
 }

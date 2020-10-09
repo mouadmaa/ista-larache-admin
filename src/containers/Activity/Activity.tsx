@@ -1,11 +1,11 @@
 import React, { FC, Fragment, useState } from 'react'
+import { message } from 'antd'
 
 import './Activity.css'
 import ActivityList from '../../components/Activity/ActivityList/ActivityList'
-import { useActivity } from '../../hooks/useActivityHook'
 import ActivityForm from '../../components/Activity/ActivityForm/ActivityForm'
 import { Activity as ActivityType } from '../../generated/graphql'
-import { message } from 'antd'
+import { useActivity } from '../../hooks/useActivityHook'
 
 const Activity: FC = () => {
   const [activity, setActivity] = useState<ActivityType>()

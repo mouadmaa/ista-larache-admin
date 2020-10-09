@@ -2,6 +2,7 @@ import React, { FC, Fragment, useState } from 'react'
 import { message, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 
+import './Module.css'
 import ModuleForm from '../../components/Module/ModuleForm/ModuleForm'
 import ModuleTable from '../../components/Module/ModuleTable/ModuleTable'
 import { Formation, Module as ModuleType } from '../../generated/graphql'
@@ -11,10 +12,11 @@ interface ModuleProps {
   modules: ModuleType[]
   loading: boolean
   formation?: Formation
+  viewModule: boolean
 }
 
 const Module: FC<ModuleProps> = props => {
-  const { modules, loading, formation } = props
+  const { modules, loading, formation, viewModule } = props
 
   const [module, setModule] = useState<ModuleType>()
 
@@ -63,14 +65,15 @@ const Module: FC<ModuleProps> = props => {
           loading={loadingForm}
           onCreate={createModule}
           onUpdate={updateModule}
-          onShowForm={onShowForm}
           onHideForm={onHideForm}
-        />
+          />
       )}
       <ModuleTable
-        modules={formation ? modules : []}
+        modules={formation && viewModule ? modules : []}
         loading={loading || loadingTable}
         formation={formation}
+        viewModule={viewModule}
+        onShowForm={onShowForm}
         onEdit={onEdit}
         onDelete={onDelete}
       />

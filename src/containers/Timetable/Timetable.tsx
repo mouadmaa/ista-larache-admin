@@ -3,7 +3,7 @@ import { Button, Upload, Image, message, Row, Col } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 
 import './Timetable.css'
-import SelectClass from '../../components/Student/SelectClass/SelectClass'
+import SelectClass from '../../components/Class/SelectClass/SelectClass'
 import { Class } from '../../generated/graphql'
 import { getImageBase64 } from '../../utils/getImageBase64'
 import { useFormation } from '../../hooks/useFormationHook'
@@ -35,7 +35,7 @@ const Timetable: FC = () => {
 
     if (errors) message.error('Upload image failed.')
     if (data?.updateClass) setCurrentClass(data.updateClass as Class)
-    setFile(undefined)
+    onRemove()
   }
 
   const handleDelete = async () => {
@@ -48,7 +48,7 @@ const Timetable: FC = () => {
 
     if (errors) message.error('Delete image failed.')
     if (data?.updateClass) setCurrentClass(data.updateClass as Class)
-    setFile(undefined)
+    onRemove()
   }
 
   const beforeUpload = (file: any) => {
@@ -67,7 +67,7 @@ const Timetable: FC = () => {
         onSelect={onSelectClass}
       />
       <Row align='middle' justify='space-around'>
-        <Col span={10}>
+        <Col span={16}>
           <Upload
             defaultFileList={file ? [file] : []}
             beforeUpload={beforeUpload}
@@ -81,7 +81,7 @@ const Timetable: FC = () => {
             )}
           </Upload>
         </Col>
-        <Col span={6}>
+        <Col span={2}>
           {currentClass && (
             <Button
               type="primary"
@@ -93,7 +93,7 @@ const Timetable: FC = () => {
             </Button>
           )}
         </Col>
-        <Col span={6}>
+        <Col span={3}>
           {currentClass?.timetable && (
             <Button
               type="primary"

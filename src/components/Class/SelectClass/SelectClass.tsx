@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react'
-import { Cascader, Col, Row, Spin, Typography } from 'antd'
+import { Cascader, Spin } from 'antd'
 import { CascaderOptionType, CascaderValueType } from 'antd/lib/cascader'
 
 import { Formation } from '../../../generated/graphql'
@@ -33,27 +33,21 @@ const SelectClass: FC<SelectClassProps> = props => {
       .toLowerCase().indexOf(inputValue.toLowerCase()) > -1)
   }
 
+  let cascader = (
+    <Cascader
+      size='large'
+      style={{ width: '100%' }}
+      placeholder="Please select the class"
+      options={options}
+      onChange={onChange}
+      showSearch={{ filter }}
+    />
+  )
+
   return (
-    <Row align='middle' className='select-class'>
-      <Col flex={1}>
-        <Typography.Title level={5}>
-          Please select the class:
-        </Typography.Title>
-      </Col>
-      <Col flex={30}>
-        <Cascader
-          size='large'
-          style={{ width: '100%' }}
-          placeholder="Please select the class"
-          options={options}
-          onChange={onChange}
-          showSearch={{ filter }}
-        />
-      </Col>
-      <Col flex={1}>
-        {loading && <Spin style={{ marginLeft: 30 }} />}
-      </Col>
-    </Row>
+    <div className='select-class'>
+      {loading ? <Spin>{cascader}</Spin> : cascader}
+    </div>
   )
 }
 
@@ -62,6 +56,7 @@ export default SelectClass
 const getOptions = (formations: Formation[]): CascaderOptionType[] => {
   const options: CascaderOptionType[] = []
   formations.forEach(formation => {
+    if (!formation.classes.length) return
     const option: CascaderOptionType = {
       value: formation.id,
       label: formation.name,

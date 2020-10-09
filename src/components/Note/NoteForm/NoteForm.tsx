@@ -1,6 +1,5 @@
-import React, { FC, Fragment, useCallback, useEffect, useState } from 'react'
-import { Modal, Form, Button, InputNumber, Select, message } from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { Modal, Form, InputNumber, Select, message } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 
 import { Student, Note, Module, NoteCreateInput, UpdateNoteMutationVariables } from '../../../generated/graphql'
@@ -20,8 +19,8 @@ interface NoteFormProps {
 
 const NoteForm: FC<NoteFormProps> = props => {
   const {
-    note, loading, student, modules, notes, visible, onShowForm,
-    onHideForm, onCreate, onUpdate
+    note, loading, student, modules, notes, visible, onHideForm,
+    onCreate, onUpdate
   } = props
 
   const [nextModules, setNextModules] = useState<Module[]>([])
@@ -78,13 +77,6 @@ const NoteForm: FC<NoteFormProps> = props => {
   }
 
   return (
-    <Fragment>
-      <Button
-        icon={<PlusCircleOutlined />}
-        onClick={onShowForm}
-      >
-        Add Note
-      </Button>
       <Modal
         title={`${note ? 'Edit the' : 'Create a new'} note`}
         okText={`${note ? 'Save' : 'Create'}`}
@@ -144,8 +136,7 @@ const NoteForm: FC<NoteFormProps> = props => {
             <InputNumber min={0} max={20} style={{ width: '100%' }} />
           </Form.Item>
         </Form>
-      </Modal>
-    </Fragment>
+    </Modal>
   )
 }
 

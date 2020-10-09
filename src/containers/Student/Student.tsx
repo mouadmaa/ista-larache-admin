@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { message } from 'antd'
 
 import './Student.css'
-import SelectClass from '../../components/Student/SelectClass/SelectClass'
+import SelectClass from '../../components/Class/SelectClass/SelectClass'
 import StudentTable from '../../components/Student/StudentTable/StudentTable'
 import { useFormation } from '../../hooks/useFormationHook'
 import { useClass } from '../../hooks/useClassHook'
@@ -39,7 +39,6 @@ const Student = () => {
 
   const onSelectClass = (formationId?: string, classId?: string) => {
     if (classId) fetchClassWithStudents({ variables: { id: classId } })
-    else if (formationId && !classId) message.info('This formation does not have any classes.')
     if (formationId) setFormationId(formationId)
     setClassId(classId)
     setStudent(undefined)
@@ -50,6 +49,7 @@ const Student = () => {
   const onShowForm = () => {
     setFormVisible(true)
     setStudent(undefined)
+    setViewNote(false)
   }
 
   const onShowDrawer = (student: StudentType) => {
@@ -57,9 +57,10 @@ const Student = () => {
     setStudent(student)
   }
 
-  const onEdit = (student: StudentType) => {
+  const onEdit = (selectedStudent: StudentType) => {
     setFormVisible(true)
-    setStudent({ ...student })
+    setStudent({ ...selectedStudent })
+    if (student?.id !== selectedStudent.id) setViewNote(false)
   }
 
   const onDelete = (student: StudentType) => {
@@ -92,16 +93,15 @@ const Student = () => {
           currentClass={classWithStudents}
           onCreate={createStudent}
           onUpdate={updateStudent}
-          onShowForm={onShowForm}
           onHideForm={onHideForm}
           visible={formVisible}
           loading={loadingForm}
         />
       )}
       <StudentTable
-        currentClass={classWithStudents}
         students={students}
-        loading={classWithStudentsLoading || loading}
+        loading={loading || classWithStudentsLoading}
+        onShowForm={onShowForm}
         onShowDrawer={onShowDrawer}
         onEdit={onEdit}
         onDelete={onDelete}

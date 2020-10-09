@@ -1,6 +1,5 @@
-import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Input, Modal, Form, Button, InputNumber, message } from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import React, { FC, useCallback, useEffect } from 'react'
+import { Input, Modal, Form, InputNumber, message } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 
 import { Formation, Module, ModuleCreateInput, UpdateModuleMutationVariables } from '../../../generated/graphql'
@@ -13,14 +12,13 @@ interface ModuleFormProps {
   loading: boolean
   onCreate: ({ variables }: { variables: ModuleCreateInput }) => void
   onUpdate: ({ variables }: { variables: UpdateModuleMutationVariables }) => void
-  onShowForm: () => void
   onHideForm: () => void
 }
 
 const ModuleForm: FC<ModuleFormProps> = props => {
   const {
     module, modules, loading, formation, visible,
-    onShowForm, onHideForm, onCreate, onUpdate
+    onHideForm, onCreate, onUpdate
   } = props
 
   const [form] = useForm()
@@ -53,13 +51,6 @@ const ModuleForm: FC<ModuleFormProps> = props => {
   }
 
   return (
-    <Fragment>
-      <Button
-        icon={<PlusCircleOutlined />}
-        onClick={onShowForm}
-      >
-        Add Module
-      </Button>
       <Modal
         title={`${module ? 'Edit the' : 'Create a new'} module`}
         okText={`${module ? 'Save' : 'Create'}`}
@@ -104,8 +95,7 @@ const ModuleForm: FC<ModuleFormProps> = props => {
             <Input />
           </Form.Item>
         </Form>
-      </Modal>
-    </Fragment>
+    </Modal>
   )
 }
 

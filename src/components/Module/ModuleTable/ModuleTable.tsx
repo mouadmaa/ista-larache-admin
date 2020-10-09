@@ -1,7 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC } from 'react'
-import { Divider, Popconfirm, Space, Table } from 'antd'
+import { Button, Divider, Popconfirm, Space, Table, Typography } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
+import { PlusCircleOutlined } from '@ant-design/icons'
 
 import { Formation, Module } from '../../../generated/graphql'
 
@@ -9,12 +10,16 @@ interface ModuleTableProps {
   modules: Module[]
   loading: boolean
   formation?: Formation
+  viewModule: boolean
+  onShowForm: () => void
   onDelete: (module: Module) => void
   onEdit: (module: Module) => void
 }
 
 const ModuleTable: FC<ModuleTableProps> = props => {
-  const { modules, loading, formation, onDelete, onEdit } = props
+  const {
+    modules, loading, formation, onShowForm, onDelete, onEdit, viewModule
+  } = props
 
   const columns: ColumnsType<Module> = [
     {
@@ -49,7 +54,22 @@ const ModuleTable: FC<ModuleTableProps> = props => {
 
   return (
     <Table<Module>
-      title={() => getTitle(modules, loading, formation)}
+      title={() => (
+        <div className='table-module-header'>
+          <Typography.Text>
+            {getTitle(modules, loading, formation)}
+          </Typography.Text>
+          {formation && viewModule && (
+            <Button
+              type='link'
+              icon={<PlusCircleOutlined />}
+              onClick={onShowForm}
+            >
+              Add Module
+            </Button>
+          )}
+        </div>
+      )}
       columns={columns}
       dataSource={modules}
       loading={loading}

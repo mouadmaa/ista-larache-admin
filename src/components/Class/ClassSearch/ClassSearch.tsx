@@ -1,15 +1,17 @@
 import React, { FC, useState } from 'react'
-import { Select, Typography } from 'antd'
+import { Button, Select, Typography } from 'antd'
+import { PlusCircleOutlined } from '@ant-design/icons'
 
 import { Formation } from '../../../generated/graphql'
 
 interface ClassSearchProps {
   formations: Formation[]
   onSearch: (name: string) => void
+  onShowForm: () => void
 }
 
 const ClassSearch: FC<ClassSearchProps> = props => {
-  const { formations, onSearch } = props
+  const { formations, onSearch, onShowForm } = props
 
   const [value, setValue] = useState<string>()
 
@@ -20,20 +22,24 @@ const ClassSearch: FC<ClassSearchProps> = props => {
 
   return (
     <div className='class-search'>
-      <Typography.Title level={4}>
+      <Typography.Title level={5}>
         Classes
       </Typography.Title>
-      <span>
-        <Typography.Text>
-          Filter with formation name:
-        </Typography.Text>
+      <div>
+        <Button
+          type='primary'
+          icon={<PlusCircleOutlined />}
+          onClick={onShowForm}
+        >
+          Add Class
+        </Button>
         <Select
           style={{ width: 300 }}
-          showSearch
           value={value}
           onChange={handleChange}
           placeholder='Filter by with formation name'
           showArrow={false}
+          showSearch
           allowClear
           filterOption={(input, option) =>
             option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -45,7 +51,7 @@ const ClassSearch: FC<ClassSearchProps> = props => {
             </Select.Option>
           ))}
         </Select>
-      </span>
+      </div>
     </div>
   )
 }

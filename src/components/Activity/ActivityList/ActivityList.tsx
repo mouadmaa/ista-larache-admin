@@ -19,7 +19,7 @@ const ActivityList: FC<ActivityListProps> = props => {
     <List
       header={(
         <div className='activity-list-header'>
-          <Typography.Title level={4}>
+          <Typography.Title level={5}>
             Activities
           </Typography.Title>
           <Button
@@ -33,10 +33,7 @@ const ActivityList: FC<ActivityListProps> = props => {
       )}
       dataSource={activities}
       loading={loading}
-      pagination={{
-        onChange: console.log,
-        pageSize: 5,
-      }}
+      pagination={{ pageSize: 6 }}
       itemLayout='vertical'
       size='large'
       renderItem={activity => (
@@ -81,7 +78,7 @@ const ActivityList: FC<ActivityListProps> = props => {
             />
             <div
               dangerouslySetInnerHTML={{
-                __html: `${activity.desc.substring(0, 200)}
+                __html: `${activity.desc.substr(0, 200)}
                 ${activity.desc.length >= 200 ? '...' : ''}`
               }}
             />

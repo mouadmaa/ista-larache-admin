@@ -10,19 +10,18 @@ interface ClassTableProps {
   classes: Class[]
   formations: Formation[]
   loading: boolean
+  onShowForm: () => void
   onShowDrawer: (viewClass: Class) => void
   onEdit: (editedClass: Class) => void
   onDelete: (deletedClass: Class) => void
 }
 
-interface DataSourceClasses extends Class {
-  formationName: string
-}
+interface DataSourceClasses extends Class { formationName: string }
 
 let previousSearch = ''
 
 const ClassTable: FC<ClassTableProps> = props => {
-  const { classes, loading, formations, onShowDrawer, onDelete, onEdit } = props
+  const { classes, loading, formations, onShowForm, onShowDrawer, onDelete, onEdit } = props
 
   const [data, setData] = useState<DataSourceClasses[]>([])
 
@@ -55,10 +54,14 @@ const ClassTable: FC<ClassTableProps> = props => {
       width: '15%',
       render: (_, record) => (
         <Space size="small">
-          <Button onClick={() => onShowDrawer(record)}>
+          <Button
+            type='link'
+            onClick={() => onShowDrawer(record)}
+          >
             View Class Details
           </Button>
           <Button
+            type='link'
             icon={<EditOutlined />}
             onClick={() => onEdit(record)}
           >
@@ -68,7 +71,10 @@ const ClassTable: FC<ClassTableProps> = props => {
             title="Sure to delete?"
             onConfirm={() => onDelete(record)}
           >
-            <Button icon={<DeleteOutlined />}>
+            <Button
+              type='link'
+              icon={<DeleteOutlined />}
+            >
               Delete
             </Button>
           </Popconfirm>
@@ -84,6 +90,7 @@ const ClassTable: FC<ClassTableProps> = props => {
         <ClassSearch
           formations={formations}
           onSearch={onSearch}
+          onShowForm={onShowForm}
         />
       )}
       columns={columns}

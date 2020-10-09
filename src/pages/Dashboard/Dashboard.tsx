@@ -8,15 +8,15 @@ import Spinner from '../../components/UI/Spinner/Spinner'
 
 const { Sider, Header, Content } = Layout
 
-const Formation = lazy(() => import('../../container/Formation/Formation'))
-const Class = lazy(() => import('../../container/Class/Class'))
-const Student = lazy(() => import('../../container/Student/Student'))
-const Timetable = lazy(() => import('../../container/Timetable/Timetable'))
-const Activity = lazy(() => import('../../container/Activity/Activity'))
+const Formation = lazy(() => import('../../containers/Formation/Formation'))
+const Class = lazy(() => import('../../containers/Class/Class'))
+const Student = lazy(() => import('../../containers/Student/Student'))
+const Timetable = lazy(() => import('../../containers/Timetable/Timetable'))
+const Activity = lazy(() => import('../../containers/Activity/Activity'))
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [selectedTap, setSelectedTap] = useState('activity')
+  const [selectedTap, setSelectedTap] = useState('formation')
 
   const onSelect = ({ key }: { key: React.Key }) => setSelectedTap(key as string)
 

@@ -5,12 +5,13 @@ import { ExclamationCircleOutlined } from '@ant-design/icons'
 import './Formation.css'
 import FormationList from '../../components/Formation/FormationList/FormationList'
 import FormationForm from '../../components/Formation/FormationForm/FormationForm'
+import Module from '../Module/Module'
 import { useFormation } from '../../hooks/useFormationHook'
 import { Formation as FormationType } from '../../generated/graphql'
-import Module from '../Module/Module'
 
 const Formation: FC = () => {
   const [formation, setFormation] = useState<FormationType>()
+  const [viewModule, setViewModule] = useState(false)
 
   const {
     formations, formationsLoading, formVisible, setFormVisible,
@@ -23,9 +24,10 @@ const Formation: FC = () => {
     setFormation(undefined)
   }
 
-  const onEdit = (formation: FormationType) => {
+  const onEdit = (selectedFormation: FormationType) => {
     setFormVisible(true)
-    setFormation({ ...formation })
+    setFormation({ ...selectedFormation })
+    if (formation?.id !== selectedFormation.id) setViewModule(false)
   }
 
   const onDelete = (formation: FormationType) => {
@@ -47,6 +49,7 @@ const Formation: FC = () => {
   const onShowModules = (formation: FormationType) => {
     setFormation(formation)
     fetchFormationWithModules({ variables: { id: formation.id } })
+    setViewModule(true)
   }
 
   const onHideForm = () => setFormVisible(false)
@@ -59,18 +62,19 @@ const Formation: FC = () => {
         loading={formLoading}
         onCreate={createFormation}
         onUpdate={updateFormation}
-        onShowForm={onShowForm}
         onHideForm={onHideForm}
       />
       <FormationList
         formations={formations}
         loading={formationsLoading}
+        onShowForm={onShowForm}
         onEdit={onEdit}
         onDelete={onDelete}
         onShowModules={onShowModules}
       />
       <Module
         modules={modules}
+        viewModule={viewModule}
         loading={loadingModules}
         formation={formation}
       />

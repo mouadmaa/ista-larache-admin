@@ -22,6 +22,14 @@
   border-radius: 4px;
 }
 
+.student-container .student-note-final {
+  margin: 25px 0 -5px;
+}
+
+.student-container .student-note-final button {
+  transform: translateY(-12px);
+}
+
 .student-search {
   display: flex;
   align-items: center;
@@ -32,6 +40,6 @@
   width: 300px;
 }
 
-.student-search > span > span {
+.student-search > div > button {
   margin-right: 10px;
 }

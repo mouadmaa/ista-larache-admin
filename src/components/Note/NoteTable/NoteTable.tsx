@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useEffect, useState } from 'react'
-import { Divider, Popconfirm, Space, Table } from 'antd'
+import { Button, Divider, Popconfirm, Space, Table, Typography } from 'antd'
+import { PlusCircleOutlined } from '@ant-design/icons'
 import { ColumnsType } from 'antd/lib/table'
 
 import { Module, Note, Student } from '../../../generated/graphql'
@@ -10,6 +11,8 @@ interface ModuleTableProps {
   loading: boolean
   student?: Student
   modules: Module[]
+  viewNote: boolean
+  onShowForm: () => void
   onDelete: (note: Note) => void
   onEdit: (note: Note) => void
 }
@@ -19,19 +22,19 @@ interface DataSourceNotes extends Note {
 }
 
 const ModuleTable: FC<ModuleTableProps> = props => {
-  const { notes, student, modules, loading, onDelete, onEdit } = props
+  const { notes, student, modules, loading, viewNote, onShowForm, onDelete, onEdit } = props
 
   const [data, setData] = useState<DataSourceNotes[]>([])
 
   useEffect(() => {
-    if (!modules.length || !notes.length) {
+    if (!modules.length || !notes.length || !viewNote) {
       setData([])
       return
     }
     setData(notes.map(
       note => ({ ...note, moduleName: note.module.name })
     ))
-  }, [notes, modules])
+  }, [notes, modules, viewNote])
 
   const columns: ColumnsType<Note> = [
     {
@@ -77,7 +80,22 @@ const ModuleTable: FC<ModuleTableProps> = props => {
 
   return (
     <Table<Note>
-      title={() => getTitle(notes, loading, student)}
+      title={() => (
+        <div className='table-note-header'>
+          <Typography.Text>
+            {getTitle(notes, loading, student)}
+          </Typography.Text>
+          {student && viewNote && (
+            <Button
+              type='link'
+              icon={<PlusCircleOutlined />}
+              onClick={onShowForm}
+            >
+              Add Note
+            </Button>
+          )}
+        </div>
+      )}
       columns={columns}
       dataSource={data}
       loading={loading}

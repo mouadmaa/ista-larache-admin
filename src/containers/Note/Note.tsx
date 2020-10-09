@@ -2,6 +2,7 @@ import { message } from 'antd'
 import React, { FC, Fragment, useState } from 'react'
 import NoteForm from '../../components/Note/NoteForm/NoteForm'
 
+import './Note.css'
 import NoteTable from '../../components/Note/NoteTable/NoteTable'
 import { Student, Note as NoteType, Module } from '../../generated/graphql'
 import { useNote } from '../../hooks/useNote'
@@ -60,10 +61,12 @@ const Note: FC<NoteProps> = props => {
         />
       )}
       <NoteTable
-        notes={viewNote ? notes : []}
+        notes={notes}
+        viewNote={viewNote}
         loading={loadingNotes || loadingModules || loadingTable}
         student={student}
         modules={modules}
+        onShowForm={onShowForm}
         onEdit={onEdit}
         onDelete={onDelete}
       />

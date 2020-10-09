@@ -1,6 +1,5 @@
-import React, { FC, Fragment, useCallback, useEffect } from 'react'
-import { Input, Modal, Form, Select, Button, message } from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import React, { FC, useCallback, useEffect } from 'react'
+import { Input, Modal, Form, Select, message } from 'antd'
 import { useForm } from 'antd/lib/form/Form'
 
 import { FormationCreateInput, UpdateFormationMutationVariables, Formation } from '../../../generated/graphql'
@@ -12,12 +11,11 @@ interface FormationFormProps {
   loading: boolean
   onCreate: ({ variables }: { variables: FormationCreateInput }) => void
   onUpdate: ({ variables }: { variables: UpdateFormationMutationVariables }) => void
-  onShowForm: () => void
   onHideForm: () => void
 }
 
 const FormationForm: FC<FormationFormProps> = props => {
-  const { formation, visible, loading, onCreate, onUpdate, onShowForm, onHideForm } = props
+  const { formation, visible, loading, onCreate, onUpdate, onHideForm } = props
 
   const [form] = useForm()
 
@@ -49,13 +47,6 @@ const FormationForm: FC<FormationFormProps> = props => {
   }
 
   return (
-    <Fragment>
-      <Button
-        icon={<PlusCircleOutlined />}
-        onClick={onShowForm}
-      >
-        Add Formation
-      </Button>
       <Modal
         title={`${formation ? `Edit ${formation.name}` : 'Create a new'} Formation`}
         okText={`${formation ? 'Save' : 'Create'}`}
@@ -113,8 +104,7 @@ const FormationForm: FC<FormationFormProps> = props => {
             </Select>
           </Form.Item>
         </Form>
-      </Modal>
-    </Fragment>
+    </Modal>
   )
 }
 
