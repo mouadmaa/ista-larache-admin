@@ -941,6 +941,21 @@ export type FormationsWithClassesQuery = (
   )> }
 );
 
+export type TeacherFormationsWithCLassesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TeacherFormationsWithCLassesQuery = (
+  { __typename?: 'Query' }
+  & { teacherFormations: Array<(
+    { __typename?: 'Formation' }
+    & { classes: Array<(
+      { __typename?: 'Class' }
+      & ClassFragment
+    )> }
+    & FormationFragment
+  )> }
+);
+
 export type StudentWithNotesQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -2032,6 +2047,42 @@ export function useFormationsWithClassesLazyQuery(baseOptions?: Apollo.LazyQuery
 export type FormationsWithClassesQueryHookResult = ReturnType<typeof useFormationsWithClassesQuery>;
 export type FormationsWithClassesLazyQueryHookResult = ReturnType<typeof useFormationsWithClassesLazyQuery>;
 export type FormationsWithClassesQueryResult = Apollo.QueryResult<FormationsWithClassesQuery, FormationsWithClassesQueryVariables>;
+export const TeacherFormationsWithCLassesDocument = gql`
+    query TeacherFormationsWithCLasses {
+  teacherFormations {
+    ...Formation
+    classes {
+      ...Class
+    }
+  }
+}
+    ${FormationFragmentDoc}
+${ClassFragmentDoc}`;
+
+/**
+ * __useTeacherFormationsWithCLassesQuery__
+ *
+ * To run a query within a React component, call `useTeacherFormationsWithCLassesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTeacherFormationsWithCLassesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTeacherFormationsWithCLassesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTeacherFormationsWithCLassesQuery(baseOptions?: Apollo.QueryHookOptions<TeacherFormationsWithCLassesQuery, TeacherFormationsWithCLassesQueryVariables>) {
+        return Apollo.useQuery<TeacherFormationsWithCLassesQuery, TeacherFormationsWithCLassesQueryVariables>(TeacherFormationsWithCLassesDocument, baseOptions);
+      }
+export function useTeacherFormationsWithCLassesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TeacherFormationsWithCLassesQuery, TeacherFormationsWithCLassesQueryVariables>) {
+          return Apollo.useLazyQuery<TeacherFormationsWithCLassesQuery, TeacherFormationsWithCLassesQueryVariables>(TeacherFormationsWithCLassesDocument, baseOptions);
+        }
+export type TeacherFormationsWithCLassesQueryHookResult = ReturnType<typeof useTeacherFormationsWithCLassesQuery>;
+export type TeacherFormationsWithCLassesLazyQueryHookResult = ReturnType<typeof useTeacherFormationsWithCLassesLazyQuery>;
+export type TeacherFormationsWithCLassesQueryResult = Apollo.QueryResult<TeacherFormationsWithCLassesQuery, TeacherFormationsWithCLassesQueryVariables>;
 export const StudentWithNotesDocument = gql`
     query StudentWithNotes($id: String!) {
   student(where: {id: $id}) {

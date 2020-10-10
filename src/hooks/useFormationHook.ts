@@ -1,21 +1,30 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { message } from 'antd'
 
 import {
   Formation, useCreateFormationMutation, useFormationsQuery, useDeleteFormationMutation,
-  useUpdateFormationMutation, useFormationWithModulesLazyQuery, Module, useFormationsWithClassesLazyQuery
+  useUpdateFormationMutation, useFormationWithModulesLazyQuery, Module, useFormationsWithClassesLazyQuery,
+  useTeacherFormationsWithCLassesLazyQuery
 } from '../generated/graphql'
+import AuthContext from '../context/authContext'
 
 export const useFormation = () => {
   const [formVisible, setFormVisible] = useState(false)
 
+  const { user } = useContext(AuthContext)
+
   const { data: formationsData, loading: formationsLoading } = useFormationsQuery()
+
   const [
     fetchFormationWithModules, { data: formationWithModulesData, loading: formationWithModulesLoading }
   ] = useFormationWithModulesLazyQuery()
+
   const [
     fetchFormationsWithClasses, { data: formationsWithClassesData, loading: formationsWithClassesLoading }
   ] = useFormationsWithClassesLazyQuery()
+  const [
+    fetchTeacherFormationsWithCLasses, { data: teacherFormationsWithClassesData, loading: teacherFormationsWithCLassesLoading }
+  ] = useTeacherFormationsWithCLassesLazyQuery()
 
   const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
     onCompleted: () => {
@@ -56,13 +65,14 @@ export const useFormation = () => {
     createFormation,
     updateFormation,
     deleteFormation,
+    formVisible,
+    setFormVisible,
     fetchFormationWithModules,
     modules: formationWithModulesData?.formation?.modules as Module[] || [],
     loadingModules: formationWithModulesLoading,
-    fetchFormationsWithClasses,
-    formationsWithClasses: formationsWithClassesData?.formations as Formation[] || [],
-    formationsWithClassesLoading,
-    formVisible,
-    setFormVisible,
+    fetchFormationsWithClasses: user?.role === 'ADMIN' ? fetchFormationsWithClasses : fetchTeacherFormationsWithCLasses,
+    formationsWithClassesLoading: formationsWithClassesLoading || teacherFormationsWithCLassesLoading,
+    formationsWithClasses: user?.role === 'ADMIN' ? formationsWithClassesData?.formations as Formation[] || []
+      : teacherFormationsWithClassesData?.teacherFormations as Formation[] || [],
   }
 }

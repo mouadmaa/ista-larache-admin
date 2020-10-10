@@ -1,0 +1,8 @@
+query TeacherFormationsWithCLasses {
+  teacherFormations {
+    ...Formation
+    classes {
+      ...Class
+    }
+  }
+}

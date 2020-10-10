@@ -1,10 +1,11 @@
-import React, { FC, lazy, Suspense, useState } from 'react'
+import React, { FC, Fragment, lazy, Suspense, useContext, useState } from 'react'
 import { Layout, Menu } from 'antd'
 import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons'
 
 import './Dashboard.css'
 import ProfileDropdown from '../../components/Dashboard/ProfileDropdown/ProfileDropdown'
 import Spinner from '../../components/UI/Spinner/Spinner'
+import AuthContext from '../../context/authContext'
 
 const { Sider, Header, Content } = Layout
 
@@ -17,7 +18,9 @@ const Teacher = lazy(() => import('../../containers/Teacher/Teacher'))
 
 const DashboardPage: FC = () => {
   const [collapsed, setCollapsed] = useState(false)
-  const [selectedTap, setSelectedTap] = useState('teacher')
+  const [selectedTap, setSelectedTap] = useState('home')
+
+  const { user } = useContext(AuthContext)
 
   const onSelect = ({ key }: { key: React.Key }) => setSelectedTap(key as string)
 
@@ -29,24 +32,32 @@ const DashboardPage: FC = () => {
           <Menu.Item key="home" icon={<PieChartOutlined />}>
             Home
           </Menu.Item>
-          <Menu.Item key="formation" icon={<DesktopOutlined />}>
-            Formation
-          </Menu.Item>
-          <Menu.Item key="class" icon={<DesktopOutlined />}>
-            Class
-          </Menu.Item>
-          <Menu.Item key="student" icon={<DesktopOutlined />}>
-            Student
-          </Menu.Item>
-          <Menu.Item key="timetable" icon={<DesktopOutlined />}>
-            Timetable
-          </Menu.Item>
-          <Menu.Item key="activity" icon={<DesktopOutlined />}>
-            Activity
-          </Menu.Item>
-          <Menu.Item key="teacher" icon={<DesktopOutlined />}>
-            Teacher
-          </Menu.Item>
+          {user?.role === 'ADMIN' && (
+            <Fragment>
+              <Menu.Item key="formation" icon={<DesktopOutlined />}>
+                Formation
+              </Menu.Item>
+              <Menu.Item key="class" icon={<DesktopOutlined />}>
+                Class
+              </Menu.Item>
+            </Fragment>
+          )}
+          <Fragment>
+            <Menu.Item key="student" icon={<DesktopOutlined />}>
+              Student
+            </Menu.Item>
+            <Menu.Item key="timetable" icon={<DesktopOutlined />}>
+              Timetable
+            </Menu.Item>
+            <Menu.Item key="activity" icon={<DesktopOutlined />}>
+              Activity
+            </Menu.Item>
+          </Fragment>
+          {user?.role === 'ADMIN' && (
+            <Menu.Item key="teacher" icon={<DesktopOutlined />}>
+              Teacher
+            </Menu.Item>
+          )}
         </Menu>
       </Sider>
       <Layout className="site-layout taps-layout">
