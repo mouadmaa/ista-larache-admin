@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 
-import { Role, useMeLazyQuery, User } from '../generated/graphql'
+import { Role, useMeQuery, User } from '../generated/graphql'
 
 export interface AuthHook {
   user?: User,
@@ -19,9 +19,7 @@ export const useAuth = (): AuthHook => {
   const [user, setUser] = useState<User>()
   const [loading, setLoading] = useState(true)
 
-  const [fetchCurrentUser, { data: currentUser }] = useMeLazyQuery(
-    { fetchPolicy: 'cache-and-network' }
-  )
+  const { data: currentUser } = useMeQuery()
 
   const login = useCallback((user: User) => {
     setUser(user)
@@ -41,14 +39,17 @@ export const useAuth = (): AuthHook => {
       const userData = getUserData()
       if (!userData) return
 
-      fetchCurrentUser()
-      if (currentUser?.me) {
-        setUser(currentUser.me)
+      if (currentUser) {
+        if (currentUser.me) {
+           setUser(currentUser.me)
+        } else {
+          removeUserData()
+        }
       } else {
         setUser({ ...userData, email: '', })
       }
     })()
-  }, [currentUser, fetchCurrentUser])
+  }, [currentUser])
 
   return { user, login, loading, logout, }
 }

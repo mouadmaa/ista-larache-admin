@@ -8,16 +8,12 @@ import Spinner from './components/UI/Spinner/Spinner'
 const App: FC = () => {
   const { user, loading } = useContext(AuthContext)
 
-  if (loading) {
-    return (
-      <Spinner isPage />
-    )
-  }
-
-  return user ? (
+  return loading ? (
+    <Spinner isPage />
+  ) : user ? (
     <Dashboard />
   ) : (
-      <Login />
+    <Login />
   )
 }
 

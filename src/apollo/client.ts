@@ -16,7 +16,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
       console.log(
         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
       )
-      Message.error(message, process.env.NODE_ENV === 'development' ? 10 : 5)
+      if (process.env.NODE_ENV === 'development') Message.error(message, 10)
     })
   if (networkError) console.log(`[Network error]: ${networkError}`)
 })

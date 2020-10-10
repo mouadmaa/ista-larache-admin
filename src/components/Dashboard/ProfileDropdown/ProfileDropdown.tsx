@@ -12,9 +12,9 @@ const ProfileDropdown: FC = () => {
 
   const onMenuClick = async ({ key }: { key: React.Key }) => {
     if (key === 'logout') {
+      logout()
       await logoutMutation()
       await client.resetStore()
-      logout()
     }
   }
 

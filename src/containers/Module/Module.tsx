@@ -41,8 +41,9 @@ const Module: FC<ModuleProps> = props => {
       icon: <ExclamationCircleOutlined />,
       content: `All the Notes related to this Module "${module.name}"
         they will also be permanently deleted`,
-      okText: 'Confirm',
-      cancelText: 'Cancel',
+      okText: 'Yser',
+      okType: 'danger',
+      cancelText: 'No',
       onOk: () => {
         setModule(undefined)
         deleteModule({ variables: { id: module.id } })

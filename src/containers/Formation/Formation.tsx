@@ -36,8 +36,9 @@ const Formation: FC = () => {
       icon: <ExclamationCircleOutlined />,
       content: `All the Modules, Classes and Students related to this formation
         "${formation.name}" they will also be permanently deleted`,
-      okText: 'Confirm',
-      cancelText: 'Cancel',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk: () => {
         setFormation(undefined)
         deleteFormation({ variables: { id: formation.id } })

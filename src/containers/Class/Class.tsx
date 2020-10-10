@@ -43,8 +43,9 @@ const Class: FC = () => {
       icon: <ExclamationCircleOutlined />,
       content: `All the Students related to this class "${deletedClass.formation.name}"
         they will also be permanently deleted`,
-      okText: 'Confirm',
-      cancelText: 'Cancel',
+      okText: 'Yes',
+      okType: 'danger',
+      cancelText: 'No',
       onOk: () => {
         setCurrentClass(undefined)
         deleteClass({ variables: { id: deletedClass.id } })

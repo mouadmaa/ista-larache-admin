@@ -23,7 +23,7 @@ export const useFormation = () => {
     fetchFormationsWithClasses, { data: formationsWithClassesData, loading: formationsWithClassesLoading }
   ] = useFormationsWithClassesLazyQuery()
   const [
-    fetchTeacherFormationsWithCLasses, { data: teacherFormationsWithClassesData, loading: teacherFormationsWithCLassesLoading }
+    fetchTeacherFormationsWithCLasses, { data: teacherFormationsWithClassesData, loading: teacherFormationsWithClassesLoading }
   ] = useTeacherFormationsWithCLassesLazyQuery()
 
   const [createFormation, { loading: loadingCreate }] = useCreateFormationMutation({
@@ -71,7 +71,7 @@ export const useFormation = () => {
     modules: formationWithModulesData?.formation?.modules as Module[] || [],
     loadingModules: formationWithModulesLoading,
     fetchFormationsWithClasses: user?.role === 'ADMIN' ? fetchFormationsWithClasses : fetchTeacherFormationsWithCLasses,
-    formationsWithClassesLoading: formationsWithClassesLoading || teacherFormationsWithCLassesLoading,
+    formationsWithClassesLoading: formationsWithClassesLoading || teacherFormationsWithClassesLoading,
     formationsWithClasses: user?.role === 'ADMIN' ? formationsWithClassesData?.formations as Formation[] || []
       : teacherFormationsWithClassesData?.teacherFormations as Formation[] || [],
   }
