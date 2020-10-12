@@ -6,7 +6,7 @@ import { message as Message } from 'antd'
 import { memoryCacheConfig } from './memoryCacheConfig'
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000',
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
   credentials: 'include',
 })
 
