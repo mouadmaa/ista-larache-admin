@@ -6,7 +6,7 @@ import { message as Message } from 'antd'
 import { memoryCacheConfig } from './memoryCacheConfig'
 
 const httpLink = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
+  uri: process.env.REACT_APP_BACKEND_URL,
   credentials: 'include',
 })
 
