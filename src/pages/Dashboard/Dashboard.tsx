@@ -1,8 +1,12 @@
 import React, { FC, Fragment, lazy, Suspense, useContext, useState } from 'react'
-import { Layout, Menu } from 'antd'
-import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons'
+import { Layout, Menu, Typography } from 'antd'
+import {
+  BlockOutlined, PieChartOutlined, UserOutlined, UserSwitchOutlined,
+  CalendarOutlined, ClusterOutlined, NotificationOutlined
+} from '@ant-design/icons'
 
 import './Dashboard.css'
+import Logo from '../../assets/img/logo.png'
 import ProfileDropdown from '../../components/Dashboard/ProfileDropdown/ProfileDropdown'
 import Spinner from '../../components/UI/Spinner/Spinner'
 import AuthContext from '../../context/authContext'
@@ -27,34 +31,43 @@ const DashboardPage: FC = () => {
   return (
     <Layout className='dashboard-layout'>
       <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
-        <Header className="site-layout-background header-menu" />
+        <Header className="site-layout-background header-menu">
+          {collapsed ? (
+            <img src={Logo} alt="ista logo" />
+          ) : (
+              <Typography.Title level={5} type='secondary'>
+                <img src={Logo} alt="ista logo" />
+                ISTA LARACHE
+              </Typography.Title>
+            )}
+        </Header>
         <Menu theme="dark" defaultSelectedKeys={[selectedTap]} mode="inline" onSelect={onSelect}>
           <Menu.Item key="home" icon={<PieChartOutlined />}>
             Home
           </Menu.Item>
           {user?.role === 'ADMIN' && (
             <Fragment>
-              <Menu.Item key="formation" icon={<DesktopOutlined />}>
+              <Menu.Item key="formation" icon={<ClusterOutlined />}>
                 Formation
               </Menu.Item>
-              <Menu.Item key="class" icon={<DesktopOutlined />}>
+              <Menu.Item key="class" icon={<BlockOutlined />}>
                 Class
               </Menu.Item>
             </Fragment>
           )}
           <Fragment>
-            <Menu.Item key="student" icon={<DesktopOutlined />}>
+            <Menu.Item key="student" icon={<UserSwitchOutlined />}>
               Student
             </Menu.Item>
-            <Menu.Item key="timetable" icon={<DesktopOutlined />}>
+            <Menu.Item key="timetable" icon={<CalendarOutlined />}>
               Timetable
             </Menu.Item>
-            <Menu.Item key="activity" icon={<DesktopOutlined />}>
+            <Menu.Item key="activity" icon={<NotificationOutlined />}>
               Activity
             </Menu.Item>
           </Fragment>
           {user?.role === 'ADMIN' && (
-            <Menu.Item key="teacher" icon={<DesktopOutlined />}>
+            <Menu.Item key="teacher" icon={<UserOutlined />}>
               Teacher
             </Menu.Item>
           )}
@@ -66,7 +79,11 @@ const DashboardPage: FC = () => {
         </header>
         <Content className='taps-content'>
           <Suspense fallback={<Spinner />}>
-            {selectedTap === 'home' && <h3>Home</h3>}
+            {selectedTap === 'home' && (
+              <Typography.Title level={5} type='secondary'>
+                ISTA LARACHE ADMIN
+              </Typography.Title>
+            )}
             {selectedTap === 'formation' && <Formation />}
             {selectedTap === 'class' && <Class />}
             {selectedTap === 'student' && <Student />}

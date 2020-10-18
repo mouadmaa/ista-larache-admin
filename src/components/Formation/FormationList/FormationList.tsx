@@ -51,9 +51,7 @@ const FormationList: FC<FormationListProps> = props => {
               type='link'
               icon={<EditOutlined />}
               onClick={() => onEdit(formation)}
-            >
-              Edit
-            </Button>,
+            />,
             <Popconfirm
               title="Sure to delete?"
               onConfirm={() => onDelete(formation)}
@@ -61,9 +59,7 @@ const FormationList: FC<FormationListProps> = props => {
               <Button
                 type='link'
                 icon={<DeleteOutlined />}
-              >
-                Delete
-              </Button>
+              />
             </Popconfirm>
           ]}
         >

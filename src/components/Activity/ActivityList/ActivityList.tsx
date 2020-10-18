@@ -44,9 +44,7 @@ const ActivityList: FC<ActivityListProps> = props => {
               type='link'
               icon={<EditOutlined />}
               onClick={() => onShowForm(activity)}
-            >
-              Edit
-            </Button>,
+            />,
             <Popconfirm
               title="Sure to delete?"
               onConfirm={() => onDelete(activity)}
@@ -54,9 +52,7 @@ const ActivityList: FC<ActivityListProps> = props => {
               <Button
                 type='link'
                 icon={<DeleteOutlined />}
-              >
-                Delete
-              </Button>
+              />
             </Popconfirm>
           ]}
           extra={

@@ -1,7 +1,6 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC, useEffect, useState } from 'react'
-import { Button, Divider, Popconfirm, Space, Table, Typography } from 'antd'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { Button, Popconfirm, Space, Table, Typography } from 'antd'
+import { PlusCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { ColumnsType } from 'antd/lib/table'
 
 import { Module, Note, Student } from '../../../generated/graphql'
@@ -44,34 +43,42 @@ const ModuleTable: FC<ModuleTableProps> = props => {
     {
       title: "First Note",
       dataIndex: "note1",
+      sorter: (a, b) => a.note1! - b.note1!,
     },
     {
       title: "Second Note",
       dataIndex: "note2",
+      sorter: (a, b) => a.note2! - b.note2!,
     },
     {
       title: "Third Note",
       dataIndex: "note3",
+      sorter: (a, b) => a.note3! - b.note3!,
     },
     {
       title: "Note of EFM",
       dataIndex: "efm",
+      sorter: (a, b) => a.efm! - b.efm!,
     },
     {
       title: 'Operation',
       dataIndex: 'operation',
-      width: '15%',
+      width: '10%',
       render: (_, note) => (
         <Space size="small">
-          <a onClick={() => onEdit(note)}>
-            Edit
-          </a>
-          <Divider type="vertical" />
+          <Button
+            type='link'
+            icon={<EditOutlined />}
+            onClick={() => onEdit(note)}
+          />
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => onDelete(note)}
           >
-            <a>Delete</a>
+            <Button
+              type='link'
+              icon={<DeleteOutlined />}
+            />
           </Popconfirm>
         </Space>
       ),

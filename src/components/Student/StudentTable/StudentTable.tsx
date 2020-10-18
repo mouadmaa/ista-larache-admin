@@ -50,37 +50,33 @@ const StudentTable: FC<StudentTableProps> = props => {
       title: 'Operation',
       dataIndex: 'operation',
       width: '24%',
-      render: (_, record) => (
+      render: (_, student) => (
         <Space>
           <Button
             type='link'
-            onClick={() => onShowDrawer(record)}
+            onClick={() => onShowDrawer(student)}
           >
             View Student Details
           </Button>
           <Button
             type='link'
-            onClick={() => onShowNotes(record)}
+            onClick={() => onShowNotes(student)}
           >
             View Notes
           </Button>
           <Button
             type='link'
             icon={<EditOutlined />}
-            onClick={() => onEdit(record)}
-          >
-            Edit
-          </Button>
+            onClick={() => onEdit(student)}
+          />
           <Popconfirm
             title="Sure to delete?"
-            onConfirm={() => onDelete(record)}
+            onConfirm={() => onDelete(student)}
           >
             <Button
               type='link'
               icon={<DeleteOutlined />}
-            >
-              Delete
-            </Button>
+            />
           </Popconfirm>
         </Space>
       ),

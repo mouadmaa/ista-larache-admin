@@ -1,8 +1,7 @@
-query Activities {
-  activities {
-    count
-    activities {
-      ...Activity
-    }
+query activities {
+  activities(
+    orderBy: { date: desc }
+  ) {
+    ...Activity
   }
 }

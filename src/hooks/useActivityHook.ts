@@ -43,7 +43,7 @@ export const useActivity = () => {
   })
 
   return {
-    activities: activitiesData?.activities?.activities as Activity[] || [],
+    activities: activitiesData?.activities as Activity[] || [],
     activitiesLoading: activitiesLoading || loadingDelete,
     loadingForm: loadingCreate || loadingUpdate,
     createActivity,

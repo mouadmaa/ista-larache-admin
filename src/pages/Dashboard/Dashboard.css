@@ -24,7 +24,21 @@
 
 .header-menu {
   padding: 0;
-  height: 32px;
-  margin: 16px;
-  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-menu h5 {
+  margin-top: 10px;
+  color: #eee !important;
+}
+
+.header-menu h5 img {
+  width: 20px;
+  transform: translate(-10px, -2px);
+}
+
+.header-menu > img {
+  width: 40px;
 }

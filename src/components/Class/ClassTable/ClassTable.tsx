@@ -64,9 +64,7 @@ const ClassTable: FC<ClassTableProps> = props => {
             type='link'
             icon={<EditOutlined />}
             onClick={() => onEdit(record)}
-          >
-            Edit
-          </Button>
+          />
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => onDelete(record)}
@@ -74,9 +72,7 @@ const ClassTable: FC<ClassTableProps> = props => {
             <Button
               type='link'
               icon={<DeleteOutlined />}
-            >
-              Delete
-            </Button>
+            />
           </Popconfirm>
         </Space>
       ),

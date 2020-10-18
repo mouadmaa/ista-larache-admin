@@ -8,7 +8,7 @@ interface SelectClassProps {
   fetchFormationsWithClasses: () => void
   formationsWithClasses: Formation[]
   loading: boolean
-  onSelect: (formationId: string | undefined, classId: string | undefined) => void
+  onSelect: (formationId?: string, classId?: string) => void
 }
 
 const SelectClass: FC<SelectClassProps> = props => {

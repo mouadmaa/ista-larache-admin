@@ -28,7 +28,7 @@ const TeacherTable: FC<TeacherTableProps> = props => {
     {
       title: 'Operation',
       dataIndex: 'operation',
-      width: '20%',
+      width: '10%',
       render: (_, record) => (
         <Popconfirm
           title="Sure to delete?"
@@ -37,9 +37,7 @@ const TeacherTable: FC<TeacherTableProps> = props => {
           <Button
             type='link'
             icon={<DeleteOutlined />}
-          >
-            Delete
-          </Button>
+          />
         </Popconfirm>
       ),
     },

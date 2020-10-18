@@ -23,9 +23,11 @@ export type Query = {
   classes: Array<Class>;
   student?: Maybe<Student>;
   students: Array<Student>;
+  publicStudents: Array<PublicStudent>;
   notes: Array<Note>;
   activity?: Maybe<Activity>;
-  activities?: Maybe<Activities>;
+  activities: Array<Activity>;
+  _activitiesMeta: ActivitiesMeta;
 };
 
 
@@ -41,6 +43,11 @@ export type QueryClassArgs = {
 
 export type QueryStudentArgs = {
   where: StudentWhereUniqueInput;
+};
+
+
+export type QueryPublicStudentsArgs = {
+  where: PublicStudentWhereClassInput;
 };
 
 
@@ -159,6 +166,18 @@ export type StudentWhereUniqueInput = {
   id: Scalars['String'];
 };
 
+export type PublicStudentWhereClassInput = {
+  classId: Scalars['String'];
+};
+
+export type PublicStudent = {
+  __typename?: 'PublicStudent';
+  id: Scalars['String'];
+  fullName: Scalars['String'];
+  cef?: Maybe<Scalars['String']>;
+  cin?: Maybe<Scalars['String']>;
+};
+
 export type ActivityWhereInput = {
   id?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
@@ -186,9 +205,8 @@ export enum Sort {
   Desc = 'desc'
 }
 
-export type Activities = {
-  __typename?: 'Activities';
-  activities: Array<Activity>;
+export type ActivitiesMeta = {
+  __typename?: 'ActivitiesMeta';
   count: Scalars['Int'];
 };
 
@@ -210,6 +228,7 @@ export type Mutation = {
   createStudent: Student;
   updateStudent: Student;
   deleteStudent: Student;
+  studentNotes?: Maybe<Student>;
   createNote: Note;
   updateNote: Note;
   deleteNote: Note;
@@ -299,6 +318,12 @@ export type MutationUpdateStudentArgs = {
 
 export type MutationDeleteStudentArgs = {
   where: StudentWhereUniqueInput;
+};
+
+
+export type MutationStudentNotesArgs = {
+  cinOrCef: Scalars['String'];
+  password: Scalars['String'];
 };
 
 
@@ -853,13 +878,9 @@ export type ActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ActivitiesQuery = (
   { __typename?: 'Query' }
-  & { activities?: Maybe<(
-    { __typename?: 'Activities' }
-    & Pick<Activities, 'count'>
-    & { activities: Array<(
-      { __typename?: 'Activity' }
-      & ActivityFragment
-    )> }
+  & { activities: Array<(
+    { __typename?: 'Activity' }
+    & ActivityFragment
   )> }
 );
 
@@ -1831,12 +1852,9 @@ export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
 export const ActivitiesDocument = gql`
-    query Activities {
-  activities {
-    count
-    activities {
-      ...Activity
-    }
+    query activities {
+  activities(orderBy: {date: desc}) {
+    ...Activity
   }
 }
     ${ActivityFragmentDoc}`;

@@ -1,8 +1,7 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { FC } from 'react'
-import { Button, Divider, Popconfirm, Space, Table, Typography } from 'antd'
+import { Button, Popconfirm, Space, Table, Typography } from 'antd'
 import { ColumnsType } from 'antd/lib/table'
-import { PlusCircleOutlined } from '@ant-design/icons'
+import { PlusCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 import { Formation, Module } from '../../../generated/graphql'
 
@@ -34,18 +33,22 @@ const ModuleTable: FC<ModuleTableProps> = props => {
     {
       title: 'Operation',
       dataIndex: 'operation',
-      width: '15%',
+      width: '10%',
       render: (_, module) => (
         <Space size="small">
-          <a onClick={() => onEdit(module)}>
-            Edit
-          </a>
-          <Divider type="vertical" />
+          <Button
+            type='link'
+            icon={<EditOutlined />}
+            onClick={() => onEdit(module)}
+          />
           <Popconfirm
             title="Sure to delete?"
             onConfirm={() => onDelete(module)}
           >
-            <a>Delete</a>
+            <Button
+              type='link'
+              icon={<DeleteOutlined />}
+            />
           </Popconfirm>
         </Space>
       ),
