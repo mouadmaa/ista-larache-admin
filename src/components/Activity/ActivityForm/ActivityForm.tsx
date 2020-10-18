@@ -46,6 +46,7 @@ const ActivityForm: FC<ActivityFormProps> = props => {
       return
     }
 
+    variables.desc = desc
     variables.creator = user?.name
     variables.date = variables.date.toISOString()
 
@@ -55,7 +56,6 @@ const ActivityForm: FC<ActivityFormProps> = props => {
         variables.file = await getImageBase64(file)
         variables.image = activity.image
       }
-      if (desc === activity.desc) variables.desc = desc
       onUpdate({ variables: { ...variables, id: activity.id } })
     } else {
       key = 'createActivity'
@@ -63,7 +63,6 @@ const ActivityForm: FC<ActivityFormProps> = props => {
         message.info('Please choose an image of activity!')
         return
       }
-      variables.desc = desc
       variables.file = await getImageBase64(file)
       onCreate({ variables: variables as ActivityCreateInput & { file: string } })
     }
