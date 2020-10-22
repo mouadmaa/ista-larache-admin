@@ -13,6 +13,7 @@ import { AuthContext } from '../../context/authContext'
 
 const { Sider, Header, Content } = Layout
 
+const Home = lazy(() => import('../../containers/Home/Home'))
 const Formation = lazy(() => import('../../containers/Formation/Formation'))
 const Class = lazy(() => import('../../containers/Class/Class'))
 const Student = lazy(() => import('../../containers/Student/Student'))
@@ -79,11 +80,7 @@ const DashboardPage: FC = () => {
         </header>
         <Content className='taps-content'>
           <Suspense fallback={<Spinner />}>
-            {selectedTap === 'home' && (
-              <Typography.Title level={5} type='secondary'>
-                ISTA LARACHE ADMIN
-              </Typography.Title>
-            )}
+            {selectedTap === 'home' && <Home />}
             {selectedTap === 'formation' && <Formation />}
             {selectedTap === 'class' && <Class />}
             {selectedTap === 'student' && <Student />}
