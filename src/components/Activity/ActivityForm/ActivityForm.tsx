@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons'
 import { useForm } from 'antd/lib/form/Form'
 import moment from 'moment'
 
-import AuthContext from '../../../context/authContext'
+import { AuthContext } from '../../../context/authContext'
 import RichTextEditor from '../../UI/RichTextEditor/RichTextEditor'
 import { Activity, ActivityCreateInput, UpdateActivityMutationVariables } from '../../../generated/graphql'
 import { getImageBase64 } from '../../../utils/getImageBase64'

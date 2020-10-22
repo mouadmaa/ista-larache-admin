@@ -3,7 +3,7 @@ import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons
 import { Avatar, Dropdown, Menu, Spin, Typography } from 'antd'
 
 import './ProfileDropdown.css'
-import AuthContext from '../../../context/authContext'
+import { AuthContext } from '../../../context/authContext'
 import { useLogoutMutation } from '../../../generated/graphql'
 
 const ProfileDropdown: FC = () => {
@@ -12,9 +12,9 @@ const ProfileDropdown: FC = () => {
 
   const onMenuClick = async ({ key }: { key: React.Key }) => {
     if (key === 'logout') {
-      logout()
       await logoutMutation()
       await client.resetStore()
+      logout()
     }
   }
 

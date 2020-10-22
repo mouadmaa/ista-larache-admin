@@ -212,10 +212,10 @@ export type ActivitiesMeta = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  register?: Maybe<User>;
-  login?: Maybe<User>;
-  logout: Scalars['Boolean'];
+  register: User;
+  login: LoginResponse;
   deleteUser: User;
+  logout: Scalars['Boolean'];
   createFormation: Formation;
   updateFormation: Formation;
   deleteFormation: Formation;
@@ -358,6 +358,12 @@ export type MutationUpdateActivityArgs = {
 
 export type MutationDeleteActivityArgs = {
   where: ActivityWhereUniqueInput;
+};
+
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type UserWhereUniqueInput = {
@@ -844,10 +850,14 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = (
   { __typename?: 'Mutation' }
-  & { login?: Maybe<(
-    { __typename?: 'User' }
-    & UserFragment
-  )> }
+  & { login: (
+    { __typename?: 'LoginResponse' }
+    & Pick<LoginResponse, 'accessToken'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & UserFragment
+    )> }
+  ) }
 );
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
@@ -867,10 +877,10 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
-  & { register?: Maybe<(
+  & { register: (
     { __typename?: 'User' }
     & UserFragment
-  )> }
+  ) }
 );
 
 export type ActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1758,7 +1768,10 @@ export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMut
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
-    ...User
+    accessToken
+    user {
+      ...User
+    }
   }
 }
     ${UserFragmentDoc}`;

@@ -9,7 +9,7 @@ import './Dashboard.css'
 import Logo from '../../assets/img/logo.png'
 import ProfileDropdown from '../../components/Dashboard/ProfileDropdown/ProfileDropdown'
 import Spinner from '../../components/UI/Spinner/Spinner'
-import AuthContext from '../../context/authContext'
+import { AuthContext } from '../../context/authContext'
 
 const { Sider, Header, Content } = Layout
 

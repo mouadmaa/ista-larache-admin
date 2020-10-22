@@ -6,7 +6,7 @@ import {
   useUpdateFormationMutation, useFormationWithModulesLazyQuery, Module, useFormationsWithClassesLazyQuery,
   useTeacherFormationsWithCLassesLazyQuery
 } from '../generated/graphql'
-import AuthContext from '../context/authContext'
+import { AuthContext } from '../context/authContext'
 
 export const useFormation = () => {
   const [formVisible, setFormVisible] = useState(false)

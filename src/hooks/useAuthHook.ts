@@ -1,75 +1,56 @@
 import { useState, useCallback, useEffect } from 'react'
 
-import { Role, useMeQuery, User } from '../generated/graphql'
+import { User } from '../generated/graphql'
+import { setAccessToken } from '../apollo/apolloClient'
 
 export interface AuthHook {
-  user?: User,
-  loading: boolean,
-  login(user: User): void
+  user?: User
+  loading: boolean
+  login(user: User, accessToken: string): void
   logout(): void
 }
 
-interface UserData {
-  id: string
-  name: string
-  role: Role
+interface RefreshTokenResponse {
+  success: boolean
+  user: User
+  accessToken: string
 }
 
 export const useAuth = (): AuthHook => {
   const [user, setUser] = useState<User>()
   const [loading, setLoading] = useState(true)
 
-  const { data: currentUser } = useMeQuery()
-
-  const login = useCallback((user: User) => {
+  const login = useCallback((user: User, accessToken: string) => {
     setUser(user)
-    setUserData(user)
-    setLoading(false)
+    setAccessToken(accessToken)
   }, [])
 
   const logout = useCallback(() => {
     setUser(undefined)
-    removeUserData()
   }, [])
 
   useEffect(() => {
     (async () => {
-      setLoading(false)
+      try {
+        const refreshToken = await (await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/refresh_token`,
+          {
+            method: 'POST',
+            credentials: 'include'
+          }
+        )).json() as RefreshTokenResponse
 
-      const userData = getUserData()
-      if (!userData) return
-
-      if (currentUser) {
-        if (currentUser.me) {
-           setUser(currentUser.me)
-        } else {
-          removeUserData()
+        if (refreshToken.success) {
+          setAccessToken(refreshToken.accessToken)
+          setUser(refreshToken.user)
         }
-      } else {
-        setUser({ ...userData, email: '', })
+
+        setLoading(false)
+      } catch {
+        setLoading(false)
       }
     })()
-  }, [currentUser])
+  }, [])
 
   return { user, login, loading, logout, }
-}
-
-const setUserData = (user: User) => {
-  localStorage.setItem('userData',
-    JSON.stringify({
-      id: user.id,
-      name: user.name,
-      role: user.role,
-    })
-  )
-}
-
-const getUserData = () => {
-  return JSON.parse(
-    localStorage.getItem('userData') as string
-  ) as UserData
-}
-
-const removeUserData = () => {
-  localStorage.removeItem('userData')
 }

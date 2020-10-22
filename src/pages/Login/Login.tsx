@@ -1,10 +1,10 @@
 import React, { FC, useContext } from 'react'
-import { Layout } from 'antd'
+import { Layout, message } from 'antd'
 
 import './Login.css'
 import LoginHead from '../../components/Login/LoginHead/LoginHead'
 import LoginForm from '../../components/Login/LoginForm/LoginForm'
-import AuthContext from '../../context/authContext'
+import { AuthContext } from '../../context/authContext'
 import { LoginMutationVariables, useLoginMutation } from '../../generated/graphql'
 
 const LoginPage: FC = () => {
@@ -12,8 +12,15 @@ const LoginPage: FC = () => {
   const [loginMutation, { loading }] = useLoginMutation()
 
   const onFinish = async (variables: LoginMutationVariables) => {
-    const { data } = await loginMutation({ variables })
-    if (data?.login) login(data.login)
+    try {
+      const { data } = await loginMutation({ variables })
+      if (data?.login.user && data?.login.accessToken) {
+        const { user, accessToken } = data.login
+        login(user, accessToken)
+      }
+    } catch {
+      message.error('email or password not valid')
+    }
   }
 
   return (

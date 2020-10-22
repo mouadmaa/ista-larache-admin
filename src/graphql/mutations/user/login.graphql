@@ -6,6 +6,9 @@ mutation Login (
     email: $email
     password: $password
   ) {
-    ...User
+    accessToken
+    user {
+      ...User
+    }
   }
 }
