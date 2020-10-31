@@ -27,6 +27,7 @@ export const useAuth = (): AuthHook => {
 
   const logout = useCallback(() => {
     setUser(undefined)
+    setAccessToken(undefined)
   }, [])
 
   useEffect(() => {
